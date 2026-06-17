@@ -205,7 +205,7 @@
 
         .header-motto {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
             color: var(--text-main);
             margin: 0;
             line-height: 1.4;
@@ -521,12 +521,13 @@
             transform: scale(1.1);
         }
 
+        /* MODAL - Genel */
         .modal { 
             display: none; 
             position: fixed; 
             top: 0; left: 0;
             width: 100%; height: 100%; 
-            background: rgba(255, 107, 157, 0.2);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
             z-index: 1000; 
             align-items: center;
@@ -720,6 +721,7 @@
         }
         .btn-secondary { background: #F5F5F5; color: var(--text-main); }
 
+        /* DETAY SAYFASI */
         .detail-view { 
             position: fixed; 
             top: 0; left: 0;
@@ -804,7 +806,7 @@
         }
         .back-btn { color: var(--primary); }
         .delete-btn { color: #FF6B9D; }
-        .share-btn { 
+        .share-detail-btn { 
             background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
         }
@@ -968,7 +970,11 @@
             font-weight: 700;
         }
 
-        /* PAYLAŞIM SEÇENEKLERİ MODAL */
+        /* PAYLAŞIM MODAL - DETAY SAYFASINDAN YÜKSEK Z-INDEX */
+        #shareModal {
+            z-index: 3000 !important;
+        }
+
         .share-options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -988,6 +994,7 @@
             transition: all 0.3s;
             font-family: 'Quicksand', sans-serif;
             font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .share-option-btn i {
@@ -1024,9 +1031,8 @@
             color: white;
         }
 
-        .share-option-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        .share-option-btn:active {
+            transform: scale(0.95);
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -1109,7 +1115,7 @@
         <div class="container">
             <header>
                 <h1 id="headerTitle">Tarif Defteri</h1>
-                <p class="header-motto">"Geçmişin Kokusu, Bugünün Lezzeti, Geleceğin Mirası"</p>
+                <p class="header-motto">"Geçmişin kokusu, bugünün lezzeti, geleceğin mirası."</p>
             </header>
             
             <div class="search-wrapper">
@@ -1202,7 +1208,7 @@
                 <h1 id="detailTitle" class="detail-title"></h1>
                 <div class="header-actions">
                     <button class="action-btn edit-btn-detail" onclick="openEditModal(currentRecipeId)" title="Düzenle"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn share-btn" onclick="openShareModal()" title="Paylaş"><i class="fas fa-share-alt"></i></button>
+                    <button class="action-btn share-detail-btn" onclick="openShareModal()" title="Paylaş"><i class="fas fa-share-alt"></i></button>
                     <button class="action-btn delete-btn" onclick="deleteCurrentRecipe()"><i class="fas fa-trash-alt"></i></button>
                     <button class="action-btn back-btn" onclick="closeDetail()"><i class="fas fa-arrow-left"></i></button>
                 </div>
@@ -1221,7 +1227,7 @@
         </div>
     </div>
 
-    <!-- PAYLAŞIM SEÇENEKLERİ MODAL -->
+    <!-- PAYLAŞIM SEÇENEKLERİ MODAL (Z-INDEX 3000) -->
     <div id="shareModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1518,11 +1524,12 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // PAYLAŞIM FONKSİYONLARI
         function openShareModal() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
             
-            shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+            shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
             
             // Görseli hazırla
             html2canvas(document.getElementById('detailPage'), {
@@ -1536,12 +1543,16 @@
                     shareImageBlob = blob;
                     document.getElementById('shareModal').classList.add('active');
                 }, 'image/png', 0.9);
+            }).catch(err => {
+                console.error('Görsel hazırlama hatası:', err);
+                // Görsel hazırlanamasa bile metin paylaşımı için modalı aç
+                shareImageBlob = null;
+                document.getElementById('shareModal').classList.add('active');
             });
         }
 
         function closeShareModal() {
             document.getElementById('shareModal').classList.remove('active');
-            shareImageBlob = null;
         }
 
         function shareToWhatsApp() {
@@ -1552,54 +1563,56 @@
 
         function shareToTelegram() {
             const text = encodeURIComponent(shareText);
-            window.open(`https://t.me/share/url?text=${text}`, '_blank');
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${text}`, '_blank');
             closeShareModal();
         }
 
         function shareToTwitter() {
-            const text = encodeURIComponent(shareText.substring(0, 200));
+            const text = encodeURIComponent(shareText.substring(0, 280));
             window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
             closeShareModal();
         }
 
         function shareToEmail() {
-            const subject = encodeURIComponent(`${recipes.find(r => r.id === currentRecipeId).name} - Tarif`);
+            const recipe = recipes.find(r => r.id === currentRecipeId);
+            const subject = encodeURIComponent(`${recipe.name} - Tarif`);
             const body = encodeURIComponent(shareText);
-            window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
             closeShareModal();
         }
 
         function copyTextToClipboard() {
             navigator.clipboard.writeText(shareText).then(() => {
-                alert('Tarif metni panoya kopyalandı!');
+                alert('✅ Tarif metni panoya kopyalandı!');
                 closeShareModal();
             }).catch(() => {
-                alert('Kopyalama başarısız oldu.');
+                // Fallback
+                const textArea = document.createElement('textarea');
+                textArea.value = shareText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ Tarif metni panoya kopyalandı!');
+                closeShareModal();
             });
         }
 
         function downloadImage() {
             if (shareImageBlob) {
+                const recipe = recipes.find(r => r.id === currentRecipeId);
                 const url = URL.createObjectURL(shareImageBlob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `${recipes.find(r => r.id === currentRecipeId).name}.png`;
+                a.download = `${recipe.name}.png`;
+                document.body.appendChild(a);
                 a.click();
+                document.body.removeChild(a);
                 URL.revokeObjectURL(url);
+                alert('✅ Görsel indirildi!');
                 closeShareModal();
-            }
-        }
-
-        async function copyToClipboard(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-            } catch (err) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
+            } else {
+                alert('Görsel hazırlanamadı. Lütfen tekrar deneyin.');
             }
         }
 
@@ -1823,7 +1836,7 @@
                 if (normalized.includes(key)) return emoji;
             }
             
-            return '🥘';
+            return '';
         }
 
         async function getSmartImage(recipeName) {
@@ -1930,7 +1943,6 @@
         }
 
         function openEditModal(id) {
-            // Önce detay sayfasını kapat
             closeDetail();
             
             const recipe = recipes.find(r => r.id === id);
@@ -2034,17 +2046,13 @@
                 let image = '';
                 
                 if (uploadedImageBase64) {
-                    // Kullanıcı yeni görsel yüklediyse
                     image = uploadedImageBase64;
                 } else if (imageRemovedDuringEdit && editingRecipeId) {
-                    // Düzenleme sırasında görsel silindiyse, otomatik görsel bul
                     image = await getSmartImage(name);
                 } else if (editingRecipeId) {
-                    // Düzenleme modunda ve görsel silinmediyse, mevcut görseli koru
                     const existingRecipe = recipes.find(r => r.id === editingRecipeId);
                     image = existingRecipe ? existingRecipe.image : '';
                 } else {
-                    // Yeni tarif ve görsel yüklenmediyse, otomatik görsel bul
                     image = await getSmartImage(name);
                 }
                 
