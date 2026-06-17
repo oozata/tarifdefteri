@@ -192,6 +192,6 @@ const emojiMap = {
                 'böğürtlen': '🫐', 'bogurtlen': '🫐',
                 'ahududu': '🫐',
                 'yaban mersini': '🫐',
-                'hurma': '🌴'
-                'su' : '💧'
+                'hurma': '🌴',
+                'su' : '💧', 'Su' : '💧'
             };
