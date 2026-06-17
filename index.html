@@ -11,7 +11,6 @@
     
     <style>
         :root {
-            /* TEMA 1: Pembe-Mercan (Varsayılan) */
             --primary: #FF6B9D;
             --secondary: #FFA07A;
             --accent: #FFB6C1;
@@ -27,7 +26,6 @@
             --modal-bg: rgba(0, 0, 0, 0.5);
         }
 
-        /* TEMA 2: Mavi-Turkuaz */
         body.theme-2 {
             --primary: #0EA5E9;
             --secondary: #06B6D4;
@@ -35,14 +33,10 @@
             --coral: #22D3EE;
             --peach: #BAE6FD;
             --bg-gradient: linear-gradient(135deg, #E0F2FE 0%, #CFFAFE 50%, #E0F2FE 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #0C4A6E;
             --text-light: #64748B;
-            --shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
-            --shadow-lg: 0 12px 32px rgba(14, 165, 233, 0.2);
         }
 
-        /* TEMA 3: Mor-Pembe */
         body.theme-3 {
             --primary: #8B5CF6;
             --secondary: #EC4899;
@@ -50,14 +44,10 @@
             --coral: #F472B6;
             --peach: #FBCFE8;
             --bg-gradient: linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 50%, #F3E8FF 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #581C87;
             --text-light: #9333EA;
-            --shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
-            --shadow-lg: 0 12px 32px rgba(139, 92, 246, 0.2);
         }
 
-        /* TEMA 4: Mint-Mor */
         body.theme-4 {
             --primary: #8B5CF6;
             --secondary: #A78BFA;
@@ -65,14 +55,10 @@
             --coral: #6EE7B7;
             --peach: #A7F3D0;
             --bg-gradient: linear-gradient(135deg, #A7F3D0 0%, #C4B5FD 50%, #A7F3D0 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #4B5563;
             --text-light: #9CA3AF;
-            --shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
-            --shadow-lg: 0 12px 32px rgba(139, 92, 246, 0.2);
         }
 
-        /* TEMA 5: DARK TEMA */
         body.theme-5 {
             --primary: #FF6B9D;
             --secondary: #FFA07A;
@@ -83,8 +69,6 @@
             --card-bg: rgba(55, 65, 81, 0.95);
             --text-main: #F9FAFB;
             --text-light: #D1D5DB;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
             --modal-bg: rgba(0, 0, 0, 0.8);
         }
 
@@ -102,7 +86,6 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* SPLASH SCREEN */
         #splashScreen {
             position: fixed;
             top: 0; left: 0;
@@ -220,7 +203,6 @@
             to { opacity: 1; }
         }
 
-        /* ANA UYGULAMA */
         .bg-shape {
             position: fixed;
             border-radius: 50%;
@@ -528,7 +510,6 @@
             transition: all 0.3s;
         }
 
-        /* ALT NAV BAR */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -586,7 +567,6 @@
             transform: scale(1.1);
         }
 
-        /* MODAL - Genel */
         .modal { 
             display: none; 
             position: fixed; 
@@ -788,7 +768,6 @@
         }
         .btn-secondary { background: #F5F5F5; color: var(--text-main); }
 
-        /* DETAY SAYFASI */
         .detail-view { 
             position: fixed; 
             top: 0; left: 0;
@@ -1037,12 +1016,10 @@
             font-weight: 700;
         }
 
-        /* PAYLAŞIM MODAL - DETAY SAYFASINDAN YÜKSEK Z-INDEX */
         #shareModal {
             z-index: 3000 !important;
         }
 
-        /* PAYLAŞIM LİSTESİ - ALT ALTA */
         .share-list {
             display: flex;
             flex-direction: column;
@@ -1104,7 +1081,6 @@
             transform: scale(0.98);
         }
 
-        /* RENK PALETİ SEÇİCİ - ALT ALTA LİSTE */
         .theme-selector {
             margin-top: 20px;
         }
@@ -1191,45 +1167,6 @@
             color: var(--text-light);
         }
 
-        /* YÜKLENİYOR GÖSTERGESİ */
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 5000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            color: white;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) {
@@ -1282,7 +1219,6 @@
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-glow"></div>
         <div class="splash-ring"></div>
@@ -1299,13 +1235,6 @@
         </div>
     </div>
 
-    <!-- YÜKLENİYOR OVERLAY -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Hazırlanıyor...</div>
-    </div>
-
-    <!-- ANA UYGULAMA -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
 
@@ -1341,7 +1270,6 @@
             <div id="recipesList" class="recipes-list"></div>
         </div>
 
-        <!-- ALT NAV BAR -->
         <nav class="bottom-nav">
             <button class="nav-btn" onclick="openSettings()">
                 <i class="fas fa-cog"></i>
@@ -1357,7 +1285,6 @@
         </nav>
     </div>
 
-    <!-- AYARLAR MODAL -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1374,7 +1301,6 @@
                 </button>
             </div>
 
-            <!-- RENK PALETİ SEÇİCİ - ALT ALTA -->
             <div class="theme-selector">
                 <div class="theme-selector-title">🎨 Renk Paleti Seç</div>
                 <div class="theme-options">
@@ -1418,7 +1344,6 @@
         </div>
     </div>
 
-    <!-- İSİM MODAL -->
     <div id="nameModal" class="modal name-modal">
         <div class="modal-content">
             <span class="name-modal-icon">👤</span>
@@ -1436,7 +1361,6 @@
         </div>
     </div>
 
-    <!-- DETAY SAYFASI -->
     <div id="detailPage" class="detail-view">
         <div class="detail-hero-wrapper">
             <img id="detailImage" src="" class="detail-hero" alt="">
@@ -1467,7 +1391,6 @@
         </div>
     </div>
 
-    <!-- PAYLAŞIM SEÇENEKLERİ MODAL (ALT ALTA LİSTE) -->
     <div id="shareModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1507,7 +1430,6 @@
         </div>
     </div>
 
-    <!-- TARİF EKLE/DÜZENLE MODAL -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1566,7 +1488,6 @@
     </div>
 
     <script>
-        // SPLASH SCREEN
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splashScreen');
@@ -1605,17 +1526,11 @@
             ownerName = '';
         }
 
-        // TEMA DEĞİŞTİRME
         function changeTheme(themeNum) {
-            // Tüm temaları kaldır
             document.body.classList.remove('theme-1', 'theme-2', 'theme-3', 'theme-4', 'theme-5');
-            
-            // Yeni temayı ekle (1 hariç)
             if (themeNum !== 1) {
                 document.body.classList.add('theme-' + themeNum);
             }
-            
-            // Seçili olanı işaretle
             document.querySelectorAll('.theme-option').forEach((opt, index) => {
                 if (index + 1 === themeNum) {
                     opt.classList.add('active');
@@ -1623,16 +1538,12 @@
                     opt.classList.remove('active');
                 }
             });
-            
-            // localStorage'a kaydet
             localStorage.setItem('theme', themeNum);
             currentTheme = themeNum;
         }
 
-        // Başlangıç temasını yükle
         if (currentTheme !== '1') {
             document.body.classList.add('theme-' + currentTheme);
-            // Seçili temayı işaretle
             setTimeout(() => {
                 document.querySelectorAll('.theme-option').forEach((opt, index) => {
                     if (index + 1 === parseInt(currentTheme)) {
@@ -1646,9 +1557,7 @@
             event.stopPropagation();
             const prefaceText = document.getElementById('prefaceText');
             const readMoreBtn = document.getElementById('readMoreBtn');
-            
             prefaceText.classList.toggle('expanded');
-            
             if (prefaceText.classList.contains('expanded')) {
                 readMoreBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Daha Az';
             } else {
@@ -1659,17 +1568,14 @@
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
             if (file.size > 5 * 1024 * 1024) {
                 alert('Görsel boyutu 5MB\'den küçük olmalıdır!');
                 return;
             }
-            
             if (!file.type.startsWith('image/')) {
                 alert('Lütfen geçerli bir resim dosyası seçin!');
                 return;
             }
-            
             const reader = new FileReader();
             reader.onload = function(e) {
                 uploadedImageBase64 = e.target.result;
@@ -1684,7 +1590,6 @@
             const icon = document.getElementById('uploadIcon');
             const text = document.getElementById('uploadText');
             const container = document.querySelector('.image-preview-container');
-            
             preview.src = base64;
             preview.style.display = 'block';
             icon.style.display = 'none';
@@ -1696,12 +1601,10 @@
             uploadedImageBase64 = null;
             imageRemovedDuringEdit = true;
             document.getElementById('fileInput').value = '';
-            
             const preview = document.getElementById('imagePreview');
             const icon = document.getElementById('uploadIcon');
             const text = document.getElementById('uploadText');
             const container = document.querySelector('.image-preview-container');
-            
             preview.style.display = 'none';
             icon.style.display = 'block';
             text.style.display = 'block';
@@ -1710,15 +1613,11 @@
 
         function getTurkishPossessive(name) {
             if (!name || !name.trim()) return 'Tarif Defteri';
-            
             const cleanName = name.trim();
             const lastChar = cleanName.charAt(cleanName.length - 1).toLowerCase();
             const lastVowel = getLastVowel(cleanName);
-            
             const isVowel = 'aeıioöuü'.includes(lastChar);
-            
             let suffix = '';
-            
             if ('aı'.includes(lastVowel)) {
                 suffix = isVowel ? "'nın" : "'in";
             } else if ('ei'.includes(lastVowel)) {
@@ -1730,7 +1629,6 @@
             } else {
                 suffix = isVowel ? "'nin" : "'in";
             }
-            
             return `${cleanName}${suffix} Tarif Defteri`;
         }
 
@@ -1757,7 +1655,6 @@
             const input = document.getElementById('nameInput');
             const preview = document.getElementById('namePreview');
             const name = input.value.trim();
-            
             if (name) {
                 preview.innerHTML = `<strong>${getTurkishPossessive(name)}</strong>`;
             } else {
@@ -1782,13 +1679,11 @@
         function saveName() {
             const input = document.getElementById('nameInput');
             const name = input.value.trim();
-            
             if (!name) {
                 input.style.borderColor = '#FF6B9D';
                 input.focus();
                 return;
             }
-            
             ownerName = name;
             localStorage.setItem('ownerName', ownerName);
             updateHeaderTitle();
@@ -1807,38 +1702,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // PAYLAŞIM FONKSİYONLARI - HIZLI VE MOBİL UYGULAMA AÇICI
         function openShareModal() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
-            
             shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
-            
-            // Loading göster
-            document.getElementById('loadingOverlay').classList.add('active');
-            
-            // Görseli hazırla - GELİŞMİŞ AYARLAR
-            html2canvas(document.getElementById('detailPage'), {
-                scale: 3, // Daha yüksek kalite
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null, // Arka planı saydam yapma
-                scrollY: 0,
-                logging: false,
-                foreignObjectRendering: true,
-                removeContainer: true
-            }).then(canvas => {
-                canvas.toBlob(blob => {
-                    shareImageBlob = blob;
-                    document.getElementById('loadingOverlay').classList.remove('active');
-                    document.getElementById('shareModal').classList.add('active');
-                }, 'image/png', 1.0); // En yüksek kalite
-            }).catch(err => {
-                console.error('Görsel hazırlama hatası:', err);
-                shareImageBlob = null;
-                document.getElementById('loadingOverlay').classList.remove('active');
-                document.getElementById('shareModal').classList.add('active');
-            });
+            document.getElementById('shareModal').classList.add('active');
         }
 
         function closeShareModal() {
@@ -1847,39 +1715,33 @@
 
         function shareToWhatsApp() {
             const text = encodeURIComponent(shareText);
-            // Mobil cihazlarda WhatsApp uygulamasını aç (deep link)
             window.location.href = `https://api.whatsapp.com/send?text=${text}`;
-            setTimeout(() => closeShareModal(), 500);
+            setTimeout(() => closeShareModal(), 300);
         }
 
         function shareToTelegram() {
             const text = encodeURIComponent(shareText);
-            const url = encodeURIComponent(window.location.href);
-            // Mobil cihazlarda Telegram uygulamasını aç (deep link)
-            window.location.href = `https://t.me/share/url?url=${url}&text=${text}`;
-            setTimeout(() => closeShareModal(), 500);
+            window.location.href = `https://t.me/share/url?text=${text}`;
+            setTimeout(() => closeShareModal(), 300);
         }
 
         function shareToX() {
             const text = encodeURIComponent(shareText.substring(0, 280));
-            // Mobil cihazlarda X (Twitter) uygulamasını aç (deep link)
-            window.location.href = `https://twitter.com/intent/tweet?text=${text}`;
-            setTimeout(() => closeShareModal(), 500);
+            window.location.href = `https://mobile.twitter.com/intent/tweet?text=${text}`;
+            setTimeout(() => closeShareModal(), 300);
         }
 
         function shareToInstagram() {
-            // Instagram için web fallback (Instagram doğrudan paylaşım API'si yok)
             window.location.href = 'https://www.instagram.com/';
-            setTimeout(() => closeShareModal(), 500);
+            setTimeout(() => closeShareModal(), 300);
         }
 
         function shareToEmail() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             const subject = encodeURIComponent(`${recipe.name} - Tarif`);
             const body = encodeURIComponent(shareText);
-            // Email uygulamasını aç
             window.location.href = `mailto:?subject=${subject}&body=${body}`;
-            setTimeout(() => closeShareModal(), 500);
+            setTimeout(() => closeShareModal(), 300);
         }
 
         function copyTextToClipboard() {
@@ -1902,278 +1764,96 @@
             if (shareImageBlob) {
                 const recipe = recipes.find(r => r.id === currentRecipeId);
                 const fileName = `${recipe.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_tarif.png`;
-                
-                // Blob URL oluştur
                 const url = URL.createObjectURL(shareImageBlob);
-                
-                // Görünmez link oluştur ve tıkla
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                
-                // URL'i temizle
-                setTimeout(() => {
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                alert(`✅ Görsel "${fileName}" olarak indirildi!\n\n📁 İndirilenler klasörünüzü kontrol edin.`);
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                alert(`✅ Görsel "${fileName}" olarak indirildi!`);
                 closeShareModal();
             } else {
-                alert('❌ Görsel hazırlanamadı. Lütfen tekrar deneyin.');
+                alert('❌ Görsel hazırlanamadı.');
             }
         }
 
         function normalizeTurkish(text) {
-            return text
-                .toLowerCase()
-                .replace(/İ/g, 'i')
-                .replace(/I/g, 'ı')
-                .replace(/Ğ/g, 'ğ')
-                .replace(/Ü/g, 'ü')
-                .replace(/Ş/g, 'ş')
-                .replace(/Ö/g, 'ö')
-                .replace(/Ç/g, 'ç')
-                .trim();
+            return text.toLowerCase().replace(/İ/g, 'i').replace(/I/g, 'ı').replace(/Ğ/g, 'ğ').replace(/Ü/g, 'ü').replace(/Ş/g, 'ş').replace(/Ö/g, 'ö').replace(/Ç/g, 'ç').trim();
         }
 
         function getIngredientIcon(text) {
             const normalized = normalizeTurkish(text);
-            
             const emojiMap = {
-                'zeytinyağı': '🫗', 'zeytinyagi': '🫗',
-                'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗',
-                'sıvı yağ': '🫗', 'sivi yag': '🫗',
-                'tereyağı': '🧈', 'tereyagi': '🧈',
-                'kuru soğan': '🧅', 'kuru sogan': '🧅',
-                'soğan': '🧅', 'sogan': '🧅',
-                'sarımsak': '🧄', 'sarimsak': '🧄',
-                'tuz': '🧂',
-                'karabiber': '🌶️',
-                'toz baharat': '🌶️',
-                'baharat': '🌶️',
-                'kimyon': '🍛',
-                'köri': '🍛', 'kori': '🍛',
-                'kekik': '🌿',
-                'kuru nane': '🌿',
-                'nane': '🌿',
-                'biberiye': '🌿',
-                'defne yaprağı': '🍃', 'defne yapragi': '🍃',
-                'tarçın': '🪵', 'tarcin': '🪵',
-                'toz tarçın': '🪵', 'toz tarcin': '🪵',
-                'domates salçası': '🥫', 'domates salcasi': '🥫',
-                'biber salçası': '🥫', 'biber salcasi': '🥫',
-                'salça': '🥫', 'salca': '🥫',
-                'soya sosu': '🥢',
-                'pesto sosu': '🟢',
-                'acı sos': '🔥', 'aci sos': '🔥',
-                'sriracha': '🔥',
-                'tabasco': '🔥',
-                'barbekü sosu': '🪵', 'barbeku sosu': '🪵',
-                'hardal': '🍯',
-                'mayonez': '🍅',
-                'ketçap': '🍅', 'ketcap': '🍅',
-                'köri ezmesi': '🍛', 'kori ezmesi': '🍛',
-                'et suyu': '🍲',
-                'tavuk suyu': '🍲',
-                'limon': '🍋',
-                'elma sirkesi': '🍾',
-                'üzüm sirkesi': '🍾', 'uzum sirkesi': '🍾',
-                'sirke': '🍾',
-                'nar ekşisi': '🍷', 'nar eksi': '🍷',
-                'sıvı krema': '🥛', 'sivi krema': '🥛',
-                'süt': '🥛', 'sut': '🥛',
-                'su': '💧', 'Su': '💧',
-                'yoğurt': '🥣', 'yogurt': '🥣',
-                'tahin': '🏺',
-                'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
-                'un': '🌾',
-                'buğday unu': '🌾', 'bugday unu': '🌾',
-                'mısır nişastası': '🌽', 'misir nisastasi': '🌽',
-                'nişasta': '🌽', 'nisasta': '🌽',
-                'badem unu': '🫘',
-                'kırmızı mercimek': '🔴', 'kirmizi mercimek': '🔴',
-                'yeşil mercimek': '🟢', 'yesil mercimek': '🟢',
-                'mercimek': '🟢',
-                'kuru fasulye': '🫘',
-                'nohut': '🧆',
-                'pilavlık bulgur': '🍚', 'pilavlik bulgur': '🍚',
-                'köftelik bulgur': '🌾', 'koftelik bulgur': '🌾',
-                'bulgur': '🌾',
-                'baldo pirinç': '🍚', 'baldo pirinc': '🍚',
-                'basmati pirinç': '🍚', 'basmati pirinc': '🍚',
-                'pirinç': '🍚', 'pirinc': '🍚',
-                'barbunya': '🤎',
-                'kuru bakla': '🫛',
-                'börülce': '👁️', 'borulce': '👁️',
-                'bakla': '🫛',
-                'mısır taneleri': '🌽', 'misir taneleri': '🌽',
-                'mısır': '🌽', 'misir': '🌽',
-                'yarma': '🌾',
-                'dövme buğday': '🌾', 'dovme bugday': '🌾',
-                'erişte': '🍝', 'eriste': '🍝',
-                'makarna': '🍝',
-                'yulaf ezmesi': '🥣',
-                'yulaf': '🥣',
-                'patates': '🥔',
-                'havuç': '🥕',
-                'domates': '🍅',
-                'salatalık': '🥒', 'salatalik': '🥒',
-                'kuru mantar': '🍄',
-                'kültür mantarı': '🍄', 'kultur mantari': '🍄',
-                'mantar': '🍄',
-                'patlıcan': '🍆', 'patlican': '🍆',
-                'yeşil biber': '🫑', 'yesil biber': '🫑',
-                'kırmızı biber': '🌶️', 'kirmizi biber': '🌶️',
-                'biber': '🫑',
-                'kabak': '🥒',
-                'zencefil': '🫚',
-                'kuru acı biber': '🌶️', 'kuru aci biber': '🌶️',
-                'acı biber': '🌶️', 'aci biber': '🌶️',
-                'brokoli': '🥦',
-                'karnabahar': '🥦',
-                'ıspanak': '🥬', 'ispanak': '🥬',
-                'pazı': '🥬', 'pazi': '',
-                'marul': '🥬',
-                'kıvırcık': '🥬', 'kivircik': '🥬',
-                'beyaz lahana': '🥬',
-                'kırmızı lahana': '🥬', 'kirmizi lahana': '🥬',
-                'lahana': '🥬',
-                'pırasa': '🌱', 'pirasa': '🌱',
-                'kereviz': '🍏',
-                'enginar': '🪻',
-                'taze fasulye': '🫛',
-                'fasulye': '🫘',
-                'bezelye': '🫛',
-                'bal kabağı': '🎃', 'bal kabagi': '🎃',
-                'turp': '🥕',
-                'şalgam': '🥕', 'salgam': '🥕',
-                'avokado': '🥑',
-                'mısır koçanı': '🌽', 'misir kocani': '🌽',
-                'kuşkonmaz': '🌿', 'kuskonmaz': '🌿',
-                'taze maydanoz': '🌿',
-                'maydanoz': '🌿',
-                'dereotu': '🌿',
-                'zeytin': '🫒',
-                'yeşil zeytin': '🫒', 'yesil zeytin': '🫒',
-                'siyah zeytin': '🫒',
-                'kaşar peyniri': '🧀', 'kasar peyniri': '🧀',
-                'mozzarella peyniri': '🧀',
-                'beyaz peynir': '⬜',
-                'süzme peynir': '⬜', 'suzme peynir': '⬜',
-                'parmesan': '🧀',
-                'eski kaşar': '🧀', 'eski kasar': '🧀',
-                'labne peyniri': '🧀',
-                'peynir': '🧀',
-                'sucuk': '🥓',
-                'pastırma': '🥓', 'pastirma': '🥓',
-                'et': '🥩',
-                'kıyma': '🥩', 'kiyma': '🥩',
-                'tavuk': '🍗',
-                'pudra şekeri': '🍧', 'pudra sekeri': '🍧',
-                'toz şeker': '🍬', 'toz seker': '🍬',
-                'esmer şeker': '🍬', 'esmer seker': '🍬',
-                'şeker': '🍬', 'seker': '🍬',
-                'yumurta': '🥚',
-                'kabartma tozu': '🧪',
-                'karbonat': '🧪',
-                'şekerli vanilin': '🌸', 'sekerli vanilin': '🌸',
-                'vanilin': '🌸',
-                'kakao tozu': '🍫',
-                'çikolata': '🍫', 'cikolata': '🍫',
-                'damla çikolata': '🍪', 'damla cikolata': '🍪',
-                'limon kabuğu': '🍊', 'limon kabugu': '🍊',
-                'portakal kabuğu': '🍊', 'portakal kabugu': '🍊',
-                'kuru üzüm': '🍇', 'kuru uzum': '🍇',
-                'kuru kayısı': '🍇', 'kuru kayisi': '🍇',
-                'kuru meyve': '🍇',
-                'ceviz': '🧠',
-                'ceviz içi': '🧠', 'ceviz ici': '🧠',
-                'fındık': '🌰', 'findik': '🌰',
-                'badem': '🥜',
-                'hindistan cevizi': '🥥',
-                'hindistan cevizi tozu': '🥥',
-                'bal': '🍯',
-                'pekmez': '🍯',
-                'krem şanti': '🧁', 'krem santi': '🧁',
-                'şanti': '🧁', 'santi': '🧁',
-                'maya': '🍞',
-                'kuru maya': '🍞',
-                'yaş maya': '🍞', 'yas maya': '🍞',
-                'jöle': '🍮', 'jole': '🍮',
-                'jelatin': '🍮',
-                'gıda boyası': '🎨', 'gida boyasi': '🎨',
-                'şekerleme': '🧁', 'sekerleme': '🧁',
-                'sprinkles': '🧁',
-                'kurutulmuş meyve tozu': '🍓', 'kurutulmus meyve tozu': '🍓',
-                'elma': '🍎',
-                'kırmızı elma': '🍎', 'kirmizi elma': '🍎',
-                'yeşil elma': '🍏', 'yesil elma': '🍏',
-                'armut': '🍐',
-                'portakal': '🍊',
-                'mandalina': '🍊',
-                'greyfurt': '🍊',
-                'muz': '🍌',
-                'çilek': '🍓', 'cilek': '🍓',
-                'kiraz': '🍒',
-                'vişne': '🍒', 'visne': '🍒',
-                'üzüm': '🍇', 'uzum': '🍇',
-                'yeşil üzüm': '🍇', 'yesil uzum': '🍇',
-                'kara üzüm': '🍇', 'kara uzum': '🍇',
-                'karpuz': '🍉',
-                'kavun': '🍈',
-                'şeftali': '🍑', 'seftali': '🍑',
-                'kayısı': '🍑', 'kayisi': '🍑',
-                'taze kayısı': '🍑', 'taze kayisi': '🍑',
-                'erik': '🍏',
-                'yeşil erik': '🍏', 'yesil erik': '🍏',
-                'mürdüm erik': '🍏', 'murdum erik': '🍏',
-                'incir': '🪘',
-                'nar': '🍎',
-                'kivi': '🥝',
-                'ananas': '🍍',
-                'böğürtlen': '🫐', 'bogurtlen': '🫐',
-                'ahududu': '🫐',
-                'yaban mersini': '🫐',
-                'hurma': '🌴'
+                'zeytinyağı': '🫗', 'zeytinyagi': '🫗', 'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗', 'sıvı yağ': '🫗', 'sivi yag': '🫗',
+                'tereyağı': '🧈', 'tereyagi': '🧈', 'kuru soğan': '🧅', 'kuru sogan': '🧅', 'soğan': '🧅', 'sogan': '🧅',
+                'sarımsak': '🧄', 'sarimsak': '🧄', 'tuz': '🧂', 'karabiber': '🌶️', 'toz baharat': '🌶️', 'baharat': '🌶️',
+                'kimyon': '🍛', 'köri': '🍛', 'kori': '🍛', 'kekik': '🌿', 'kuru nane': '🌿', 'nane': '🌿', 'biberiye': '🌿',
+                'defne yaprağı': '🍃', 'defne yapragi': '🍃', 'tarçın': '🪵', 'tarcin': '🪵', 'toz tarçın': '🪵', 'toz tarcin': '🪵',
+                'domates salçası': '🥫', 'domates salcasi': '🥫', 'biber salçası': '🥫', 'biber salcasi': '🥫', 'salça': '🥫', 'salca': '🥫',
+                'soya sosu': '🥢', 'pesto sosu': '🟢', 'acı sos': '🔥', 'aci sos': '🔥', 'sriracha': '🔥', 'tabasco': '🔥',
+                'barbekü sosu': '🪵', 'barbeku sosu': '🪵', 'hardal': '🍯', 'mayonez': '🍅', 'ketçap': '🍅', 'ketcap': '🍅',
+                'köri ezmesi': '🍛', 'kori ezmesi': '🍛', 'et suyu': '🍲', 'tavuk suyu': '🍲', 'limon': '🍋',
+                'elma sirkesi': '🍾', 'üzüm sirkesi': '🍾', 'uzum sirkesi': '🍾', 'sirke': '🍾', 'nar ekşisi': '🍷', 'nar eksi': '🍷',
+                'sıvı krema': '🥛', 'sivi krema': '🥛', 'süt': '🥛', 'sut': '🥛', 'su': '💧', 'Su': '💧',
+                'yoğurt': '🥣', 'yogurt': '🥣', 'tahin': '🏺', 'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
+                'un': '🌾', 'buğday unu': '🌾', 'bugday unu': '🌾', 'mısır nişastası': '🌽', 'misir nisastasi': '🌽',
+                'nişasta': '🌽', 'nisasta': '🌽', 'badem unu': '🫘', 'kırmızı mercimek': '🔴', 'kirmizi mercimek': '🔴',
+                'yeşil mercimek': '🟢', 'yesil mercimek': '🟢', 'mercimek': '🟢', 'kuru fasulye': '🫘', 'nohut': '🧆',
+                'pilavlık bulgur': '🍚', 'pilavlik bulgur': '🍚', 'köftelik bulgur': '🌾', 'koftelik bulgur': '🌾', 'bulgur': '🌾',
+                'baldo pirinç': '🍚', 'baldo pirinc': '🍚', 'basmati pirinç': '🍚', 'basmati pirinc': '🍚', 'pirinç': '🍚', 'pirinc': '🍚',
+                'barbunya': '🤎', 'kuru bakla': '🫛', 'börülce': '👁️', 'borulce': '👁️', 'bakla': '🫛',
+                'mısır taneleri': '🌽', 'misir taneleri': '🌽', 'mısır': '🌽', 'misir': '🌽', 'yarma': '🌾', 'dövme buğday': '🌾', 'dovme bugday': '🌾',
+                'erişte': '🍝', 'eriste': '🍝', 'makarna': '🍝', 'yulaf ezmesi': '🥣', 'yulaf': '🥣',
+                'patates': '🥔', 'havuç': '🥕', 'domates': '🍅', 'salatalık': '🥒', 'salatalik': '🥒',
+                'kuru mantar': '🍄', 'kültür mantarı': '🍄', 'kultur mantari': '🍄', 'mantar': '🍄',
+                'patlıcan': '🍆', 'patlican': '🍆', 'yeşil biber': '🫑', 'yesil biber': '🫑', 'kırmızı biber': '🌶️', 'kirmizi biber': '🌶️', 'biber': '🫑',
+                'kabak': '🥒', 'zencefil': '🫚', 'kuru acı biber': '🌶️', 'kuru aci biber': '🌶️', 'acı biber': '🌶️', 'aci biber': '🌶️',
+                'brokoli': '🥦', 'karnabahar': '🥦', 'ıspanak': '🥬', 'ispanak': '🥬', 'pazı': '🥬', 'pazi': '', 'marul': '🥬',
+                'kıvırcık': '🥬', 'kivircik': '🥬', 'beyaz lahana': '🥬', 'kırmızı lahana': '🥬', 'kirmizi lahana': '🥬', 'lahana': '🥬',
+                'pırasa': '🌱', 'pirasa': '🌱', 'kereviz': '🍏', 'enginar': '🪻', 'taze fasulye': '🫛', 'fasulye': '🫘', 'bezelye': '🫛',
+                'bal kabağı': '🎃', 'bal kabagi': '🎃', 'turp': '🥕', 'şalgam': '🥕', 'salgam': '🥕', 'avokado': '🥑',
+                'mısır koçanı': '🌽', 'misir kocani': '🌽', 'kuşkonmaz': '🌿', 'kuskonmaz': '🌿', 'taze maydanoz': '🌿', 'maydanoz': '🌿', 'dereotu': '🌿',
+                'zeytin': '🫒', 'yeşil zeytin': '🫒', 'yesil zeytin': '🫒', 'siyah zeytin': '🫒',
+                'kaşar peyniri': '🧀', 'kasar peyniri': '🧀', 'mozzarella peyniri': '🧀', 'beyaz peynir': '⬜', 'süzme peynir': '⬜', 'suzme peynir': '⬜',
+                'parmesan': '🧀', 'eski kaşar': '🧀', 'eski kasar': '🧀', 'labne peyniri': '🧀', 'peynir': '🧀',
+                'sucuk': '🥓', 'pastırma': '🥓', 'pastirma': '🥓', 'et': '🥩', 'kıyma': '🥩', 'kiyma': '🥩', 'tavuk': '🍗',
+                'pudra şekeri': '🍧', 'pudra sekeri': '🍧', 'toz şeker': '🍬', 'toz seker': '🍬', 'esmer şeker': '🍬', 'esmer seker': '🍬', 'şeker': '🍬', 'seker': '🍬',
+                'yumurta': '🥚', 'kabartma tozu': '🧪', 'karbonat': '🧪', 'şekerli vanilin': '🌸', 'sekerli vanilin': '🌸', 'vanilin': '🌸',
+                'kakao tozu': '🍫', 'çikolata': '🍫', 'cikolata': '🍫', 'damla çikolata': '🍪', 'damla cikolata': '🍪',
+                'limon kabuğu': '🍊', 'limon kabugu': '🍊', 'portakal kabuğu': '🍊', 'portakal kabugu': '🍊',
+                'kuru üzüm': '🍇', 'kuru uzum': '🍇', 'kuru kayısı': '🍇', 'kuru kayisi': '🍇', 'kuru meyve': '🍇',
+                'ceviz': '🧠', 'ceviz içi': '🧠', 'ceviz ici': '🧠', 'fındık': '🌰', 'findik': '🌰', 'badem': '🥜',
+                'hindistan cevizi': '🥥', 'hindistan cevizi tozu': '🥥', 'bal': '🍯', 'pekmez': '🍯',
+                'krem şanti': '🧁', 'krem santi': '🧁', 'şanti': '🧁', 'santi': '🧁',
+                'maya': '🍞', 'kuru maya': '🍞', 'yaş maya': '🍞', 'yas maya': '🍞',
+                'jöle': '🍮', 'jole': '🍮', 'jelatin': '🍮', 'gıda boyası': '🎨', 'gida boyasi': '🎨',
+                'şekerleme': '🧁', 'sekerleme': '🧁', 'sprinkles': '🧁', 'kurutulmuş meyve tozu': '🍓', 'kurutulmus meyve tozu': '🍓',
+                'elma': '🍎', 'kırmızı elma': '🍎', 'kirmizi elma': '🍎', 'yeşil elma': '🍏', 'yesil elma': '🍏',
+                'armut': '🍐', 'portakal': '🍊', 'mandalina': '🍊', 'greyfurt': '🍊', 'muz': '🍌',
+                'çilek': '🍓', 'cilek': '🍓', 'kiraz': '🍒', 'vişne': '🍒', 'visne': '🍒',
+                'üzüm': '🍇', 'uzum': '🍇', 'yeşil üzüm': '🍇', 'yesil uzum': '🍇', 'kara üzüm': '🍇', 'kara uzum': '🍇',
+                'karpuz': '🍉', 'kavun': '🍈', 'şeftali': '🍑', 'seftali': '🍑', 'kayısı': '🍑', 'kayisi': '🍑', 'taze kayısı': '🍑', 'taze kayisi': '🍑',
+                'erik': '🍏', 'yeşil erik': '🍏', 'yesil erik': '🍏', 'mürdüm erik': '🍏', 'murdum erik': '🍏',
+                'incir': '🪘', 'nar': '🍎', 'kivi': '🥝', 'ananas': '🍍',
+                'böğürtlen': '🫐', 'bogurtlen': '🫐', 'ahududu': '🫐', 'yaban mersini': '🫐', 'hurma': '🌴'
             };
-
-            
             if (emojiMap[normalized]) return emojiMap[normalized];
-            
             for (const [key, emoji] of Object.entries(emojiMap)) {
                 if (normalized.includes(key)) return emoji;
             }
-            
             return '';
         }
 
         async function getSmartImage(recipeName) {
-            const normalized = recipeName.toLowerCase()
-                .replace(/ğ/g, 'g')
-                .replace(/ü/g, 'u')
-                .replace(/ş/g, 's')
-                .replace(/ı/g, 'i')
-                .replace(/ö/g, 'o')
-                .replace(/ç/g, 'c')
-                .trim();
-            
+            const normalized = recipeName.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').trim();
             const keywords = {
-                'su boregi': 'su boregi', 'su böreği': 'su boregi',
-                'börek': 'börek', 'borek': 'börek',
-                'mantı': 'mantı', 'manti': 'mantı',
-                'krep': 'krep',
-                'çorba': 'corba', 'corba': 'corba',
-                'dolma': 'dolma', 'sarma': 'sarma',
-                'kebap': 'kebap',
-                'köfte': 'kofte', 'kofte': 'kofte',
-                'pilav': 'pilav',
-                'baklava': 'baklava',
-                'künefe': 'kunefe', 'kunefe': 'kunefe'
+                'su boregi': 'su boregi', 'su böreği': 'su boregi', 'börek': 'börek', 'borek': 'börek',
+                'mantı': 'mantı', 'manti': 'mantı', 'krep': 'krep', 'çorba': 'corba', 'corba': 'corba',
+                'dolma': 'dolma', 'sarma': 'sarma', 'kebap': 'kebap', 'köfte': 'kofte', 'kofte': 'kofte',
+                'pilav': 'pilav', 'baklava': 'baklava', 'künefe': 'kunefe', 'kunefe': 'kunefe'
             };
-            
             let searchKeyword = normalized;
             for (const [key, value] of Object.entries(keywords)) {
                 if (normalized.includes(key)) {
@@ -2181,7 +1861,6 @@
                     break;
                 }
             }
-            
             try {
                 const query1 = encodeURIComponent(recipeName);
                 const url1 = `https://tr.wikipedia.org/w/api.php?action=query&titles=${query1}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
@@ -2189,22 +1868,18 @@
                 const data1 = await res1.json();
                 const pages1 = data1.query.pages;
                 const pageId1 = Object.keys(pages1)[0];
-                
                 if (pages1[pageId1] && pages1[pageId1].thumbnail) {
                     return pages1[pageId1].thumbnail.source;
                 }
-                
                 const query2 = encodeURIComponent(normalized);
                 const url2 = `https://tr.wikipedia.org/w/api.php?action=query&titles=${query2}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
                 const res2 = await fetch(url2);
                 const data2 = await res2.json();
                 const pages2 = data2.query.pages;
                 const pageId2 = Object.keys(pages2)[0];
-                
                 if (pages2[pageId2] && pages2[pageId2].thumbnail) {
                     return pages2[pageId2].thumbnail.source;
                 }
-                
                 if (searchKeyword !== normalized) {
                     const query3 = encodeURIComponent(searchKeyword);
                     const url3 = `https://tr.wikipedia.org/w/api.php?action=query&titles=${query3}&prop=pageimages&format=json&pithumbsize=800&origin=*`;
@@ -2212,31 +1887,20 @@
                     const data3 = await res3.json();
                     const pages3 = data3.query.pages;
                     const pageId3 = Object.keys(pages3)[0];
-                    
                     if (pages3[pageId3] && pages3[pageId3].thumbnail) {
                         return pages3[pageId3].thumbnail.source;
                     }
                 }
-                
             } catch (e) {
                 console.log('Wikipedia TR başarısız');
             }
-            
             const flickrKeyword = searchKeyword.replace(/[^a-z0-9]/g, '').substring(0, 15);
             const finalKeyword = flickrKeyword || 'turkish-food';
-            
             return `https://loremflickr.com/800/600/${finalKeyword}?lock=${finalKeyword.length}`;
         }
 
         function normalizeForSearch(text) {
-            return text.toLowerCase()
-                .replace(/ğ/g, 'g')
-                .replace(/ü/g, 'u')
-                .replace(/ş/g, 's')
-                .replace(/ı/g, 'i')
-                .replace(/ö/g, 'o')
-                .replace(/ç/g, 'c')
-                .trim();
+            return text.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').trim();
         }
 
         function openModal() { 
@@ -2255,19 +1919,14 @@
 
         function openEditModal(id) {
             closeDetail();
-            
             const recipe = recipes.find(r => r.id === id);
             if (!recipe) return;
-            
             editingRecipeId = id;
             uploadedImageBase64 = null;
             imageRemovedDuringEdit = false;
-            
             document.getElementById('modalTitle').textContent = '✏️ Tarifi Düzenle';
             document.getElementById('saveBtn').textContent = 'Güncelle';
-            
             document.getElementById('name').value = recipe.name;
-            
             if (recipe.image && !recipe.image.startsWith('http')) {
                 showImagePreview(recipe.image);
                 uploadedImageBase64 = recipe.image;
@@ -2276,54 +1935,34 @@
                 const icon = document.getElementById('uploadIcon');
                 const text = document.getElementById('uploadText');
                 const container = document.querySelector('.image-preview-container');
-                
                 preview.src = recipe.image;
                 preview.style.display = 'block';
                 icon.style.display = 'none';
                 text.style.display = 'none';
                 container.classList.add('has-image');
             }
-            
-            // MALZEMELER - Her satıra + ve - butonu ekle
             const ingredientsContainer = document.getElementById('ingredientsContainer');
             ingredientsContainer.innerHTML = '';
             recipe.ingredients.forEach((ing, index) => {
                 const div = document.createElement('div');
                 div.className = 'dynamic-row';
-                div.innerHTML = `
-                    <input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required>
-                    <button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()" title="Yeni Malzeme Ekle"><i class="fas fa-plus"></i></button>
-                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>
-                `;
+                div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()" title="Yeni Malzeme Ekle"><i class="fas fa-plus"></i></button><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>`;
                 ingredientsContainer.appendChild(div);
             });
             if (recipe.ingredients.length === 0) {
-                ingredientsContainer.innerHTML = `<div class="dynamic-row">
-                    <input type="text" placeholder="Malzeme ekle..." class="ing-input" required>
-                    <button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button>
-                </div>`;
+                ingredientsContainer.innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
             }
-            
-            // YAPILIŞ - Her satıra + ve - butonu ekle
             const instructionsContainer = document.getElementById('instructionsContainer');
             instructionsContainer.innerHTML = '';
             recipe.instructions.forEach((step, index) => {
                 const div = document.createElement('div');
                 div.className = 'dynamic-row';
-                div.innerHTML = `
-                    <textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea>
-                    <button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()" title="Yeni Adım Ekle"><i class="fas fa-plus"></i></button>
-                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>
-                `;
+                div.innerHTML = `<textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()" title="Yeni Adım Ekle"><i class="fas fa-plus"></i></button><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>`;
                 instructionsContainer.appendChild(div);
             });
             if (recipe.instructions.length === 0) {
-                instructionsContainer.innerHTML = `<div class="dynamic-row">
-                    <textarea placeholder="Adım 1..." class="inst-input" required></textarea>
-                    <button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button>
-                </div>`;
+                instructionsContainer.innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
             }
-            
             document.getElementById('modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -2359,17 +1998,13 @@
             const name = document.getElementById('name').value.trim();
             const ingredients = Array.from(document.querySelectorAll('.ing-input')).map(i => i.value.trim()).filter(v => v);
             const instructions = Array.from(document.querySelectorAll('.inst-input')).map(i => i.value.trim()).filter(v => v);
-
             if (!ingredients.length || !instructions.length) { alert('Lütfen tüm alanları doldurun'); return; }
-
             const saveBtn = document.getElementById('saveBtn');
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             saveBtn.disabled = true;
-
             try {
                 let image = '';
-                
                 if (uploadedImageBase64) {
                     image = uploadedImageBase64;
                 } else if (imageRemovedDuringEdit && editingRecipeId) {
@@ -2380,7 +2015,6 @@
                 } else {
                     image = await getSmartImage(name);
                 }
-                
                 if (editingRecipeId) {
                     const index = recipes.findIndex(r => r.id === editingRecipeId);
                     if (index !== -1) {
@@ -2405,11 +2039,9 @@
                         date: new Date().toLocaleDateString('tr-TR') 
                     });
                 }
-                
                 localStorage.setItem('recipes', JSON.stringify(recipes));
                 renderList();
                 closeModal();
-                
                 if (editingRecipeId && currentRecipeId === editingRecipeId) {
                     showDetail(editingRecipeId);
                 }
@@ -2426,7 +2058,6 @@
         function renderList(filterText = '') {
             const container = document.getElementById('recipesList');
             let sorted = [...recipes].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
-            
             if (filterText) {
                 const normalizedFilter = normalizeForSearch(filterText);
                 sorted = sorted.filter(r => {
@@ -2434,20 +2065,10 @@
                     return normalizedName.includes(normalizedFilter);
                 });
             }
-
             if (!sorted.length) {
-                container.innerHTML = `
-                    <div class="empty-state-wrapper">
-                        <div class="empty-state">
-                            <div class="empty-icon"><i class="fas fa-book-open"></i></div>
-                            <h3>Henüz tarif yok</h3>
-                            <p>İlk tarifini ekleyerek başla!<br>Lezzetli yolculuğun burada başlayacak.</p>
-                        </div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state-wrapper"><div class="empty-state"><div class="empty-icon"><i class="fas fa-book-open"></i></div><h3>Henüz tarif yok</h3><p>İlk tarifini ekleyerek başla!<br>Lezzetli yolculuğun burada başlayacak.</p></div></div>`;
                 return;
             }
-
             container.innerHTML = sorted.map(r => `
                 <div class="recipe-card" onclick="showDetail(${r.id})">
                     <div class="card-image-wrapper">
@@ -2513,7 +2134,6 @@
             }
         }
 
-        // Başlangıç
         updateHeaderTitle();
         renderList();
     </script>
