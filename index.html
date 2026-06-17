@@ -85,7 +85,7 @@
 
         .header-motto {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
             color: var(--text-main);
             margin: 0;
             line-height: 1.4;
@@ -137,6 +137,13 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .preface-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
 
         .preface-card::before {
@@ -202,12 +209,119 @@
             color: var(--text-main);
             font-style: italic;
             margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .preface-card-signature {
             display: inline;
             margin-left: 5px;
             font-size: 1rem;
+        }
+
+        .read-more-btn {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--coral));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .read-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .preface-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preface-modal.active {
+            display: flex;
+        }
+
+        .preface-modal-content {
+            background: white;
+            padding: 32px 28px;
+            border-radius: 24px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+            position: relative;
+        }
+
+        .preface-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--peach));
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .preface-modal-close:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .preface-modal-title {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .preface-modal-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            font-style: italic;
+            text-align: center;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .recipes-list { 
@@ -433,17 +547,6 @@
             animation: modalSlideIn 0.3s ease;
         }
         
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
         .modal-header { 
             display: flex; 
             justify-content: space-between; 
@@ -501,7 +604,6 @@
         }
         textarea { resize: vertical; min-height: 100px; }
         
-        /* Görsel Yükleme Alanı */
         .image-upload-wrapper {
             margin-bottom: 20px;
         }
@@ -751,6 +853,14 @@
             background: linear-gradient(135deg, #128C7E, #075E54);
             transform: scale(1.1);
         }
+        .edit-btn-detail {
+            background: linear-gradient(135deg, var(--primary), var(--coral));
+            color: white;
+        }
+        .edit-btn-detail:hover {
+            background: linear-gradient(135deg, var(--coral), var(--secondary));
+            transform: scale(1.1);
+        }
 
         .detail-grid { 
             display: grid; 
@@ -978,7 +1088,8 @@
             .preface-card {
                 flex-direction: column;
                 text-align: center;
-                padding: 20px;
+                padding: 16px 18px !important;
+                margin: 16px auto !important;
             }
             .preface-card::before {
                 width: 100%;
@@ -988,6 +1099,30 @@
             }
             .preface-card-header {
                 justify-content: center;
+            }
+            .preface-icon-wrapper {
+                width: 50px !important;
+                height: 50px !important;
+                min-width: 50px !important;
+            }
+            .preface-icon-wrapper i {
+                font-size: 1.2rem !important;
+            }
+            .preface-card-title {
+                font-size: 1.1rem !important;
+            }
+            .preface-divider {
+                width: 30px !important;
+            }
+            .preface-card-text {
+                font-size: 0.85rem !important;
+                line-height: 1.5 !important;
+            }
+            .preface-card-signature {
+                display: none !important;
+            }
+            .read-more-btn {
+                display: inline-block;
             }
             .edit-name-btn {
                 bottom: 170px;
@@ -1024,11 +1159,23 @@
         <div class="share-loading-text">Paylaşım hazırlanıyor...</div>
     </div>
 
+    <div id="prefaceModal" class="preface-modal" onclick="closePreface()">
+        <div class="preface-modal-content" onclick="event.stopPropagation()">
+            <button class="preface-modal-close" onclick="closePreface()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="preface-modal-title">Önsöz</h3>
+            <p class="preface-modal-text">
+                "Bu defter; sadece ölçülerin ve malzemelerin yan yana geldiği bir liste değil, paylaşılan mutlu anların, sıcak sohbetlerin ve emeğin hafızasıdır. Her tarif, sevdiklerime duyduğum sevginin tabaktaki ifadesidir. Mutfağımdan yükselen her güzel koku, geleceğe bırakılmış lezzetli birer hatıradır. Sevgiyle, sabırla ve ağız tadıyla..." 
+            </p>
+        </div>
+    </div>
+
     <div id="mainPage">
         <div class="container">
             <header>
                 <h1 id="headerTitle">Tarif Defteri</h1>
-                <p class="header-motto">"Geçmişin Kokusu, Bugünün Lezzeti, Geleceğin Mirası"</p>
+                <p class="header-motto">"Geçmişin kokusu, bugünün lezzeti, geleceğin mirası."</p>
             </header>
             
             <div class="search-wrapper">
@@ -1036,7 +1183,7 @@
                 <i class="fas fa-search search-icon"></i>
             </div>
 
-            <div class="preface-card">
+            <div class="preface-card" onclick="openPreface()">
                 <div class="preface-icon-wrapper">
                     <i class="fas fa-book-open"></i>
                 </div>
@@ -1046,8 +1193,11 @@
                         <div class="preface-divider"></div>
                     </div>
                     <p class="preface-card-text">
-                        "Bu defter; sadece ölçülerin ve malzemelerin yan yana geldiği bir liste değil, paylaşılan mutlu anların, sıcak sohbetlerin ve emeğin hafızasıdır. Her tarif, sevdiklerime duyduğum sevginin tabaktaki ifadesidir. Mutfağımdan yükselen her güzel koku, geleceğe bırakılmış lezzetli birer hatıradır. Sevgiyle, sabırla ve ağız tadıyla..." <span class="preface-card-signature">💕</span>
+                        "Bu defter; sadece ölçülerin ve malzemelerin yan yana geldiği bir liste değil, paylaşılan mutlu anların, sıcak sohbetlerin ve emeğin hafızasıdır. Her tarif, sevdiklerime duyduğum sevginin tabaktaki ifadesidir. Mutfağımdan yükselen her güzel koku, geleceğe bırakılmış lezzetli birer hatıradır. Sevgiyle, sabırla ve ağız tadıyla..."
                     </p>
+                    <button class="read-more-btn">
+                        <i class="fas fa-chevron-down"></i> Devamını Oku
+                    </button>
                 </div>
             </div>
 
@@ -1088,6 +1238,7 @@
             <div class="detail-header">
                 <h1 id="detailTitle" class="detail-title"></h1>
                 <div class="header-actions">
+                    <button class="action-btn edit-btn-detail" onclick="openEditModal(currentRecipeId)" title="Düzenle"><i class="fas fa-edit"></i></button>
                     <button class="action-btn share-btn" onclick="shareRecipe()" title="Paylaş"><i class="fas fa-share-alt"></i></button>
                     <button class="action-btn delete-btn" onclick="deleteCurrentRecipe()"><i class="fas fa-trash-alt"></i></button>
                     <button class="action-btn back-btn" onclick="closeDetail()"><i class="fas fa-arrow-left"></i></button>
@@ -1110,7 +1261,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>✨ Yeni Tarif</h2>
+                <h2 id="modalTitle">✨ Yeni Tarif</h2>
                 <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
             </div>
             <form id="form">
@@ -1119,7 +1270,6 @@
                     <input type="text" id="name" placeholder="Örn: Su Böreği" required>
                 </div>
                 
-                <!-- GÖRSEL YÜKLEME ALANI -->
                 <div class="form-group image-upload-wrapper">
                     <label><i class="fas fa-camera"></i> Tarif Görseli</label>
                     <div class="image-preview-container" onclick="document.getElementById('fileInput').click()">
@@ -1169,6 +1319,8 @@
         let recipes = [];
         let ownerName = '';
         let uploadedImageBase64 = null;
+        let currentRecipeId = null;
+        let editingRecipeId = null; // Düzenleme için
         
         try {
             const stored = localStorage.getItem('recipes');
@@ -1184,20 +1336,25 @@
             ownerName = '';
         }
 
-        let currentRecipeId = null;
+        function openPreface() {
+            document.getElementById('prefaceModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-        // GÖRSEL YÜKLEME FONKSİYONLARI
+        function closePreface() {
+            document.getElementById('prefaceModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // Dosya boyutu kontrolü (max 5MB)
             if (file.size > 5 * 1024 * 1024) {
                 alert('Görsel boyutu 5MB\'den küçük olmalıdır!');
                 return;
             }
             
-            // Sadece resim dosyaları
             if (!file.type.startsWith('image/')) {
                 alert('Lütfen geçerli bir resim dosyası seçin!');
                 return;
@@ -1344,7 +1501,7 @@
                 
                 const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
                 
-                const shareText = `🍰 *${recipe.name}*\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n *Malzemeler:*\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 *Yapılışı:*\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+                const shareText = `🍰 *${recipe.name}*\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n *Malzemeler:*\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍ *Yapılışı:*\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n Afiyet olsun!`;
                 
                 if (navigator.share && navigator.canShare) {
                     const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
@@ -1406,15 +1563,15 @@
             const normalized = normalizeTurkish(text);
             
             const emojiMap = {
-                'zeytinyağı': '🫗', 'zeytinyagi': '🫗',
-                'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗',
-                'sıvı yağ': '🫗', 'sivi yag': '🫗',
-                'tereyağı': '🧈', 'tereyagi': '🧈',
-                'kuru soğan': '🧅', 'kuru sogan': '🧅',
+                'zeytinyağı': '', 'zeytinyagi': '🫗',
+                'ayçiçek yağı': '', 'aycicek yagi': '',
+                'sıvı yağ': '🫗', 'sivi yag': '',
+                'tereyağı': '🧈', 'tereyagi': '',
+                'kuru soğan': '', 'kuru sogan': '',
                 'soğan': '🧅', 'sogan': '🧅',
                 'sarımsak': '🧄', 'sarimsak': '🧄',
-                'tuz': '🧂',
-                'karabiber': '🌶️',
+                'tuz': '',
+                'karabiber': '️',
                 'toz baharat': '🌶️',
                 'baharat': '🌶️',
                 'kimyon': '🍛',
@@ -1424,7 +1581,7 @@
                 'nane': '🌿',
                 'biberiye': '🌿',
                 'defne yaprağı': '🍃', 'defne yapragi': '🍃',
-                'tarçın': '🪵', 'tarcin': '🪵',
+                'tarçın': '🪵', 'tarcin': '',
                 'toz tarçın': '🪵', 'toz tarcin': '🪵',
                 'domates salçası': '🥫', 'domates salcasi': '🥫',
                 'biber salçası': '🥫', 'biber salcasi': '🥫',
@@ -1433,41 +1590,41 @@
                 'pesto sosu': '🟢',
                 'acı sos': '🔥', 'aci sos': '🔥',
                 'sriracha': '🔥',
-                'tabasco': '🔥',
+                'tabasco': '',
                 'barbekü sosu': '🪵', 'barbeku sosu': '🪵',
                 'hardal': '🍯',
                 'mayonez': '🍅',
                 'ketçap': '🍅', 'ketcap': '🍅',
-                'köri ezmesi': '🍛', 'kori ezmesi': '🍛',
-                'et suyu': '🍲',
+                'köri ezmesi': '', 'kori ezmesi': '',
+                'et suyu': '',
                 'tavuk suyu': '🍲',
-                'limon': '🍋',
+                'limon': '',
                 'elma sirkesi': '🍾',
                 'üzüm sirkesi': '🍾', 'uzum sirkesi': '🍾',
                 'sirke': '🍾',
                 'nar ekşisi': '🍷', 'nar eksi': '🍷',
                 'sıvı krema': '🥛', 'sivi krema': '🥛',
-                'süt': '🥛', 'sut': '🥛',
-                'yoğurt': '🥣', 'yogurt': '🥣',
-                'tahin': '🏺',
-                'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
+                'süt': '🥛', 'sut': '',
+                'yoğurt': '', 'yogurt': '🥣',
+                'tahin': '',
+                'balsamık sirke': '', 'balsamik sirke': '',
                 'un': '🌾',
-                'buğday unu': '🌾', 'bugday unu': '🌾',
+                'buğday unu': '', 'bugday unu': '',
                 'mısır nişastası': '🌽', 'misir nisastasi': '🌽',
-                'nişasta': '🌽', 'nisasta': '🌽',
+                'nişasta': '🌽', 'nisasta': '',
                 'badem unu': '🫘',
-                'kırmızı mercimek': '🔴', 'kirmizi mercimek': '🔴',
+                'kırmızı mercimek': '', 'kirmizi mercimek': '',
                 'yeşil mercimek': '🟢', 'yesil mercimek': '🟢',
                 'mercimek': '🟢',
                 'kuru fasulye': '🫘',
                 'nohut': '🧆',
-                'pilavlık bulgur': '🍚', 'pilavlik bulgur': '🍚',
+                'pilavlık bulgur': '', 'pilavlik bulgur': '',
                 'köftelik bulgur': '🌾', 'koftelik bulgur': '🌾',
-                'bulgur': '🌾',
+                'bulgur': '',
                 'baldo pirinç': '🍚', 'baldo pirinc': '🍚',
                 'basmati pirinç': '🍚', 'basmati pirinc': '🍚',
-                'pirinç': '🍚', 'pirinc': '🍚',
-                'barbunya': '🤎',
+                'pirinç': '🍚', 'pirinc': '',
+                'barbunya': '',
                 'kuru bakla': '🫛',
                 'börülce': '👁️', 'borulce': '👁️',
                 'bakla': '🫛',
@@ -1476,75 +1633,75 @@
                 'yarma': '🌾',
                 'dövme buğday': '🌾', 'dovme bugday': '🌾',
                 'erişte': '🍝', 'eriste': '🍝',
-                'makarna': '🍝',
+                'makarna': '',
                 'yulaf ezmesi': '🥣',
                 'yulaf': '🥣',
-                'patates': '🥔',
-                'havuç': '🥕',
-                'domates': '🍅',
-                'salatalık': '🥒', 'salatalik': '🥒',
-                'kuru mantar': '🍄',
-                'kültür mantarı': '🍄', 'kultur mantari': '🍄',
+                'patates': '',
+                'havuç': '',
+                'domates': '',
+                'salatalık': '', 'salatalik': '🥒',
+                'kuru mantar': '',
+                'kültür mantarı': '🍄', 'kultur mantari': '',
                 'mantar': '🍄',
                 'patlıcan': '🍆', 'patlican': '🍆',
                 'yeşil biber': '🫑', 'yesil biber': '🫑',
-                'kırmızı biber': '🌶️', 'kirmizi biber': '🌶️',
+                'kırmızı biber': '', 'kirmizi biber': '',
                 'biber': '🫑',
                 'kabak': '🥒',
                 'zencefil': '🫚',
-                'kuru acı biber': '️🌶️', 'kuru aci biber': '🌶️',
-                'acı biber': '🌶️', 'aci biber': '🌶️',
+                'kuru acı biber': '️', 'kuru aci biber': '🌶️',
+                'acı biber': '️', 'aci biber': '🌶️',
                 'brokoli': '🥦',
-                'karnabahar': '🥦',
-                'ıspanak': '🥬', 'ispanak': '🥬',
+                'karnabahar': '',
+                'ıspanak': '', 'ispanak': '🥬',
                 'pazı': '🥬', 'pazi': '',
                 'marul': '🥬',
-                'kıvırcık': '🥬', 'kivircik': '🥬',
-                'beyaz lahana': '🥬',
+                'kıvırcık': '', 'kivircik': '',
+                'beyaz lahana': '',
                 'kırmızı lahana': '🥬', 'kirmizi lahana': '🥬',
                 'lahana': '🥬',
-                'pırasa': '🌱', 'pirasa': '🌱',
-                'kereviz': '🍏',
-                'enginar': '🪻',
-                'taze fasulye': '🫛',
-                'fasulye': '🫘',
-                'bezelye': '🫛',
-                'bal kabağı': '🎃', 'bal kabagi': '🎃',
+                'pırasa': '🌱', 'pirasa': '',
+                'kereviz': '',
+                'enginar': '',
+                'taze fasulye': '',
+                'fasulye': '',
+                'bezelye': '',
+                'bal kabağı': '', 'bal kabagi': '🎃',
                 'turp': '🥕',
                 'şalgam': '🥕', 'salgam': '🥕',
                 'avokado': '🥑',
                 'mısır koçanı': '🌽', 'misir kocani': '🌽',
                 'kuşkonmaz': '🌿', 'kuskonmaz': '🌿',
-                'taze maydanoz': '🌿',
-                'maydanoz': '🌿',
-                'dereotu': '🌿',
+                'taze maydanoz': '',
+                'maydanoz': '',
+                'dereotu': '',
                 'zeytin': '🫒',
-                'yeşil zeytin': '🫒', 'yesil zeytin': '🫒',
+                'yeşil zeytin': '', 'yesil zeytin': '',
                 'siyah zeytin': '🫒',
                 'kaşar peyniri': '🧀', 'kasar peyniri': '🧀',
                 'mozzarella peyniri': '🧀',
-                'beyaz peynir': '⬜',
+                'beyaz peynir': '',
                 'süzme peynir': '⬜', 'suzme peynir': '⬜',
-                'parmesan': '🧀',
-                'eski kaşar': '🧀', 'eski kasar': '🧀',
+                'parmesan': '',
+                'eski kaşar': '🧀', 'eski kasar': '',
                 'labne peyniri': '🧀',
                 'peynir': '🧀',
-                'sucuk': '🥓',
-                'pastırma': '🥓', 'pastirma': '🥓',
-                'et': '🥩',
-                'kıyma': '🥩', 'kiyma': '🥩',
+                'sucuk': '',
+                'pastırma': '', 'pastirma': '🥓',
+                'et': '',
+                'kıyma': '', 'kiyma': '',
                 'tavuk': '🍗',
-                'pudra şekeri': '🍧', 'pudra sekeri': '🍧',
-                'toz şeker': '🍬', 'toz seker': '🍬',
-                'esmer şeker': '🍬', 'esmer seker': '🍬',
+                'pudra şekeri': '', 'pudra sekeri': '🍧',
+                'toz şeker': '', 'toz seker': '🍬',
+                'esmer şeker': '', 'esmer seker': '',
                 'şeker': '🍬', 'seker': '🍬',
-                'yumurta': '🥚',
+                'yumurta': '',
                 'kabartma tozu': '🧪',
                 'karbonat': '🧪',
                 'şekerli vanilin': '🌸', 'sekerli vanilin': '🌸',
                 'vanilin': '🌸',
                 'kakao tozu': '🍫',
-                'çikolata': '🍫', 'cikolata': '🍫',
+                'çikolata': '🍫', 'cikolata': '',
                 'damla çikolata': '🍪', 'damla cikolata': '🍪',
                 'limon kabuğu': '🍊', 'limon kabugu': '🍊',
                 'portakal kabuğu': '🍊', 'portakal kabugu': '🍊',
@@ -1553,46 +1710,46 @@
                 'kuru meyve': '🍇',
                 'ceviz': '🧠',
                 'ceviz içi': '🧠', 'ceviz ici': '🧠',
-                'fındık': '🌰', 'findik': '🌰',
+                'fındık': '🥜', 'findik': '🥜',
                 'badem': '🥜',
                 'hindistan cevizi': '🥥',
                 'hindistan cevizi tozu': '🥥',
                 'bal': '🍯',
                 'pekmez': '🍯',
                 'krem şanti': '🧁', 'krem santi': '🧁',
-                'şanti': '🧁', 'santi': '🧁',
-                'maya': '🍞',
-                'kuru maya': '🍞',
-                'yaş maya': '🍞', 'yas maya': '🍞',
+                'şanti': '🧁', 'santi': '',
+                'maya': '',
+                'kuru maya': '',
+                'yaş maya': '', 'yas maya': '🍞',
                 'jöle': '🍮', 'jole': '🍮',
                 'jelatin': '🍮',
                 'gıda boyası': '🎨', 'gida boyasi': '🎨',
                 'şekerleme': '🧁', 'sekerleme': '🧁',
                 'sprinkles': '🧁',
-                'kurutulmuş meyve tozu': '🍓', 'kurutulmus meyve tozu': '🍓',
+                'kurutulmuş meyve tozu': '', 'kurutulmus meyve tozu': '🍓',
                 'elma': '🍎',
-                'kırmızı elma': '🍎', 'kirmizi elma': '🍎',
+                'kırmızı elma': '', 'kirmizi elma': '',
                 'yeşil elma': '🍏', 'yesil elma': '🍏',
-                'armut': '🍐',
-                'portakal': '🍊',
-                'mandalina': '🍊',
+                'armut': '',
+                'portakal': '',
+                'mandalina': '',
                 'greyfurt': '🍊',
                 'muz': '🍌',
                 'çilek': '🍓', 'cilek': '🍓',
                 'kiraz': '🍒',
                 'vişne': '🍒', 'visne': '🍒',
-                'üzüm': '🍇', 'uzum': '🍇',
-                'yeşil üzüm': '🍇', 'yesil uzum': '🍇',
-                'kara üzüm': '🍇', 'kara uzum': '🍇',
-                'karpuz': '🍉',
-                'kavun': '🍈',
-                'şeftali': '🍑', 'seftali': '🍑',
+                'üzüm': '', 'uzum': '🍇',
+                'yeşil üzüm': '', 'yesil uzum': '',
+                'kara üzüm': '', 'kara uzum': '',
+                'karpuz': '',
+                'kavun': '',
+                'şeftali': '', 'seftali': '🍑',
                 'kayısı': '🍑', 'kayisi': '🍑',
                 'taze kayısı': '🍑', 'taze kayisi': '🍑',
                 'erik': '🍏',
                 'yeşil erik': '🍏', 'yesil erik': '🍏',
-                'mürdüm erik': '🍏', 'murdum erik': '🍏',
-                'incir': '🪘',
+                'mürdüm erik': '', 'murdum erik': '',
+                'incir': '',
                 'nar': '🍎',
                 'kivi': '🥝',
                 'ananas': '🍍',
@@ -1601,7 +1758,6 @@
                 'yaban mersini': '🫐',
                 'hurma': '🌴'
             };
-
             
             if (emojiMap[normalized]) return emojiMap[normalized];
             
@@ -1709,10 +1865,82 @@
         }
 
         function openModal() { 
+            editingRecipeId = null;
             uploadedImageBase64 = null;
             removeImage();
+            document.getElementById('modalTitle').textContent = '✨ Yeni Tarif';
+            document.getElementById('saveBtn').textContent = 'Kaydet';
+            document.getElementById('form').reset();
+            document.getElementById('ingredientsContainer').innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
+            document.getElementById('instructionsContainer').innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
             document.getElementById('modal').classList.add('active'); 
             document.body.style.overflow = 'hidden'; 
+        }
+
+        // DÜZENLEME MODALI
+        function openEditModal(id) {
+            const recipe = recipes.find(r => r.id === id);
+            if (!recipe) return;
+            
+            editingRecipeId = id;
+            uploadedImageBase64 = null;
+            
+            // Modal başlığını değiştir
+            document.getElementById('modalTitle').textContent = '✏️ Tarifi Düzenle';
+            document.getElementById('saveBtn').textContent = 'Güncelle';
+            
+            // Formu doldur
+            document.getElementById('name').value = recipe.name;
+            
+            // Görsel önizleme
+            if (recipe.image && !recipe.image.startsWith('http')) {
+                // Base64 görsel varsa göster
+                showImagePreview(recipe.image);
+                uploadedImageBase64 = recipe.image;
+            } else {
+                // URL görsel varsa göster ama uploadedImageBase64 null kalsın
+                const preview = document.getElementById('imagePreview');
+                const icon = document.getElementById('uploadIcon');
+                const text = document.getElementById('uploadText');
+                const container = document.querySelector('.image-preview-container');
+                
+                preview.src = recipe.image;
+                preview.style.display = 'block';
+                icon.style.display = 'none';
+                text.style.display = 'none';
+                container.classList.add('has-image');
+            }
+            
+            // Malzemeleri doldur
+            const ingredientsContainer = document.getElementById('ingredientsContainer');
+            ingredientsContainer.innerHTML = '';
+            recipe.ingredients.forEach((ing, index) => {
+                const div = document.createElement('div');
+                div.className = 'dynamic-row';
+                div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required>
+                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                ingredientsContainer.appendChild(div);
+            });
+            if (recipe.ingredients.length === 0) {
+                ingredientsContainer.innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
+            }
+            
+            // Adımları doldur
+            const instructionsContainer = document.getElementById('instructionsContainer');
+            instructionsContainer.innerHTML = '';
+            recipe.instructions.forEach((step, index) => {
+                const div = document.createElement('div');
+                div.className = 'dynamic-row';
+                div.innerHTML = `<textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea>
+                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                instructionsContainer.appendChild(div);
+            });
+            if (recipe.instructions.length === 0) {
+                instructionsContainer.innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
+            }
+            
+            document.getElementById('modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
         
         function closeModal() { 
@@ -1720,6 +1948,7 @@
             document.body.style.overflow = 'auto';
             document.getElementById('form').reset();
             uploadedImageBase64 = null;
+            editingRecipeId = null;
             removeImage();
             document.getElementById('ingredientsContainer').innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
             document.getElementById('instructionsContainer').innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
@@ -1755,26 +1984,53 @@
             try {
                 let image = '';
                 
-                // Kullanıcı görsel yüklediyse onu kullan
                 if (uploadedImageBase64) {
+                    // Kullanıcı yeni görsel yüklediyse
                     image = uploadedImageBase64;
+                } else if (editingRecipeId) {
+                    // Düzenleme modunda ve yeni görsel yüklenmediyse, mevcut görseli koru
+                    const existingRecipe = recipes.find(r => r.id === editingRecipeId);
+                    image = existingRecipe ? existingRecipe.image : '';
                 } else {
-                    // Yoksa otomatik görsel bul
+                    // Yeni tarif ve görsel yüklenmediyse, otomatik bul
                     image = await getSmartImage(name);
                 }
                 
-                recipes.unshift({ 
-                    id: Date.now(), 
-                    name, 
-                    ingredients, 
-                    instructions, 
-                    image, 
-                    hasCustomImage: !!uploadedImageBase64,
-                    date: new Date().toLocaleDateString('tr-TR') 
-                });
+                if (editingRecipeId) {
+                    // DÜZENLEME: Mevcut tarifi güncelle
+                    const index = recipes.findIndex(r => r.id === editingRecipeId);
+                    if (index !== -1) {
+                        recipes[index] = {
+                            ...recipes[index],
+                            name,
+                            ingredients,
+                            instructions,
+                            image,
+                            hasCustomImage: !!uploadedImageBase64,
+                            date: new Date().toLocaleDateString('tr-TR')
+                        };
+                    }
+                } else {
+                    // YENİ EKLEME
+                    recipes.unshift({ 
+                        id: Date.now(), 
+                        name, 
+                        ingredients, 
+                        instructions, 
+                        image, 
+                        hasCustomImage: !!uploadedImageBase64,
+                        date: new Date().toLocaleDateString('tr-TR') 
+                    });
+                }
+                
                 localStorage.setItem('recipes', JSON.stringify(recipes));
                 renderList();
                 closeModal();
+                
+                // Eğer detay sayfasındaysa güncelle
+                if (editingRecipeId && currentRecipeId === editingRecipeId) {
+                    showDetail(editingRecipeId);
+                }
             } catch (err) { 
                 console.error(err); 
                 alert('Bir hata oluştu. Lütfen tekrar deneyin.');
