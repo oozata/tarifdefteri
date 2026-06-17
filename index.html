@@ -1079,8 +1079,12 @@
             background: #0088cc;
         }
 
-        .share-list-btn.twitter {
-            background: #1DA1F2;
+        .share-list-btn.x {
+            background: #000000;
+        }
+
+        .share-list-btn.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
         .share-list-btn.email {
@@ -1187,6 +1191,45 @@
             color: var(--text-light);
         }
 
+        /* YÜKLENİYOR GÖSTERGESİ */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) {
@@ -1254,6 +1297,12 @@
             </div>
             <div class="splash-text">YÜKLENİYOR...</div>
         </div>
+    </div>
+
+    <!-- YÜKLENİYOR OVERLAY -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Hazırlanıyor...</div>
     </div>
 
     <!-- ANA UYGULAMA -->
@@ -1434,9 +1483,13 @@
                     <i class="fab fa-telegram"></i>
                     <span>Telegram</span>
                 </button>
-                <button class="share-list-btn twitter" onclick="shareToTwitter()">
-                    <i class="fab fa-twitter"></i>
-                    <span>Twitter</span>
+                <button class="share-list-btn x" onclick="shareToX()">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>X (Twitter)</span>
+                </button>
+                <button class="share-list-btn instagram" onclick="shareToInstagram()">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
                 </button>
                 <button class="share-list-btn email" onclick="shareToEmail()">
                     <i class="fas fa-envelope"></i>
@@ -1754,28 +1807,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // PAYLAŞIM FONKSİYONLARI
+        // PAYLAŞIM FONKSİYONLARI - HIZLI VE MOBİL UYGULAMA AÇICI
         function openShareModal() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
             
             shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
             
-            // Görseli hazırla
+            // Loading göster
+            document.getElementById('loadingOverlay').classList.add('active');
+            
+            // Görseli hazırla - GELİŞMİŞ AYARLAR
             html2canvas(document.getElementById('detailPage'), {
-                scale: 2,
+                scale: 3, // Daha yüksek kalite
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-gradient').includes('A7F3D0') ? '#A7F3D0' : '#FFE5EC',
-                scrollY: 0
+                backgroundColor: null, // Arka planı saydam yapma
+                scrollY: 0,
+                logging: false,
+                foreignObjectRendering: true,
+                removeContainer: true
             }).then(canvas => {
                 canvas.toBlob(blob => {
                     shareImageBlob = blob;
+                    document.getElementById('loadingOverlay').classList.remove('active');
                     document.getElementById('shareModal').classList.add('active');
-                }, 'image/png', 0.9);
+                }, 'image/png', 1.0); // En yüksek kalite
             }).catch(err => {
                 console.error('Görsel hazırlama hatası:', err);
                 shareImageBlob = null;
+                document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('shareModal').classList.add('active');
             });
         }
@@ -1786,28 +1847,39 @@
 
         function shareToWhatsApp() {
             const text = encodeURIComponent(shareText);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-            closeShareModal();
+            // Mobil cihazlarda WhatsApp uygulamasını aç (deep link)
+            window.location.href = `https://api.whatsapp.com/send?text=${text}`;
+            setTimeout(() => closeShareModal(), 500);
         }
 
         function shareToTelegram() {
             const text = encodeURIComponent(shareText);
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${text}`, '_blank');
-            closeShareModal();
+            const url = encodeURIComponent(window.location.href);
+            // Mobil cihazlarda Telegram uygulamasını aç (deep link)
+            window.location.href = `https://t.me/share/url?url=${url}&text=${text}`;
+            setTimeout(() => closeShareModal(), 500);
         }
 
-        function shareToTwitter() {
+        function shareToX() {
             const text = encodeURIComponent(shareText.substring(0, 280));
-            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-            closeShareModal();
+            // Mobil cihazlarda X (Twitter) uygulamasını aç (deep link)
+            window.location.href = `https://twitter.com/intent/tweet?text=${text}`;
+            setTimeout(() => closeShareModal(), 500);
+        }
+
+        function shareToInstagram() {
+            // Instagram için web fallback (Instagram doğrudan paylaşım API'si yok)
+            window.location.href = 'https://www.instagram.com/';
+            setTimeout(() => closeShareModal(), 500);
         }
 
         function shareToEmail() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             const subject = encodeURIComponent(`${recipe.name} - Tarif`);
             const body = encodeURIComponent(shareText);
+            // Email uygulamasını aç
             window.location.href = `mailto:?subject=${subject}&body=${body}`;
-            closeShareModal();
+            setTimeout(() => closeShareModal(), 500);
         }
 
         function copyTextToClipboard() {
@@ -1829,18 +1901,28 @@
         function downloadImage() {
             if (shareImageBlob) {
                 const recipe = recipes.find(r => r.id === currentRecipeId);
+                const fileName = `${recipe.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_tarif.png`;
+                
+                // Blob URL oluştur
                 const url = URL.createObjectURL(shareImageBlob);
+                
+                // Görünmez link oluştur ve tıkla
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `${recipe.name}.png`;
+                a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert('✅ Görsel indirildi!');
+                
+                // URL'i temizle
+                setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alert(`✅ Görsel "${fileName}" olarak indirildi!\n\n📁 İndirilenler klasörünüzü kontrol edin.`);
                 closeShareModal();
             } else {
-                alert('Görsel hazırlanamadı. Lütfen tekrar deneyin.');
+                alert('❌ Görsel hazırlanamadı. Lütfen tekrar deneyin.');
             }
         }
 
@@ -1903,6 +1985,7 @@
                 'nar ekşisi': '🍷', 'nar eksi': '🍷',
                 'sıvı krema': '🥛', 'sivi krema': '🥛',
                 'süt': '🥛', 'sut': '🥛',
+                'su': '💧', 'Su': '💧',
                 'yoğurt': '🥣', 'yogurt': '🥣',
                 'tahin': '🏺',
                 'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
@@ -2201,30 +2284,44 @@
                 container.classList.add('has-image');
             }
             
+            // MALZEMELER - Her satıra + ve - butonu ekle
             const ingredientsContainer = document.getElementById('ingredientsContainer');
             ingredientsContainer.innerHTML = '';
-            recipe.ingredients.forEach((ing) => {
+            recipe.ingredients.forEach((ing, index) => {
                 const div = document.createElement('div');
                 div.className = 'dynamic-row';
-                div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required>
-                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                div.innerHTML = `
+                    <input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required>
+                    <button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()" title="Yeni Malzeme Ekle"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>
+                `;
                 ingredientsContainer.appendChild(div);
             });
             if (recipe.ingredients.length === 0) {
-                ingredientsContainer.innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
+                ingredientsContainer.innerHTML = `<div class="dynamic-row">
+                    <input type="text" placeholder="Malzeme ekle..." class="ing-input" required>
+                    <button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button>
+                </div>`;
             }
             
+            // YAPILIŞ - Her satıra + ve - butonu ekle
             const instructionsContainer = document.getElementById('instructionsContainer');
             instructionsContainer.innerHTML = '';
             recipe.instructions.forEach((step, index) => {
                 const div = document.createElement('div');
                 div.className = 'dynamic-row';
-                div.innerHTML = `<textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea>
-                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                div.innerHTML = `
+                    <textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea>
+                    <button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()" title="Yeni Adım Ekle"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()" title="Sil"><i class="fas fa-minus"></i></button>
+                `;
                 instructionsContainer.appendChild(div);
             });
             if (recipe.instructions.length === 0) {
-                instructionsContainer.innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
+                instructionsContainer.innerHTML = `<div class="dynamic-row">
+                    <textarea placeholder="Adım 1..." class="inst-input" required></textarea>
+                    <button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button>
+                </div>`;
             }
             
             document.getElementById('modal').classList.add('active');
