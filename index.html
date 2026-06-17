@@ -1235,6 +1235,7 @@
         let uploadedImageBase64 = null;
         let currentRecipeId = null;
         let editingRecipeId = null;
+        let imageRemovedDuringEdit = false;
         
         try {
             const stored = localStorage.getItem('recipes');
@@ -1281,6 +1282,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 uploadedImageBase64 = e.target.result;
+                imageRemovedDuringEdit = false;
                 showImagePreview(uploadedImageBase64);
             };
             reader.readAsDataURL(file);
@@ -1301,6 +1303,7 @@
         
         function removeImage() {
             uploadedImageBase64 = null;
+            imageRemovedDuringEdit = true;
             document.getElementById('fileInput').value = '';
             
             const preview = document.getElementById('imagePreview');
@@ -1432,15 +1435,18 @@
                 canvas.toBlob(async function(blob) {
                     const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
                     
-                    if (navigator.share && navigator.canShare) {
+                    // Mobil cihazlarda Web Share API kullan
+                    if (navigator.share) {
                         try {
-                            if (navigator.canShare({ files: [file] })) {
+                            // Önce dosya paylaşımı dene
+                            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                                 await navigator.share({
                                     title: `${recipe.name} - ${ownerName}'in Tarif Defteri`,
                                     text: shareText,
                                     files: [file]
                                 });
                             } else {
+                                // Dosya paylaşılamıyorsa sadece metin paylaş
                                 await navigator.share({
                                     title: recipe.name,
                                     text: shareText,
@@ -1449,18 +1455,21 @@
                             }
                         } catch (err) {
                             if (err.name !== 'AbortError') {
+                                // Paylaşım başarısızsa metni kopyala
                                 await copyToClipboard(shareText);
                                 alert('Tarif metni panoya kopyalandı!');
                             }
                         }
                     } else {
+                        // Web Share API desteklenmiyorsa metni kopyala
                         await copyToClipboard(shareText);
-                        alert('Tarif metni panoya kopyalandı!');
+                        alert('Tarif metni panoya kopyalandı! Yapıştırıp paylaşabilirsiniz.');
                     }
                 }, 'image/png', 0.9);
                 
             } catch (error) {
                 console.error('Paylaşım hatası:', error);
+                const shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
                 await copyToClipboard(shareText);
                 alert('Tarif metni panoya kopyalandı!');
             }
@@ -1794,6 +1803,7 @@
         function openModal() { 
             editingRecipeId = null;
             uploadedImageBase64 = null;
+            imageRemovedDuringEdit = false;
             removeImage();
             document.getElementById('modalTitle').textContent = '✨ Yeni Tarif';
             document.getElementById('saveBtn').textContent = 'Kaydet';
@@ -1813,6 +1823,7 @@
             
             editingRecipeId = id;
             uploadedImageBase64 = null;
+            imageRemovedDuringEdit = false;
             
             document.getElementById('modalTitle').textContent = '✏️ Tarifi Düzenle';
             document.getElementById('saveBtn').textContent = 'Güncelle';
@@ -1870,6 +1881,7 @@
             document.body.style.overflow = 'auto';
             document.getElementById('form').reset();
             uploadedImageBase64 = null;
+            imageRemovedDuringEdit = false;
             editingRecipeId = null;
             removeImage();
             document.getElementById('ingredientsContainer').innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
@@ -1907,11 +1919,17 @@
                 let image = '';
                 
                 if (uploadedImageBase64) {
+                    // Kullanıcı yeni görsel yüklediyse
                     image = uploadedImageBase64;
+                } else if (imageRemovedDuringEdit && editingRecipeId) {
+                    // Düzenleme sırasında görsel silindiyse, otomatik görsel bul
+                    image = await getSmartImage(name);
                 } else if (editingRecipeId) {
+                    // Düzenleme modunda ve görsel silinmediyse, mevcut görseli koru
                     const existingRecipe = recipes.find(r => r.id === editingRecipeId);
                     image = existingRecipe ? existingRecipe.image : '';
                 } else {
+                    // Yeni tarif ve görsel yüklenmediyse, otomatik görsel bul
                     image = await getSmartImage(name);
                 }
                 
@@ -1924,7 +1942,7 @@
                             ingredients,
                             instructions,
                             image,
-                            hasCustomImage: !!uploadedImageBase64,
+                            hasCustomImage: !!uploadedImageBase64 && !imageRemovedDuringEdit,
                             date: new Date().toLocaleDateString('tr-TR')
                         };
                     }
