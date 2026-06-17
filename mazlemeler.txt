@@ -193,4 +193,5 @@ const emojiMap = {
                 'ahududu': '🫐',
                 'yaban mersini': '🫐',
                 'hurma': '🌴'
+                'su' : '💧'
             };
