@@ -968,34 +968,6 @@
             font-weight: 700;
         }
 
-        .share-loading {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 3000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .share-loading.active { display: flex; }
-        .share-loading-spinner {
-            width: 60px; height: 60px;
-            border: 4px solid rgba(255, 107, 157, 0.2);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        .share-loading-text {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.2rem;
-            color: var(--text-main);
-            font-weight: 600;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) {
@@ -1068,11 +1040,6 @@
     <!-- ANA UYGULAMA -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
-
-    <div id="shareLoading" class="share-loading">
-        <div class="share-loading-spinner"></div>
-        <div class="share-loading-text">Paylaşım hazırlanıyor...</div>
-    </div>
 
     <div id="mainPage">
         <div class="container">
@@ -1256,7 +1223,6 @@
                 splash.classList.add('fade-out');
                 setTimeout(function() {
                     splash.style.display = 'none';
-                    // İsim sorma modalını aç
                     if (!ownerName || !ownerName.trim()) {
                         openNameModal();
                     }
@@ -1270,7 +1236,6 @@
         let currentRecipeId = null;
         let editingRecipeId = null;
         
-        // LocalStorage'dan verileri yükle
         try {
             const stored = localStorage.getItem('recipes');
             if (stored) {
@@ -1452,8 +1417,7 @@
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
             
-            const loading = document.getElementById('shareLoading');
-            loading.classList.add('active');
+            const shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
             
             try {
                 const detailPage = document.getElementById('detailPage');
@@ -1462,48 +1426,43 @@
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: '#FFE5EC',
-                    scrollY: -window.scrollY
+                    scrollY: 0
                 });
                 
                 canvas.toBlob(async function(blob) {
-                    const shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+                    const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
                     
                     if (navigator.share && navigator.canShare) {
-                        const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
-                        
-                        if (navigator.canShare({ files: [file] })) {
-                            try {
+                        try {
+                            if (navigator.canShare({ files: [file] })) {
                                 await navigator.share({
-                                    title: recipe.name,
+                                    title: `${recipe.name} - ${ownerName}'in Tarif Defteri`,
                                     text: shareText,
                                     files: [file]
                                 });
-                            } catch (err) {
-                                if (err.name !== 'AbortError') {
-                                    await navigator.share({
-                                        title: recipe.name,
-                                        text: shareText
-                                    });
-                                }
+                            } else {
+                                await navigator.share({
+                                    title: recipe.name,
+                                    text: shareText,
+                                    url: window.location.href
+                                });
                             }
-                        } else {
-                            await navigator.share({
-                                title: recipe.name,
-                                text: shareText
-                            });
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                await copyToClipboard(shareText);
+                                alert('Tarif metni panoya kopyalandı!');
+                            }
                         }
                     } else {
                         await copyToClipboard(shareText);
                         alert('Tarif metni panoya kopyalandı!');
                     }
-                    
-                    loading.classList.remove('active');
                 }, 'image/png', 0.9);
                 
             } catch (error) {
                 console.error('Paylaşım hatası:', error);
-                loading.classList.remove('active');
-                alert('Paylaşım sırasında bir hata oluştu.');
+                await copyToClipboard(shareText);
+                alert('Tarif metni panoya kopyalandı!');
             }
         }
 
@@ -1846,6 +1805,9 @@
         }
 
         function openEditModal(id) {
+            // Önce detay sayfasını kapat
+            closeDetail();
+            
             const recipe = recipes.find(r => r.id === id);
             if (!recipe) return;
             
