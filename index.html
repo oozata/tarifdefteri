@@ -35,8 +35,128 @@
             min-height: 100vh;
             min-height: -webkit-fill-available;
             overflow-x: hidden;
+            padding-bottom: 80px;
         }
 
+        /* SPLASH SCREEN */
+        #splashScreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: opacity 0.6s ease-out;
+        }
+
+        #splashScreen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.4) 0%, rgba(255, 160, 122, 0.2) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: splashPulse 2s ease-in-out infinite;
+        }
+
+        .splash-glow::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: splashPulse 2s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .splash-ring {
+            position: absolute;
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 50%;
+            width: 350px; height: 350px;
+            animation: splashRing 2s ease-out infinite;
+        }
+
+        .splash-ring:nth-child(2) { animation-delay: 0.7s; }
+        .splash-ring:nth-child(3) { animation-delay: 1.4s; }
+
+        @keyframes splashRing {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .splash-logo {
+            position: relative;
+            z-index: 2;
+            width: 250px;
+            max-width: 70vw;
+            height: auto;
+            animation: splashLogoIn 1.5s ease-out;
+        }
+
+        @keyframes splashLogoIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .splash-progress {
+            position: relative;
+            z-index: 2;
+            width: 250px;
+            max-width: 70vw;
+            margin-top: 40px;
+        }
+
+        .splash-progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .splash-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B9D 0%, #FFA07A 50%, #FFB6C1 100%);
+            border-radius: 2px;
+            width: 0%;
+            animation: splashLoading 3s ease-out forwards;
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.6);
+        }
+
+        @keyframes splashLoading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .splash-text {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            margin-top: 15px;
+            letter-spacing: 2px;
+            animation: splashFadeIn 1s ease-out 0.5s both;
+        }
+
+        @keyframes splashFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ANA UYGULAMA */
         .bg-shape {
             position: fixed;
             border-radius: 50%;
@@ -56,7 +176,7 @@
         .container { 
             max-width: 1000px; 
             margin: 0 auto; 
-            padding: 20px 16px 120px;
+            padding: 20px 16px;
             width: 100%;
         }
 
@@ -149,16 +269,13 @@
         .preface-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
+            top: 0; left: 0; bottom: 0;
             width: 4px;
             background: linear-gradient(180deg, var(--primary), var(--coral), var(--peach));
         }
 
         .preface-icon-wrapper {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             min-width: 60px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
             border-radius: 50%;
@@ -228,11 +345,6 @@
             transition: all 0.3s;
         }
 
-        .read-more-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
-        }
-
         .recipes-list { 
             display: grid;
             grid-template-columns: 1fr;
@@ -285,8 +397,7 @@
         
         .card-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 12px; right: 12px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
             color: white;
             padding: 6px 12px;
@@ -351,45 +462,70 @@
             box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
             transition: all 0.3s;
         }
-        .view-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 107, 157, 0.4);
+
+        /* ALT NAV BAR */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(255, 107, 157, 0.2);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            z-index: 100;
+            border-radius: 24px 24px 0 0;
         }
 
-        .fab-btn { 
-            position: fixed; 
-            bottom: 24px; 
-            right: 24px; 
-            width: 64px; 
-            height: 64px; 
-            border-radius: 50%; 
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-light);
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+        }
+
+        .nav-btn i {
+            font-size: 1.5rem;
+        }
+
+        .nav-btn span {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-btn.add {
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white; 
-            border: none; 
+            color: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            margin: -30px auto 0;
             box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
-            font-size: 1.8rem; 
-            cursor: pointer; 
-            transition: all 0.3s; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 100;
+            transform: translateY(0);
         }
-        .fab-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 12px 32px rgba(255, 107, 157, 0.5);
-        }
-        .fab-btn:active { 
-            transform: scale(0.95);
+
+        .nav-btn.add:hover {
+            transform: scale(1.1);
         }
 
         .modal { 
             display: none; 
             position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
+            top: 0; left: 0;
+            width: 100%; height: 100%; 
             background: rgba(255, 107, 157, 0.2);
             backdrop-filter: blur(8px);
             z-index: 1000; 
@@ -412,14 +548,8 @@
         }
         
         @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         
         .modal-header { 
@@ -439,8 +569,7 @@
         .close-btn { 
             background: linear-gradient(135deg, var(--accent), var(--peach));
             border: none; 
-            width: 40px; 
-            height: 40px; 
+            width: 40px; height: 40px; 
             border-radius: 50%; 
             cursor: pointer; 
             font-size: 1.2rem; 
@@ -479,12 +608,9 @@
         }
         textarea { resize: vertical; min-height: 100px; }
         
-        .image-upload-wrapper {
-            margin-bottom: 20px;
-        }
+        .image-upload-wrapper { margin-bottom: 20px; }
         .image-preview-container {
-            width: 100%;
-            height: 200px;
+            width: 100%; height: 200px;
             border: 3px dashed var(--primary);
             border-radius: 16px;
             display: flex;
@@ -516,37 +642,27 @@
             text-align: center;
         }
         .image-preview {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
         .image-remove-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 10px; right: 10px;
             background: rgba(255, 107, 157, 0.9);
             color: white;
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             cursor: pointer;
             display: none;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        .image-remove-btn:hover {
-            background: #ff4757;
-            transform: scale(1.1);
         }
         .image-preview-container.has-image .image-remove-btn {
             display: flex;
         }
-        #fileInput {
-            display: none;
-        }
+        #fileInput { display: none; }
         .upload-hint {
             font-size: 0.85rem;
             color: var(--text-light);
@@ -563,8 +679,7 @@
         .dynamic-row input, .dynamic-row textarea { flex: 1; }
         
         .icon-btn { 
-            width: 44px; 
-            height: 44px; 
+            width: 44px; height: 44px; 
             min-width: 44px;
             border: none; 
             border-radius: 12px; 
@@ -581,23 +696,12 @@
             color: white;
             box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
-        .add-btn-sm:hover {
-            transform: scale(1.1) rotate(90deg);
-        }
         .remove-btn-sm { 
             background: linear-gradient(135deg, #FFB6C1, #FFDAB9);
             color: #FF6B9D;
         }
-        .remove-btn-sm:hover {
-            background: linear-gradient(135deg, #FF6B9D, #FF8C94);
-            color: white;
-        }
 
-        .btn-group { 
-            display: flex; 
-            gap: 12px; 
-            margin-top: 28px;
-        }
+        .btn-group { display: flex; gap: 12px; margin-top: 28px; }
         .btn { 
             flex: 1; 
             padding: 16px; 
@@ -614,24 +718,12 @@
             color: white;
             box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
-        }
-        .btn-secondary { 
-            background: #F5F5F5;
-            color: var(--text-main);
-        }
-        .btn-secondary:hover {
-            background: #E8E8E8;
-        }
+        .btn-secondary { background: #F5F5F5; color: var(--text-main); }
 
         .detail-view { 
             position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
+            top: 0; left: 0;
+            width: 100%; height: 100%; 
             background: linear-gradient(180deg, #FFE5EC 0%, #FFEDD5 100%);
             z-index: 2000; 
             overflow-y: auto; 
@@ -652,17 +744,14 @@
         }
 
         .detail-hero { 
-            width: 100%; 
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             object-position: center;
         }
 
         .detail-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             height: 50%;
             background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
         }
@@ -701,8 +790,7 @@
         }
         
         .action-btn { 
-            width: 44px; 
-            height: 44px; 
+            width: 44px; height: 44px; 
             border-radius: 50%; 
             border: none; 
             background: white;
@@ -715,27 +803,14 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .back-btn { color: var(--primary); }
-        .back-btn:hover { transform: translateX(-3px); }
         .delete-btn { color: #FF6B9D; }
-        .delete-btn:hover { 
-            background: #FFF0F3;
-            transform: scale(1.1);
-        }
         .share-btn { 
             background: linear-gradient(135deg, #25D366, #128C7E);
             color: white;
         }
-        .share-btn:hover {
-            background: linear-gradient(135deg, #128C7E, #075E54);
-            transform: scale(1.1);
-        }
         .edit-btn-detail {
             background: linear-gradient(135deg, var(--primary), var(--coral));
             color: white;
-        }
-        .edit-btn-detail:hover {
-            background: linear-gradient(135deg, var(--coral), var(--secondary));
-            transform: scale(1.1);
         }
 
         .detail-grid { 
@@ -775,17 +850,10 @@
             border-bottom: 1px dashed rgba(255, 182, 193, 0.4);
             font-size: 1rem; 
             color: var(--text-main);
-            transition: 0.3s;
-        }
-        .ingredient-item:hover {
-            background: rgba(255, 182, 193, 0.1);
-            padding-left: 8px;
-            border-radius: 8px;
         }
         .ingredient-item:last-child { border-bottom: none; }
         .ing-icon { 
-            width: 40px; 
-            height: 40px; 
+            width: 40px; height: 40px; 
             min-width: 40px;
             background: linear-gradient(135deg, var(--accent), var(--peach));
             border-radius: 12px; 
@@ -803,15 +871,9 @@
             padding: 16px;
             background: rgba(255, 218, 185, 0.1);
             border-radius: 16px;
-            transition: 0.3s;
-        }
-        .step-item:hover {
-            background: rgba(255, 218, 185, 0.2);
-            transform: translateX(4px);
         }
         .step-num { 
-            width: 36px; 
-            height: 36px; 
+            width: 36px; height: 36px; 
             min-width: 36px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
             color: white; 
@@ -822,7 +884,6 @@
             font-weight: 700; 
             flex-shrink: 0;
             font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
         .step-text { 
             font-size: 1rem; 
@@ -842,10 +903,7 @@
             min-height: 400px;
         }
 
-        .empty-state { 
-            color: var(--text-light);
-            max-width: 400px;
-        }
+        .empty-state { color: var(--text-light); max-width: 400px; }
         .empty-icon { 
             font-size: 5rem; 
             margin-bottom: 24px;
@@ -861,10 +919,7 @@
             font-family: 'Quicksand', sans-serif;
             font-weight: 600;
         }
-        .empty-state p { 
-            font-size: 1rem;
-            line-height: 1.5;
-        }
+        .empty-state p { font-size: 1rem; line-height: 1.5; }
 
         .name-modal .modal-content {
             text-align: center;
@@ -915,10 +970,8 @@
 
         .share-loading {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             z-index: 3000;
@@ -928,12 +981,9 @@
             flex-direction: column;
             gap: 20px;
         }
-        .share-loading.active {
-            display: flex;
-        }
+        .share-loading.active { display: flex; }
         .share-loading-spinner {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border: 4px solid rgba(255, 107, 157, 0.2);
             border-top-color: var(--primary);
             border-radius: 50%;
@@ -945,15 +995,11 @@
             color: var(--text-main);
             font-weight: 600;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
+        @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) {
-            .container { padding: 30px 24px 100px; }
-            .fab-btn { width: 72px; height: 72px; font-size: 2rem; bottom: 32px; right: 32px; }
+            .container { padding: 30px 24px; }
         }
 
         @media (max-width: 768px) {
@@ -973,30 +1019,20 @@
                 bottom: auto;
                 background: linear-gradient(90deg, var(--primary), var(--coral), var(--peach));
             }
-            .preface-card-header {
-                justify-content: center;
-            }
+            .preface-card-header { justify-content: center; }
             .preface-icon-wrapper {
                 width: 50px !important;
                 height: 50px !important;
                 min-width: 50px !important;
             }
-            .preface-icon-wrapper i {
-                font-size: 1.2rem !important;
-            }
-            .preface-card-title {
-                font-size: 1.1rem !important;
-            }
+            .preface-icon-wrapper i { font-size: 1.2rem !important; }
+            .preface-card-title { font-size: 1.1rem !important; }
             .preface-card-text {
                 font-size: 0.85rem !important;
                 line-height: 1.5 !important;
             }
-            .read-more-btn {
-                display: inline-block;
-            }
-            .header-actions {
-                gap: 8px;
-            }
+            .read-more-btn { display: inline-block; }
+            .header-actions { gap: 8px; }
             .action-btn {
                 width: 40px;
                 height: 40px;
@@ -1007,18 +1043,29 @@
         @media (max-width: 375px) {
             .card-image-wrapper { height: 160px; }
             .recipe-card { border-radius: 20px; }
-            .detail-hero-wrapper {
-                height: 200px;
-            }
-        }
-
-        @media (max-height: 500px) and (orientation: landscape) {
-            .modal-content { max-height: 95vh; padding: 20px 16px; }
-            .detail-hero-wrapper { height: 180px; }
+            .detail-hero-wrapper { height: 200px; }
         }
     </style>
 </head>
 <body>
+    <!-- SPLASH SCREEN -->
+    <div id="splashScreen">
+        <div class="splash-glow"></div>
+        <div class="splash-ring"></div>
+        <div class="splash-ring"></div>
+        <div class="splash-ring"></div>
+        
+        <img src="https://raw.githubusercontent.com/oozata/tarifdefteri/main/splash.png" alt="Mutfak Günlüğüm" class="splash-logo">
+        
+        <div class="splash-progress">
+            <div class="splash-progress-bar">
+                <div class="splash-progress-fill"></div>
+            </div>
+            <div class="splash-text">YÜKLENİYOR...</div>
+        </div>
+    </div>
+
+    <!-- ANA UYGULAMA -->
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
 
@@ -1058,13 +1105,46 @@
 
             <div id="recipesList" class="recipes-list"></div>
         </div>
-        
-        <button class="fab-btn" onclick="openModal()"><i class="fas fa-plus"></i></button>
+
+        <!-- ALT NAV BAR -->
+        <nav class="bottom-nav">
+            <button class="nav-btn" onclick="openSettings()">
+                <i class="fas fa-cog"></i>
+                <span>Ayarlar</span>
+            </button>
+            <button class="nav-btn add" onclick="openModal()">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="nav-btn" onclick="scrollToTop()">
+                <i class="fas fa-arrow-up"></i>
+                <span>Yukarı</span>
+            </button>
+        </nav>
     </div>
 
+    <!-- AYARLAR MODAL -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Ayarlar</h2>
+                <button class="close-btn" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn btn-primary" onclick="openNameModal()">
+                    <i class="fas fa-user-edit"></i> İsmi Değiştir
+                </button>
+                <button class="btn btn-secondary" onclick="hardReset()" style="color: #FF6B9D;">
+                    <i class="fas fa-trash-alt"></i> Tümünü Sıfırla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- İSİM MODAL -->
     <div id="nameModal" class="modal name-modal">
         <div class="modal-content">
-            <span class="name-modal-icon"></span>
+            <span class="name-modal-icon">👤</span>
             <h2 class="name-modal-title">Hoş Geldin!</h2>
             <p class="name-modal-subtitle">Bu defter senin olacak. Bana ismini söyler misin?</p>
             <div class="name-input-wrapper">
@@ -1079,6 +1159,7 @@
         </div>
     </div>
 
+    <!-- DETAY SAYFASI -->
     <div id="detailPage" class="detail-view">
         <div class="detail-hero-wrapper">
             <img id="detailImage" src="" class="detail-hero" alt="">
@@ -1109,6 +1190,7 @@
         </div>
     </div>
 
+    <!-- TARİF EKLE/DÜZENLE MODAL -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1167,12 +1249,28 @@
     </div>
 
     <script>
+        // SPLASH SCREEN
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splashScreen');
+                splash.classList.add('fade-out');
+                setTimeout(function() {
+                    splash.style.display = 'none';
+                    // İsim sorma modalını aç
+                    if (!ownerName || !ownerName.trim()) {
+                        openNameModal();
+                    }
+                }, 600);
+            }, 3500);
+        });
+
         let recipes = [];
         let ownerName = '';
         let uploadedImageBase64 = null;
         let currentRecipeId = null;
         let editingRecipeId = null;
         
+        // LocalStorage'dan verileri yükle
         try {
             const stored = localStorage.getItem('recipes');
             if (stored) {
@@ -1191,7 +1289,6 @@
             event.stopPropagation();
             const prefaceText = document.getElementById('prefaceText');
             const readMoreBtn = document.getElementById('readMoreBtn');
-            const icon = readMoreBtn.querySelector('i');
             
             prefaceText.classList.toggle('expanded');
             
@@ -1310,6 +1407,7 @@
         }
 
         function openNameModal() {
+            closeSettings();
             document.getElementById('nameModal').classList.add('active');
             document.getElementById('nameInput').value = ownerName;
             updateNamePreview();
@@ -1338,6 +1436,18 @@
             closeNameModal();
         }
 
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         async function shareRecipe() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
@@ -1352,40 +1462,48 @@
                     useCORS: true,
                     allowTaint: true,
                     backgroundColor: '#FFE5EC',
-                    scrollY: 0
+                    scrollY: -window.scrollY
                 });
                 
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.9));
-                
-                const shareText = `🍰 *${recipe.name}*\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n *Malzemeler:*\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 *Yapılışı:*\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
-                
-                if (navigator.share && navigator.canShare) {
-                    const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
+                canvas.toBlob(async function(blob) {
+                    const shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
                     
-                    if (navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: `${recipe.name} - ${ownerName}'in Tarif Defteri`,
-                            text: shareText,
-                            files: [file]
-                        });
+                    if (navigator.share && navigator.canShare) {
+                        const file = new File([blob], `${recipe.name}.png`, { type: 'image/png' });
+                        
+                        if (navigator.canShare({ files: [file] })) {
+                            try {
+                                await navigator.share({
+                                    title: recipe.name,
+                                    text: shareText,
+                                    files: [file]
+                                });
+                            } catch (err) {
+                                if (err.name !== 'AbortError') {
+                                    await navigator.share({
+                                        title: recipe.name,
+                                        text: shareText
+                                    });
+                                }
+                            }
+                        } else {
+                            await navigator.share({
+                                title: recipe.name,
+                                text: shareText
+                            });
+                        }
                     } else {
-                        await navigator.share({
-                            title: `${recipe.name}`,
-                            text: shareText
-                        });
+                        await copyToClipboard(shareText);
+                        alert('Tarif metni panoya kopyalandı!');
                     }
-                } else {
-                    await copyToClipboard(shareText);
-                    alert('Tarif metni panoya kopyalandı! Görseli manuel olarak paylaşabilirsiniz.');
-                }
+                    
+                    loading.classList.remove('active');
+                }, 'image/png', 0.9);
                 
             } catch (error) {
                 console.error('Paylaşım hatası:', error);
-                if (error.name !== 'AbortError') {
-                    alert('Paylaşım sırasında bir hata oluştu. Lütfen tekrar deneyin.');
-                }
-            } finally {
                 loading.classList.remove('active');
+                alert('Paylaşım sırasında bir hata oluştu.');
             }
         }
 
@@ -1418,7 +1536,7 @@
         function getIngredientIcon(text) {
             const normalized = normalizeTurkish(text);
             
-           const emojiMap = {
+            const emojiMap = {
                 'zeytinyağı': '🫗', 'zeytinyagi': '🫗',
                 'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗',
                 'sıvı yağ': '🫗', 'sivi yag': '🫗',
@@ -1636,24 +1754,17 @@
                 .trim();
             
             const keywords = {
-                'su boregi': 'su boregi',
-                'su böreği': 'su boregi',
-                'börek': 'börek',
-                'borek': 'börek',
-                'mantı': 'mantı',
-                'manti': 'mantı',
+                'su boregi': 'su boregi', 'su böreği': 'su boregi',
+                'börek': 'börek', 'borek': 'börek',
+                'mantı': 'mantı', 'manti': 'mantı',
                 'krep': 'krep',
-                'çorba': 'corba',
-                'corba': 'corba',
-                'dolma': 'dolma',
-                'sarma': 'sarma',
+                'çorba': 'corba', 'corba': 'corba',
+                'dolma': 'dolma', 'sarma': 'sarma',
                 'kebap': 'kebap',
-                'köfte': 'kofte',
-                'kofte': 'kofte',
+                'köfte': 'kofte', 'kofte': 'kofte',
                 'pilav': 'pilav',
                 'baklava': 'baklava',
-                'künefe': 'kunefe',
-                'kunefe': 'kunefe'
+                'künefe': 'kunefe', 'kunefe': 'kunefe'
             };
             
             let searchKeyword = normalized;
@@ -1764,7 +1875,7 @@
             
             const ingredientsContainer = document.getElementById('ingredientsContainer');
             ingredientsContainer.innerHTML = '';
-            recipe.ingredients.forEach((ing, index) => {
+            recipe.ingredients.forEach((ing) => {
                 const div = document.createElement('div');
                 div.className = 'dynamic-row';
                 div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required>
@@ -1967,18 +2078,14 @@
                 ownerName = '';
                 renderList();
                 updateHeaderTitle();
-                openNameModal();
+                closeSettings();
+                setTimeout(() => openNameModal(), 300);
             }
         }
 
+        // Başlangıç
         updateHeaderTitle();
         renderList();
-        
-        if (!ownerName || !ownerName.trim()) {
-            setTimeout(() => {
-                openNameModal();
-            }, 500);
-        }
     </script>
 </body>
 </html>
