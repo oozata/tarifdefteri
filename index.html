@@ -11,6 +11,7 @@
     
     <style>
         :root {
+            /* TEMA 1: Pembe-Mercan (Varsayılan) */
             --primary: #FF6B9D;
             --secondary: #FFA07A;
             --accent: #FFB6C1;
@@ -23,6 +24,68 @@
             --shadow: 0 8px 24px rgba(255, 107, 157, 0.15);
             --shadow-lg: 0 12px 32px rgba(255, 107, 157, 0.2);
             --radius: 24px;
+            --modal-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        /* TEMA 2: Mavi-Turkuaz */
+        body.theme-2 {
+            --primary: #0EA5E9;
+            --secondary: #06B6D4;
+            --accent: #7DD3FC;
+            --coral: #22D3EE;
+            --peach: #BAE6FD;
+            --bg-gradient: linear-gradient(135deg, #E0F2FE 0%, #CFFAFE 50%, #E0F2FE 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #0C4A6E;
+            --text-light: #64748B;
+            --shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
+            --shadow-lg: 0 12px 32px rgba(14, 165, 233, 0.2);
+        }
+
+        /* TEMA 3: Mor-Pembe */
+        body.theme-3 {
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --accent: #C4B5FD;
+            --coral: #F472B6;
+            --peach: #FBCFE8;
+            --bg-gradient: linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 50%, #F3E8FF 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #581C87;
+            --text-light: #9333EA;
+            --shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+            --shadow-lg: 0 12px 32px rgba(139, 92, 246, 0.2);
+        }
+
+        /* TEMA 4: Mint-Mor */
+        body.theme-4 {
+            --primary: #8B5CF6;
+            --secondary: #A78BFA;
+            --accent: #C4B5FD;
+            --coral: #6EE7B7;
+            --peach: #A7F3D0;
+            --bg-gradient: linear-gradient(135deg, #A7F3D0 0%, #C4B5FD 50%, #A7F3D0 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #4B5563;
+            --text-light: #9CA3AF;
+            --shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+            --shadow-lg: 0 12px 32px rgba(139, 92, 246, 0.2);
+        }
+
+        /* TEMA 5: DARK TEMA */
+        body.theme-5 {
+            --primary: #FF6B9D;
+            --secondary: #FFA07A;
+            --accent: #FFB6C1;
+            --coral: #FF8C94;
+            --peach: #FFDAB9;
+            --bg-gradient: linear-gradient(135deg, #1F2937 0%, #374151 50%, #1F2937 100%);
+            --card-bg: rgba(55, 65, 81, 0.95);
+            --text-main: #F9FAFB;
+            --text-light: #D1D5DB;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+            --modal-bg: rgba(0, 0, 0, 0.8);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -36,6 +99,7 @@
             min-height: -webkit-fill-available;
             overflow-x: hidden;
             padding-bottom: 80px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         /* SPLASH SCREEN */
@@ -195,7 +259,7 @@
             font-family: 'Quicksand', sans-serif;
             font-size: clamp(1.8rem, 6vw, 2.5rem); 
             font-weight: 700;
-            background: linear-gradient(135deg, #FF6B9D, #FFA07A);
+            background: linear-gradient(135deg, var(--primary), var(--coral));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -223,11 +287,12 @@
             padding: 16px 50px 16px 20px; 
             border: 2px solid rgba(255, 182, 193, 0.3);
             border-radius: 50px; 
-            background: white; 
+            background: var(--card-bg);
             box-shadow: var(--shadow);
             font-size: 0.95rem; 
             font-family: 'Poppins', sans-serif;
             transition: all 0.3s;
+            color: var(--text-main);
         }
         .search-input:focus { 
             border-color: var(--primary);
@@ -244,7 +309,7 @@
         }
 
         .preface-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 237, 213, 0.95));
+            background: var(--card-bg);
             border-radius: var(--radius);
             padding: 20px 24px;
             margin: 20px auto;
@@ -469,7 +534,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: white;
+            background: var(--card-bg);
             box-shadow: 0 -4px 20px rgba(255, 107, 157, 0.2);
             display: flex;
             justify-content: space-around;
@@ -527,7 +592,7 @@
             position: fixed; 
             top: 0; left: 0;
             width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--modal-bg);
             backdrop-filter: blur(8px);
             z-index: 1000; 
             align-items: center;
@@ -537,7 +602,7 @@
         .modal.active { display: flex; }
         
         .modal-content { 
-            background: white; 
+            background: var(--card-bg);
             padding: 32px 24px; 
             width: 100%; 
             max-width: 600px; 
@@ -546,6 +611,7 @@
             border-radius: 32px;
             box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
             animation: modalSlideIn 0.3s ease;
+            color: var(--text-main);
         }
         
         @keyframes modalSlideIn {
@@ -600,11 +666,12 @@
             font-size: 1rem; 
             font-family: 'Poppins', sans-serif;
             transition: 0.3s; 
-            background: #FFF9FA;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
         }
         input:focus, textarea:focus { 
             border-color: var(--primary);
-            background: white;
+            background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
         }
         textarea { resize: vertical; min-height: 100px; }
@@ -620,7 +687,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            background: #FFF9FA;
+            background: rgba(255, 255, 255, 0.1);
             overflow: hidden;
             position: relative;
         }
@@ -825,7 +892,7 @@
         }
 
         .detail-section { 
-            background: white;
+            background: var(--card-bg);
             padding: 24px; 
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -975,64 +1042,149 @@
             z-index: 3000 !important;
         }
 
-        .share-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+        /* PAYLAŞIM LİSTESİ - ALT ALTA */
+        .share-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             margin-top: 20px;
         }
 
-        .share-option-btn {
+        .share-list-btn {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            padding: 20px;
+            gap: 16px;
+            padding: 16px 20px;
             border: none;
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Quicksand', sans-serif;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            color: white;
         }
 
-        .share-option-btn i {
-            font-size: 2rem;
+        .share-list-btn i {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
         }
 
-        .share-option-btn.whatsapp {
+        .share-list-btn.whatsapp {
             background: #25D366;
-            color: white;
         }
 
-        .share-option-btn.telegram {
+        .share-list-btn.telegram {
             background: #0088cc;
-            color: white;
         }
 
-        .share-option-btn.twitter {
+        .share-list-btn.twitter {
             background: #1DA1F2;
-            color: white;
         }
 
-        .share-option-btn.email {
+        .share-list-btn.email {
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
         }
 
-        .share-option-btn.copy {
+        .share-list-btn.copy {
             background: #F5F5F5;
             color: var(--text-main);
         }
 
-        .share-option-btn.download {
+        .share-list-btn.download {
             background: #FFA07A;
-            color: white;
         }
 
-        .share-option-btn:active {
-            transform: scale(0.95);
+        .share-list-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* RENK PALETİ SEÇİCİ - ALT ALTA LİSTE */
+        .theme-selector {
+            margin-top: 20px;
+        }
+
+        .theme-selector-title {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .theme-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-option:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .theme-option.active {
+            border-color: var(--primary);
+            background: rgba(255, 107, 157, 0.15);
+        }
+
+        .theme-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .theme-preview.theme-1 {
+            background: linear-gradient(135deg, #FF6B9D, #FFA07A);
+        }
+
+        .theme-preview.theme-2 {
+            background: linear-gradient(135deg, #0EA5E9, #06B6D4);
+        }
+
+        .theme-preview.theme-3 {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+        }
+
+        .theme-preview.theme-4 {
+            background: linear-gradient(135deg, #A7F3D0, #C4B5FD);
+        }
+
+        .theme-preview.theme-5 {
+            background: linear-gradient(135deg, #1F2937, #374151);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .theme-info {
+            flex: 1;
+        }
+
+        .theme-name {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .theme-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -1076,9 +1228,6 @@
                 width: 40px;
                 height: 40px;
                 font-size: 1rem;
-            }
-            .share-options {
-                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -1175,6 +1324,48 @@
                     <i class="fas fa-trash-alt"></i> Tümünü Sıfırla
                 </button>
             </div>
+
+            <!-- RENK PALETİ SEÇİCİ - ALT ALTA -->
+            <div class="theme-selector">
+                <div class="theme-selector-title">🎨 Renk Paleti Seç</div>
+                <div class="theme-options">
+                    <div class="theme-option active" onclick="changeTheme(1)">
+                        <div class="theme-preview theme-1"></div>
+                        <div class="theme-info">
+                            <div class="theme-name">Pembe-Mercan</div>
+                            <div class="theme-desc">Sıcak ve samimi tonlar</div>
+                        </div>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme(2)">
+                        <div class="theme-preview theme-2"></div>
+                        <div class="theme-info">
+                            <div class="theme-name">Mavi-Turkuaz</div>
+                            <div class="theme-desc">Ferah ve modern</div>
+                        </div>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme(3)">
+                        <div class="theme-preview theme-3"></div>
+                        <div class="theme-info">
+                            <div class="theme-name">Mor-Pembe</div>
+                            <div class="theme-desc">Şık ve feminen</div>
+                        </div>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme(4)">
+                        <div class="theme-preview theme-4"></div>
+                        <div class="theme-info">
+                            <div class="theme-name">Mint-Mor</div>
+                            <div class="theme-desc">Soft ve modern</div>
+                        </div>
+                    </div>
+                    <div class="theme-option" onclick="changeTheme(5)">
+                        <div class="theme-preview theme-5"></div>
+                        <div class="theme-info">
+                            <div class="theme-name">Dark Tema</div>
+                            <div class="theme-desc">Göz yormayan koyu tema</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1227,37 +1418,37 @@
         </div>
     </div>
 
-    <!-- PAYLAŞIM SEÇENEKLERİ MODAL (Z-INDEX 3000) -->
+    <!-- PAYLAŞIM SEÇENEKLERİ MODAL (ALT ALTA LİSTE) -->
     <div id="shareModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2><i class="fas fa-share-alt"></i> Paylaş</h2>
                 <button class="close-btn" onclick="closeShareModal()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="share-options">
-                <button class="share-option-btn whatsapp" onclick="shareToWhatsApp()">
+            <div class="share-list">
+                <button class="share-list-btn whatsapp" onclick="shareToWhatsApp()">
                     <i class="fab fa-whatsapp"></i>
                     <span>WhatsApp</span>
                 </button>
-                <button class="share-option-btn telegram" onclick="shareToTelegram()">
+                <button class="share-list-btn telegram" onclick="shareToTelegram()">
                     <i class="fab fa-telegram"></i>
                     <span>Telegram</span>
                 </button>
-                <button class="share-option-btn twitter" onclick="shareToTwitter()">
+                <button class="share-list-btn twitter" onclick="shareToTwitter()">
                     <i class="fab fa-twitter"></i>
                     <span>Twitter</span>
                 </button>
-                <button class="share-option-btn email" onclick="shareToEmail()">
+                <button class="share-list-btn email" onclick="shareToEmail()">
                     <i class="fas fa-envelope"></i>
                     <span>Email</span>
                 </button>
-                <button class="share-option-btn copy" onclick="copyTextToClipboard()">
+                <button class="share-list-btn copy" onclick="copyTextToClipboard()">
                     <i class="fas fa-copy"></i>
-                    <span>Kopyala</span>
+                    <span>Metni Kopyala</span>
                 </button>
-                <button class="share-option-btn download" onclick="downloadImage()">
+                <button class="share-list-btn download" onclick="downloadImage()">
                     <i class="fas fa-download"></i>
-                    <span>İndir</span>
+                    <span>Görseli İndir</span>
                 </button>
             </div>
         </div>
@@ -1344,6 +1535,7 @@
         let imageRemovedDuringEdit = false;
         let shareText = '';
         let shareImageBlob = null;
+        let currentTheme = localStorage.getItem('theme') || '1';
         
         try {
             const stored = localStorage.getItem('recipes');
@@ -1355,8 +1547,46 @@
         } catch (e) {
             localStorage.removeItem('recipes');
             localStorage.removeItem('ownerName');
+            localStorage.removeItem('theme');
             recipes = [];
             ownerName = '';
+        }
+
+        // TEMA DEĞİŞTİRME
+        function changeTheme(themeNum) {
+            // Tüm temaları kaldır
+            document.body.classList.remove('theme-1', 'theme-2', 'theme-3', 'theme-4', 'theme-5');
+            
+            // Yeni temayı ekle (1 hariç)
+            if (themeNum !== 1) {
+                document.body.classList.add('theme-' + themeNum);
+            }
+            
+            // Seçili olanı işaretle
+            document.querySelectorAll('.theme-option').forEach((opt, index) => {
+                if (index + 1 === themeNum) {
+                    opt.classList.add('active');
+                } else {
+                    opt.classList.remove('active');
+                }
+            });
+            
+            // localStorage'a kaydet
+            localStorage.setItem('theme', themeNum);
+            currentTheme = themeNum;
+        }
+
+        // Başlangıç temasını yükle
+        if (currentTheme !== '1') {
+            document.body.classList.add('theme-' + currentTheme);
+            // Seçili temayı işaretle
+            setTimeout(() => {
+                document.querySelectorAll('.theme-option').forEach((opt, index) => {
+                    if (index + 1 === parseInt(currentTheme)) {
+                        opt.classList.add('active');
+                    }
+                });
+            }, 100);
         }
 
         function togglePreface(event) {
@@ -1529,14 +1759,14 @@
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
             
-            shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+            shareText = `🍰 ${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
             
             // Görseli hazırla
             html2canvas(document.getElementById('detailPage'), {
                 scale: 2,
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: '#FFE5EC',
+                backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg-gradient').includes('A7F3D0') ? '#A7F3D0' : '#FFE5EC',
                 scrollY: 0
             }).then(canvas => {
                 canvas.toBlob(blob => {
@@ -1545,7 +1775,6 @@
                 }, 'image/png', 0.9);
             }).catch(err => {
                 console.error('Görsel hazırlama hatası:', err);
-                // Görsel hazırlanamasa bile metin paylaşımı için modalı aç
                 shareImageBlob = null;
                 document.getElementById('shareModal').classList.add('active');
             });
@@ -1586,7 +1815,6 @@
                 alert('✅ Tarif metni panoya kopyalandı!');
                 closeShareModal();
             }).catch(() => {
-                // Fallback
                 const textArea = document.createElement('textarea');
                 textArea.value = shareText;
                 document.body.appendChild(textArea);
@@ -1719,7 +1947,7 @@
                 'biber': '🫑',
                 'kabak': '🥒',
                 'zencefil': '🫚',
-                'kuru acı biber': '️🌶️', 'kuru aci biber': '🌶️',
+                'kuru acı biber': '🌶️', 'kuru aci biber': '🌶️',
                 'acı biber': '🌶️', 'aci biber': '🌶️',
                 'brokoli': '🥦',
                 'karnabahar': '🥦',
@@ -2177,8 +2405,10 @@
             if(confirm('TÜM TARİFLER VE İSİM SİLİNECEK! Emin misin?')) {
                 localStorage.removeItem('recipes');
                 localStorage.removeItem('ownerName');
+                localStorage.removeItem('theme');
                 recipes = [];
                 ownerName = '';
+                currentTheme = '1';
                 renderList();
                 updateHeaderTitle();
                 closeSettings();
