@@ -1510,9 +1510,8 @@
         function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // PAYLAŞIM METNİ - 🍰 EMOJİSİ KALDIRILDI
         function buildShareText(recipe) {
-            return `${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+            return `${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍ Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
         }
 
         function openShareModal() {
@@ -1526,7 +1525,7 @@
             document.getElementById('shareModal').classList.remove('active');
         }
 
-        // PDF OLUŞTURMA FONKSİYONU
+        // PDF OLUŞTURMA
         async function createPDF() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return null;
@@ -1535,21 +1534,17 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
-                // Başlık
                 doc.setFontSize(22);
                 doc.setTextColor(255, 107, 157);
                 doc.text(recipe.name, 20, 30);
                 
-                // Alt başlık
                 doc.setFontSize(12);
                 doc.setTextColor(100, 100, 100);
                 doc.text(`${ownerName}'in Tarif Defteri'nden`, 20, 40);
                 
-                // Çizgi
                 doc.setDrawColor(255, 107, 157);
                 doc.line(20, 45, 190, 45);
                 
-                // Malzemeler
                 doc.setFontSize(16);
                 doc.setTextColor(255, 107, 157);
                 doc.text('Malzemeler', 20, 60);
@@ -1558,20 +1553,13 @@
                 doc.setTextColor(50, 50, 50);
                 let y = 70;
                 recipe.ingredients.forEach(ing => {
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
+                    if (y > 270) { doc.addPage(); y = 20; }
                     doc.text(`• ${ing}`, 25, y);
                     y += 8;
                 });
                 
-                // Yapılışı
                 y += 10;
-                if (y > 250) {
-                    doc.addPage();
-                    y = 20;
-                }
+                if (y > 250) { doc.addPage(); y = 20; }
                 doc.setFontSize(16);
                 doc.setTextColor(255, 107, 157);
                 doc.text('Yapılışı', 20, y);
@@ -1580,16 +1568,12 @@
                 doc.setFontSize(11);
                 doc.setTextColor(50, 50, 50);
                 recipe.instructions.forEach((step, i) => {
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
+                    if (y > 270) { doc.addPage(); y = 20; }
                     const lines = doc.splitTextToSize(`${i + 1}. ${step}`, 160);
                     doc.text(lines, 25, y);
                     y += lines.length * 7 + 5;
                 });
                 
-                // Alt bilgi
                 doc.setFontSize(9);
                 doc.setTextColor(150, 150, 150);
                 doc.text(`Tarih: ${recipe.date}`, 20, 285);
@@ -1601,7 +1585,82 @@
             }
         }
 
-        // WHATSAPP İLE PDF PAYLAŞ
+        // DATA URL İLE YENİ SEKMEDE AÇMA (WebView uyumlu)
+        function openInNewTab(dataUrl, filename, mimeType) {
+            const newWindow = window.open('', '_blank');
+            if (newWindow) {
+                newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>${filename}</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>
+                            body { 
+                                margin: 0; 
+                                display: flex; 
+                                flex-direction: column;
+                                justify-content: center; 
+                                align-items: center; 
+                                min-height: 100vh; 
+                                background: linear-gradient(135deg, #FFE5EC 0%, #FFEDD5 100%);
+                                font-family: Arial, sans-serif;
+                                padding: 20px;
+                                box-sizing: border-box;
+                            }
+                            .container {
+                                text-align: center;
+                                background: white;
+                                padding: 30px;
+                                border-radius: 20px;
+                                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                                max-width: 90%;
+                            }
+                            h2 { color: #FF6B9D; margin-bottom: 15px; }
+                            p { color: #666; margin-bottom: 20px; }
+                            .btn {
+                                display: inline-block;
+                                padding: 15px 30px;
+                                background: linear-gradient(135deg, #FF6B9D, #FFA07A);
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 12px;
+                                font-size: 16px;
+                                font-weight: bold;
+                                margin: 5px;
+                            }
+                            .btn-whatsapp {
+                                background: #25D366;
+                            }
+                            iframe {
+                                width: 100%;
+                                height: 70vh;
+                                border: none;
+                                border-radius: 12px;
+                                margin-top: 20px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h2>📄 ${filename}</h2>
+                            <p>Dosyanız hazır! Aşağıdaki butonlardan birini kullanın:</p>
+                            <a href="${dataUrl}" download="${filename}" class="btn">📥 İndir</a>
+                            <a href="https://wa.me/?text=${encodeURIComponent(shareText)}" class="btn btn-whatsapp" target="_blank">💬 WhatsApp'tan Paylaş</a>
+                            <br><br>
+                            <iframe src="${dataUrl}"></iframe>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                newWindow.document.close();
+            } else {
+                // Popup engellendiyse data URL'ye yönlendir
+                window.location.href = dataUrl;
+            }
+        }
+
+        // WHATSAPP İLE PAYLAŞ
         async function shareToWhatsApp() {
             const pdfDoc = await createPDF();
             if (!pdfDoc) {
@@ -1609,28 +1668,14 @@
                 return;
             }
 
-            try {
-                const pdfBlob = pdfDoc.output('blob');
-                const pdfFile = new File([pdfBlob], `${recipes.find(r => r.id === currentRecipeId).name}.pdf`, { type: 'application/pdf' });
-                
-                // Native share ile WhatsApp'tan paylaş
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                    await navigator.share({
-                        files: [pdfFile],
-                        title: recipes.find(r => r.id === currentRecipeId).name,
-                        text: shareText
-                    });
-                } else {
-                    // İndir ve kullanıcı WhatsApp'tan göndersin
-                    pdfDoc.save(`${recipes.find(r => r.id === currentRecipeId).name}.pdf`);
-                    alert('PDF indirildi. WhatsApp\'tan paylaşabilirsiniz.');
-                }
-                
-                closeShareModal();
-            } catch (err) {
-                console.error('WhatsApp paylaşım hatası:', err);
-                alert('Paylaşım yapılamadı. Lütfen tekrar deneyin.');
-            }
+            const recipe = recipes.find(r => r.id === currentRecipeId);
+            const dataUrl = pdfDoc.output('datauristring');
+            const filename = `${recipe.name}.pdf`;
+            
+            closeShareModal();
+            
+            // Yeni sekmede PDF'i aç (kullanıcı indirebilir ve WhatsApp'tan paylaşabilir)
+            openInNewTab(dataUrl, filename, 'application/pdf');
         }
 
         // PDF OLARAK PAYLAŞ
@@ -1641,39 +1686,21 @@
                 return;
             }
 
-            try {
-                const pdfBlob = pdfDoc.output('blob');
-                const pdfFile = new File([pdfBlob], `${recipes.find(r => r.id === currentRecipeId).name}.pdf`, { type: 'application/pdf' });
-                
-                // Native share ile paylaş
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                    await navigator.share({
-                        files: [pdfFile],
-                        title: recipes.find(r => r.id === currentRecipeId).name,
-                        text: shareText
-                    });
-                } else {
-                    // İndir
-                    pdfDoc.save(`${recipes.find(r => r.id === currentRecipeId).name}.pdf`);
-                    alert('PDF indirildi!');
-                }
-                
-                closeShareModal();
-            } catch (err) {
-                console.error('PDF paylaşım hatası:', err);
-                alert('PDF paylaşılamadı. Lütfen tekrar deneyin.');
-            }
+            const recipe = recipes.find(r => r.id === currentRecipeId);
+            const dataUrl = pdfDoc.output('datauristring');
+            const filename = `${recipe.name}.pdf`;
+            
+            closeShareModal();
+            openInNewTab(dataUrl, filename, 'application/pdf');
         }
 
-        // GÖRSEL OLARAK PAYLAŞ (JPEG)
+        // GÖRSEL OLARAK PAYLAŞ
         async function shareAsJPEG() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
 
             try {
                 const detailPage = document.getElementById('detailPage');
-                
-                // html2canvas ile ekran görüntüsü al
                 const canvas = await html2canvas(detailPage, {
                     scale: 2,
                     useCORS: true,
@@ -1682,34 +1709,14 @@
                     scrollY: 0
                 });
                 
-                // Canvas'ı blob'a çevir
-                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
-                const imageFile = new File([blob], `${recipe.name}.jpg`, { type: 'image/jpeg' });
-                
-                // Native share ile paylaş
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [imageFile] })) {
-                    await navigator.share({
-                        files: [imageFile],
-                        title: recipe.name,
-                        text: shareText
-                    });
-                } else {
-                    // İndir
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${recipe.name}.jpg`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    alert('Görsel indirildi!');
-                }
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                const filename = `${recipe.name}.jpg`;
                 
                 closeShareModal();
+                openInNewTab(dataUrl, filename, 'image/jpeg');
             } catch (err) {
-                console.error('Görsel paylaşım hatası:', err);
-                alert('Görsel paylaşılamadı. Lütfen tekrar deneyin.');
+                console.error('Görsel oluşturma hatası:', err);
+                alert('Görsel oluşturulamadı. Lütfen tekrar deneyin.');
             }
         }
 
