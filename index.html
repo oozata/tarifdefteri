@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     
     <style>
         :root {
@@ -234,6 +235,10 @@
             background: linear-gradient(135deg, var(--primary), var(--coral)); color: white;
             border-radius: 50%; width: 56px; height: 56px; margin: -30px auto 0;
         }
+        .nav-btn.ocr {
+            background: linear-gradient(135deg, #8B5CF6, #EC4899); color: white;
+            border-radius: 50%; width: 56px; height: 56px; margin: -30px auto 0;
+        }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -284,7 +289,7 @@
             cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 1.2rem;
         }
         .image-preview-container.has-image .image-remove-btn { display: flex; }
-        #fileInput { display: none; }
+        #fileInput, #ocrFileInput { display: none; }
         .upload-hint { font-size: 0.85rem; color: var(--text-light); margin-top: 8px; font-style: italic; }
 
         .dynamic-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: center; }
@@ -303,6 +308,7 @@
         }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--coral)); color: white; }
         .btn-secondary { background: #F5F5F5; color: var(--text-main); }
+        .btn-ocr { background: linear-gradient(135deg, #8B5CF6, #EC4899); color: white; }
 
         .detail-view {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -432,6 +438,87 @@
         .theme-name { font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
         .theme-desc { font-size: 0.8rem; color: var(--text-light); }
 
+        /* OCR MODAL */
+        .ocr-upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .ocr-upload-area:hover {
+            border-color: var(--coral);
+            background: rgba(255, 182, 193, 0.1);
+        }
+        .ocr-upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .ocr-upload-area p {
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .ocr-upload-area small {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        .ocr-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-top: 15px;
+            display: none;
+        }
+        .ocr-progress {
+            display: none;
+            margin-top: 20px;
+        }
+        .ocr-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 182, 193, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .ocr-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #EC4899);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+        .ocr-progress-text {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            text-align: center;
+        }
+        .ocr-result {
+            display: none;
+            margin-top: 20px;
+        }
+        .ocr-result h3 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .ocr-result textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 2px solid rgba(255, 182, 193, 0.3);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) { .container { padding: 30px 24px; } }
@@ -454,7 +541,6 @@
             .detail-hero-wrapper { height: 200px; }
         }
 
-        /* PDF OLUŞTURMA İÇİN GİZLİ DİV - EKRANDA GÖRÜNMEZ */
         #pdfRenderArea {
             position: absolute;
             left: -9999px;
@@ -465,46 +551,18 @@
             color: #333;
         }
         #pdfRenderArea .pdf-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #FF6B9D;
-            margin-bottom: 10px;
+            font-size: 32px; font-weight: 700; color: #FF6B9D; margin-bottom: 10px;
             font-family: 'Quicksand', sans-serif;
         }
-        #pdfRenderArea .pdf-subtitle {
-            font-size: 16px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        #pdfRenderArea .pdf-divider {
-            height: 3px;
-            background: linear-gradient(90deg, #FF6B9D, #FFA07A);
-            margin-bottom: 30px;
-        }
+        #pdfRenderArea .pdf-subtitle { font-size: 16px; color: #888; margin-bottom: 20px; }
+        #pdfRenderArea .pdf-divider { height: 3px; background: linear-gradient(90deg, #FF6B9D, #FFA07A); margin-bottom: 30px; }
         #pdfRenderArea .pdf-section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #FF6B9D;
-            margin-bottom: 15px;
+            font-size: 22px; font-weight: 700; color: #FF6B9D; margin-bottom: 15px;
             font-family: 'Quicksand', sans-serif;
         }
-        #pdfRenderArea .pdf-ingredient {
-            font-size: 15px;
-            padding: 6px 0;
-            color: #444;
-        }
-        #pdfRenderArea .pdf-step {
-            font-size: 15px;
-            padding: 8px 0;
-            color: #444;
-            line-height: 1.6;
-        }
-        #pdfRenderArea .pdf-footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #aaa;
-            text-align: center;
-        }
+        #pdfRenderArea .pdf-ingredient { font-size: 15px; padding: 6px 0; color: #444; }
+        #pdfRenderArea .pdf-step { font-size: 15px; padding: 8px 0; color: #444; line-height: 1.6; }
+        #pdfRenderArea .pdf-footer { margin-top: 30px; font-size: 12px; color: #aaa; text-align: center; }
     </style>
 </head>
 <body>
@@ -523,7 +581,6 @@
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
 
-    <!-- PDF İÇİN GİZLİ RENDER ALANI -->
     <div id="pdfRenderArea"></div>
 
     <div id="mainPage">
@@ -556,9 +613,49 @@
 
         <nav class="bottom-nav">
             <button class="nav-btn" onclick="openSettings()"><i class="fas fa-cog"></i><span>Ayarlar</span></button>
+            <button class="nav-btn ocr" onclick="openOCRModal()"><i class="fas fa-camera"></i></button>
             <button class="nav-btn add" onclick="openModal()"><i class="fas fa-plus"></i></button>
             <button class="nav-btn" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i><span>Yukarı</span></button>
         </nav>
+    </div>
+
+    <!-- OCR MODAL - Görselden Tarif Oluştur -->
+    <div id="ocrModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-camera"></i> Görselden Tarif Oluştur</h2>
+                <button class="close-btn" onclick="closeOCRModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="ocr-upload-area" onclick="document.getElementById('ocrFileInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Görsel yüklemek için tıklayın</p>
+                <small>Instagram, WhatsApp vb. görselleri buraya yükleyin</small>
+                <img id="ocrPreview" class="ocr-preview" alt="Önizleme">
+            </div>
+            <input type="file" id="ocrFileInput" accept="image/*" onchange="handleOCRImage(event)">
+            
+            <div class="ocr-progress" id="ocrProgress">
+                <div class="ocr-progress-bar">
+                    <div class="ocr-progress-fill" id="ocrProgressFill"></div>
+                </div>
+                <div class="ocr-progress-text" id="ocrProgressText">Metin tanınıyor...</div>
+            </div>
+            
+            <div class="ocr-result" id="ocrResult">
+                <h3>📝 Tanınan Metin</h3>
+                <textarea id="ocrText" placeholder="Tanınan metin burada görünecek..."></textarea>
+                <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 8px;">
+                    💡 Metni düzenleyip "Tarif Oluştur" butonuna basın
+                </p>
+                <div class="btn-group" style="margin-top: 15px;">
+                    <button class="btn btn-secondary" onclick="closeOCRModal()">İptal</button>
+                    <button class="btn btn-ocr" onclick="createRecipeFromOCR()">
+                        <i class="fas fa-magic"></i> Tarif Oluştur
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="settingsModal" class="modal">
@@ -737,6 +834,7 @@
         let imageRemovedDuringEdit = false;
         let shareText = '';
         let currentTheme = localStorage.getItem('theme') || '1';
+        let ocrExtractedText = '';
         
         try {
             const stored = localStorage.getItem('recipes');
@@ -876,6 +974,179 @@
         function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
+        // OCR MODAL FONKSİYONLARI
+        function openOCRModal() {
+            document.getElementById('ocrModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Reset OCR state
+            document.getElementById('ocrPreview').style.display = 'none';
+            document.getElementById('ocrProgress').style.display = 'none';
+            document.getElementById('ocrResult').style.display = 'none';
+            document.getElementById('ocrText').value = '';
+            document.getElementById('ocrFileInput').value = '';
+        }
+
+        function closeOCRModal() {
+            document.getElementById('ocrModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleOCRImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Önizleme göster
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('ocrPreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                
+                // OCR işlemini başlat
+                performOCR(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function performOCR(imageData) {
+            const progress = document.getElementById('ocrProgress');
+            const progressFill = document.getElementById('ocrProgressFill');
+            const progressText = document.getElementById('ocrProgressText');
+            const result = document.getElementById('ocrResult');
+            const textArea = document.getElementById('ocrText');
+            
+            progress.style.display = 'block';
+            result.style.display = 'none';
+            
+            try {
+                const result_ocr = await Tesseract.recognize(imageData, 'tur+eng', {
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const percent = Math.round(m.progress * 100);
+                            progressFill.style.width = percent + '%';
+                            progressText.textContent = `Metin tanınıyor... %${percent}`;
+                        } else if (m.status === 'loading language traineddata') {
+                            progressText.textContent = 'Türkçe dil dosyası yükleniyor...';
+                        } else if (m.status === 'initializing tesseract') {
+                            progressText.textContent = 'OCR motoru başlatılıyor...';
+                        }
+                    }
+                });
+                
+                ocrExtractedText = result_ocr.data.text;
+                textArea.value = ocrExtractedText;
+                
+                progress.style.display = 'none';
+                result.style.display = 'block';
+                
+            } catch (err) {
+                console.error('OCR hatası:', err);
+                alert('Metin tanıma başarısız oldu. Lütfen daha net bir görsel deneyin.');
+                progress.style.display = 'none';
+            }
+        }
+
+        function createRecipeFromOCR() {
+            const text = document.getElementById('ocrText').value.trim();
+            if (!text) {
+                alert('Lütfen metin girin veya görsel yükleyin.');
+                return;
+            }
+            
+            // Metni satırlara böl
+            const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            
+            // Malzemeler ve yapılış adımlarını ayır
+            let ingredients = [];
+            let instructions = [];
+            let currentSection = null;
+            let recipeName = '';
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const lowerLine = line.toLowerCase();
+                
+                // Tarif adı tespiti (ilk satır veya başlık benzeri)
+                if (i === 0 && !lowerLine.includes('malzeme') && !lowerLine.includes('yapılış') && line.length < 50) {
+                    recipeName = line.replace(/[:;,-]$/, '').trim();
+                    continue;
+                }
+                
+                // Malzemeler bölümü
+                if (lowerLine.includes('malzeme') || lowerLine.includes('ingredients')) {
+                    currentSection = 'ingredients';
+                    continue;
+                }
+                
+                // Yapılış bölümü
+                if (lowerLine.includes('yapılış') || lowerLine.includes('hazırlanış') || lowerLine.includes('pişirme') || lowerLine.includes('instructions') || lowerLine.includes('preparation')) {
+                    currentSection = 'instructions';
+                    continue;
+                }
+                
+                // Satırı ilgili bölüme ekle
+                if (currentSection === 'ingredients') {
+                    // Başlangıç karakterlerini temizle (-, •, *, 1., vb.)
+                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                    if (cleanLine) ingredients.push(cleanLine);
+                } else if (currentSection === 'instructions') {
+                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                    if (cleanLine) instructions.push(cleanLine);
+                } else {
+                    // Henüz bölüm belirtilmemişse, malzeme benzeri satırları malzemelere ekle
+                    if (line.startsWith('-') || line.startsWith('•') || line.startsWith('*') || /^\d+[\.\)]/.test(line)) {
+                        const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                        if (cleanLine) ingredients.push(cleanLine);
+                    }
+                }
+            }
+            
+            // Eğer tarif adı bulunamadıysa, ilk malzemeden tahmin et
+            if (!recipeName && ingredients.length > 0) {
+                recipeName = 'Yeni Tarif';
+            }
+            
+            // Eğer yapılış bulunamadıysa, malzemeleri yapılış olarak kullan
+            if (instructions.length === 0 && ingredients.length > 0) {
+                instructions = [...ingredients];
+                ingredients = [];
+            }
+            
+            // Modalı aç ve verileri doldur
+            closeOCRModal();
+            openModal();
+            
+            document.getElementById('name').value = recipeName;
+            
+            // Malzemeleri ekle
+            const ingredientsContainer = document.getElementById('ingredientsContainer');
+            ingredientsContainer.innerHTML = '';
+            if (ingredients.length > 0) {
+                ingredients.forEach((ing, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'dynamic-row';
+                    div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                    ingredientsContainer.appendChild(div);
+                });
+            } else {
+                ingredientsContainer.innerHTML = `<div class="dynamic-row"><input type="text" placeholder="Malzeme ekle..." class="ing-input" required><button type="button" class="icon-btn add-btn-sm" onclick="addIngRow()"><i class="fas fa-plus"></i></button></div>`;
+            }
+            
+            // Yapılış adımlarını ekle
+            const instructionsContainer = document.getElementById('instructionsContainer');
+            instructionsContainer.innerHTML = '';
+            if (instructions.length > 0) {
+                instructions.forEach((step, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'dynamic-row';
+                    div.innerHTML = `<textarea placeholder="Adım ${index + 1}..." class="inst-input" required>${step}</textarea><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
+                    instructionsContainer.appendChild(div);
+                });
+            } else {
+                instructionsContainer.innerHTML = `<div class="dynamic-row"><textarea placeholder="Adım 1..." class="inst-input" required></textarea><button type="button" class="icon-btn add-btn-sm" onclick="addInstRow()"><i class="fas fa-plus"></i></button></div>`;
+            }
+        }
+
         function buildShareText(recipe) {
             return `${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
         }
@@ -891,13 +1162,11 @@
             document.getElementById('shareModal').classList.remove('active');
         }
 
-        // PDF OLUŞTURMA - HTML2CANVAS İLE TÜRKÇE KARAKTERLER KORUNUR
         async function createPDF() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return null;
 
             try {
-                // PDF içeriğini gizli div'e yaz (Türkçe karakterler korunur)
                 const pdfArea = document.getElementById('pdfRenderArea');
                 
                 let ingredientsHTML = recipe.ingredients.map(ing => 
@@ -920,7 +1189,6 @@
                     <div class="pdf-footer">📅 ${recipe.date} • Mutfak Günlüğüm</div>
                 `;
 
-                // html2canvas ile canvas'a çevir (Türkçe karakterler düzgün render edilir)
                 const canvas = await html2canvas(pdfArea, {
                     scale: 2,
                     backgroundColor: '#ffffff',
@@ -930,19 +1198,16 @@
                     windowWidth: 800
                 });
 
-                // Canvas'ı jsPDF'e ekle
                 const { jsPDF } = window.jspdf;
                 const imgData = canvas.toDataURL('image/jpeg', 0.95);
                 
-                // A4 boyutları
-                const pdfWidth = 210; // mm
-                const pdfHeight = 297; // mm
-                const imgWidth = pdfWidth - 20; // 10mm margin her iki taraftan
+                const pdfWidth = 210;
+                const pdfHeight = 297;
+                const imgWidth = pdfWidth - 20;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
                 const doc = new jsPDF('p', 'mm', 'a4');
                 
-                // Eğer tek sayfaya sığmıyorsa, sayfalara böl
                 let heightLeft = imgHeight;
                 let position = 10;
                 
@@ -963,7 +1228,6 @@
             }
         }
 
-        // WHATSAPP - Cihazdaki WhatsApp uygulamasını açar
         async function shareToWhatsApp() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
@@ -988,7 +1252,6 @@
             }
         }
 
-        // PDF İNDİRME
         async function shareAsPDF() {
             const pdfDoc = await createPDF();
             if (!pdfDoc) {
@@ -1014,7 +1277,6 @@
             }
         }
 
-        // RESİM İNDİRME
         async function shareAsJPEG() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
