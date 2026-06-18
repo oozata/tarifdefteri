@@ -438,6 +438,7 @@
         .theme-name { font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
         .theme-desc { font-size: 0.8rem; color: var(--text-light); }
 
+        /* OCR MODAL */
         .ocr-upload-area {
             border: 3px dashed var(--primary);
             border-radius: 16px;
@@ -618,6 +619,7 @@
         </nav>
     </div>
 
+    <!-- OCR MODAL - Görselden Tarif Oluştur -->
     <div id="ocrModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -972,9 +974,11 @@
         function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
+        // OCR MODAL FONKSİYONLARI
         function openOCRModal() {
             document.getElementById('ocrModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+            // Reset OCR state
             document.getElementById('ocrPreview').style.display = 'none';
             document.getElementById('ocrProgress').style.display = 'none';
             document.getElementById('ocrResult').style.display = 'none';
@@ -991,12 +995,14 @@
             const file = event.target.files[0];
             if (!file) return;
             
+            // Önizleme göster
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('ocrPreview');
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 
+                // OCR işlemini başlat
                 performOCR(e.target.result);
             };
             reader.readAsDataURL(file);
@@ -1047,75 +1053,66 @@
                 return;
             }
             
+            // Metni satırlara böl
             const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             
+            // Malzemeler ve yapılış adımlarını ayır
             let ingredients = [];
             let instructions = [];
-            let currentSection = 'ingredients';
+            let currentSection = null;
             let recipeName = '';
             
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 const lowerLine = line.toLowerCase();
                 
-                // Tarif adı (ilk satır, kısa ve başlık benzeri)
-                if (i === 0 && line.length < 60 && !lowerLine.includes('için') && !lowerLine.includes('yapılış')) {
+                // Tarif adı tespiti (ilk satır veya başlık benzeri)
+                if (i === 0 && !lowerLine.includes('malzeme') && !lowerLine.includes('yapılış') && line.length < 50) {
                     recipeName = line.replace(/[:;,-]$/, '').trim();
                     continue;
                 }
                 
-                // MALZEMELER başlıkları
-                if (lowerLine.includes('malzeme') || 
-                    lowerLine.includes('hamuru için') || 
-                    lowerLine.includes('içi için') || 
-                    lowerLine.includes('üzeri için') ||
-                    lowerLine.includes('içi ve üzeri için') ||
-                    lowerLine.includes('içine:') ||
-                    lowerLine.includes('üzerine:') ||
-                    lowerLine.includes('içine ') ||
-                    lowerLine.includes('üzerine ') ||
-                    lowerLine.includes('sosu için') ||
-                    lowerLine.includes('harç için') ||
-                    lowerLine.includes('kreması için') ||
-                    lowerLine.includes('krema için') ||
-                    lowerLine.includes('şerbeti için') ||
-                    lowerLine.includes('şerbet için') ||
-                    lowerLine.includes('iç harç')) {
+                // Malzemeler bölümü
+                if (lowerLine.includes('malzeme') || lowerLine.includes('ingredients')) {
                     currentSection = 'ingredients';
                     continue;
                 }
                 
-                // YAPILIŞ başlıkları
-                if (lowerLine === 'yapılışı' || 
-                    lowerLine === 'yapılış' || 
-                    lowerLine === 'yapılış:' ||
-                    lowerLine.includes('hazırlanış') || 
-                    lowerLine.includes('pişirme') ||
-                    lowerLine.includes('hazırlanışı') ||
-                    lowerLine.includes('yapımı')) {
+                // Yapılış bölümü
+                if (lowerLine.includes('yapılış') || lowerLine.includes('hazırlanış') || lowerLine.includes('pişirme') || lowerLine.includes('instructions') || lowerLine.includes('preparation')) {
                     currentSection = 'instructions';
                     continue;
                 }
                 
-                // Hashtag ve gereksiz kısımları atla
-                if (line.startsWith('#') || lowerLine.includes('daha az') || lowerLine.includes('devamı')) {
-                    continue;
-                }
-                
-                // Satırı ilgili bölüme ekle (* işaretini temizle)
-                const cleanLine = line.replace(/^[\*\-•]\s*/, '').trim();
-                if (!cleanLine) continue;
-                
+                // Satırı ilgili bölüme ekle
                 if (currentSection === 'ingredients') {
-                    ingredients.push(cleanLine);
+                    // Başlangıç karakterlerini temizle (-, •, *, 1., vb.)
+                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                    if (cleanLine) ingredients.push(cleanLine);
                 } else if (currentSection === 'instructions') {
-                    instructions.push(cleanLine);
+                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                    if (cleanLine) instructions.push(cleanLine);
+                } else {
+                    // Henüz bölüm belirtilmemişse, malzeme benzeri satırları malzemelere ekle
+                    if (line.startsWith('-') || line.startsWith('•') || line.startsWith('*') || /^\d+[\.\)]/.test(line)) {
+                        const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
+                        if (cleanLine) ingredients.push(cleanLine);
+                    }
                 }
             }
             
-            if (!recipeName) recipeName = 'Yeni Tarif';
+            // Eğer tarif adı bulunamadıysa, ilk malzemeden tahmin et
+            if (!recipeName && ingredients.length > 0) {
+                recipeName = 'Yeni Tarif';
+            }
             
-            // Modalı aç ve doldur
+            // Eğer yapılış bulunamadıysa, malzemeleri yapılış olarak kullan
+            if (instructions.length === 0 && ingredients.length > 0) {
+                instructions = [...ingredients];
+                ingredients = [];
+            }
+            
+            // Modalı aç ve verileri doldur
             closeOCRModal();
             openModal();
             
@@ -1125,7 +1122,7 @@
             const ingredientsContainer = document.getElementById('ingredientsContainer');
             ingredientsContainer.innerHTML = '';
             if (ingredients.length > 0) {
-                ingredients.forEach(ing => {
+                ingredients.forEach((ing, index) => {
                     const div = document.createElement('div');
                     div.className = 'dynamic-row';
                     div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
