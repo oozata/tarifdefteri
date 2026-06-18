@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
     <style>
         :root {
@@ -28,48 +29,27 @@
         }
 
         body.theme-2 {
-            --primary: #0EA5E9;
-            --secondary: #06B6D4;
-            --accent: #7DD3FC;
-            --coral: #22D3EE;
-            --peach: #BAE6FD;
+            --primary: #0EA5E9; --secondary: #06B6D4; --accent: #7DD3FC; --coral: #22D3EE; --peach: #BAE6FD;
             --bg-gradient: linear-gradient(135deg, #E0F2FE 0%, #CFFAFE 50%, #E0F2FE 100%);
-            --text-main: #0C4A6E;
-            --text-light: #64748B;
+            --text-main: #0C4A6E; --text-light: #64748B;
         }
 
         body.theme-3 {
-            --primary: #8B5CF6;
-            --secondary: #EC4899;
-            --accent: #C4B5FD;
-            --coral: #F472B6;
-            --peach: #FBCFE8;
+            --primary: #8B5CF6; --secondary: #EC4899; --accent: #C4B5FD; --coral: #F472B6; --peach: #FBCFE8;
             --bg-gradient: linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 50%, #F3E8FF 100%);
-            --text-main: #581C87;
-            --text-light: #9333EA;
+            --text-main: #581C87; --text-light: #9333EA;
         }
 
         body.theme-4 {
-            --primary: #8B5CF6;
-            --secondary: #A78BFA;
-            --accent: #C4B5FD;
-            --coral: #6EE7B7;
-            --peach: #A7F3D0;
+            --primary: #8B5CF6; --secondary: #A78BFA; --accent: #C4B5FD; --coral: #6EE7B7; --peach: #A7F3D0;
             --bg-gradient: linear-gradient(135deg, #A7F3D0 0%, #C4B5FD 50%, #A7F3D0 100%);
-            --text-main: #4B5563;
-            --text-light: #9CA3AF;
+            --text-main: #4B5563; --text-light: #9CA3AF;
         }
 
         body.theme-5 {
-            --primary: #FF6B9D;
-            --secondary: #FFA07A;
-            --accent: #FFB6C1;
-            --coral: #FF8C94;
-            --peach: #FFDAB9;
+            --primary: #FF6B9D; --secondary: #FFA07A; --accent: #FFB6C1; --coral: #FF8C94; --peach: #FFDAB9;
             --bg-gradient: linear-gradient(135deg, #1F2937 0%, #374151 50%, #1F2937 100%);
-            --card-bg: rgba(55, 65, 81, 0.95);
-            --text-main: #F9FAFB;
-            --text-light: #D1D5DB;
+            --card-bg: rgba(55, 65, 81, 0.95); --text-main: #F9FAFB; --text-light: #D1D5DB;
             --modal-bg: rgba(0, 0, 0, 0.8);
         }
 
@@ -88,982 +68,361 @@
         }
 
         #splashScreen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition: opacity 0.6s ease-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden; transition: opacity 0.6s ease-out;
         }
-
         #splashScreen.fade-out { opacity: 0; pointer-events: none; }
 
         .splash-glow {
-            position: absolute;
-            width: 300px; height: 300px;
+            position: absolute; width: 300px; height: 300px;
             background: radial-gradient(circle, rgba(255, 107, 157, 0.4) 0%, rgba(255, 160, 122, 0.2) 40%, transparent 70%);
-            border-radius: 50%;
-            animation: splashPulse 2s ease-in-out infinite;
+            border-radius: 50%; animation: splashPulse 2s ease-in-out infinite;
         }
-
         .splash-glow::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px; height: 400px;
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 400px; height: 400px;
             background: radial-gradient(circle, rgba(255, 182, 193, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: splashPulse 2s ease-in-out infinite 0.5s;
+            border-radius: 50%; animation: splashPulse 2s ease-in-out infinite 0.5s;
         }
-
         @keyframes splashPulse {
             0%, 100% { transform: scale(0.8); opacity: 0.5; }
             50% { transform: scale(1.2); opacity: 0.8; }
         }
-
         .splash-ring {
-            position: absolute;
-            border: 2px solid rgba(255, 107, 157, 0.3);
-            border-radius: 50%;
-            width: 350px; height: 350px;
+            position: absolute; border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 50%; width: 350px; height: 350px;
             animation: splashRing 2s ease-out infinite;
         }
-
         .splash-ring:nth-child(2) { animation-delay: 0.7s; }
         .splash-ring:nth-child(3) { animation-delay: 1.4s; }
-
         @keyframes splashRing {
             0% { transform: scale(0.8); opacity: 0.8; }
             100% { transform: scale(1.3); opacity: 0; }
         }
-
-        .splash-logo {
-            position: relative;
-            z-index: 2;
-            width: 250px;
-            max-width: 70vw;
-            height: auto;
-            animation: splashLogoIn 1.5s ease-out;
-        }
-
-        @keyframes splashLogoIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .splash-progress {
-            position: relative;
-            z-index: 2;
-            width: 250px;
-            max-width: 70vw;
-            margin-top: 40px;
-        }
-
-        .splash-progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
+        .splash-logo { position: relative; z-index: 2; width: 250px; max-width: 70vw; height: auto; animation: splashLogoIn 1.5s ease-out; }
+        @keyframes splashLogoIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        .splash-progress { position: relative; z-index: 2; width: 250px; max-width: 70vw; margin-top: 40px; }
+        .splash-progress-bar { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; }
         .splash-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #FF6B9D 0%, #FFA07A 50%, #FFB6C1 100%);
-            border-radius: 2px;
-            width: 0%;
-            animation: splashLoading 3s ease-out forwards;
+            height: 100%; background: linear-gradient(90deg, #FF6B9D 0%, #FFA07A 50%, #FFB6C1 100%);
+            border-radius: 2px; width: 0%; animation: splashLoading 3s ease-out forwards;
             box-shadow: 0 0 20px rgba(255, 107, 157, 0.6);
         }
-
-        @keyframes splashLoading {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
+        @keyframes splashLoading { 0% { width: 0%; } 100% { width: 100%; } }
         .splash-text {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 13px;
-            margin-top: 15px;
-            letter-spacing: 2px;
-            animation: splashFadeIn 1s ease-out 0.5s both;
+            text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 13px;
+            margin-top: 15px; letter-spacing: 2px; animation: splashFadeIn 1s ease-out 0.5s both;
         }
+        @keyframes splashFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        @keyframes splashFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .bg-shape {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.5;
-            animation: float 8s ease-in-out infinite;
-        }
-        .shape-1 { top: -10%; left: -10%; width: 350px; height: 350px; background: linear-gradient(135deg, #FFB6C1, #FFDAB9); animation-delay: 0s; }
+        .bg-shape { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.5; animation: float 8s ease-in-out infinite; }
+        .shape-1 { top: -10%; left: -10%; width: 350px; height: 350px; background: linear-gradient(135deg, #FFB6C1, #FFDAB9); }
         .shape-2 { bottom: -10%; right: -10%; width: 300px; height: 300px; background: linear-gradient(135deg, #FFA07A, #FFB6C1); animation-delay: 4s; }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px 16px; width: 100%; }
 
-        .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 20px 16px;
-            width: 100%;
-        }
-
-        header { 
-            text-align: center; 
-            margin-bottom: 20px;
-            padding: 30px 20px;
+        header {
+            text-align: center; margin-bottom: 20px; padding: 30px 20px;
             background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 218, 185, 0.3));
-            border-radius: var(--radius);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow);
-            position: relative;
+            border-radius: var(--radius); backdrop-filter: blur(10px);
+            box-shadow: var(--shadow); position: relative;
         }
-        
-        header h1 { 
-            font-family: 'Quicksand', sans-serif;
-            font-size: clamp(1.8rem, 6vw, 2.5rem); 
-            font-weight: 700;
+        header h1 {
+            font-family: 'Quicksand', sans-serif; font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 10px; line-height: 1.2;
         }
-
         .header-motto {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1rem, 3.5vw, 1.4rem);
-            color: var(--text-main);
-            margin: 0;
-            line-height: 1.4;
-            font-style: italic;
+            font-family: 'Dancing Script', cursive; font-size: clamp(1rem, 3.5vw, 1.4rem);
+            color: var(--text-main); margin: 0; line-height: 1.4; font-style: italic;
         }
 
-        .search-wrapper { 
-            max-width: 100%; 
-            margin: 0 auto 20px; 
-            position: relative; 
-            width: 100%;
+        .search-wrapper { max-width: 100%; margin: 0 auto 20px; position: relative; width: 100%; }
+        .search-input {
+            width: 100%; padding: 16px 50px 16px 20px; border: 2px solid rgba(255, 182, 193, 0.3);
+            border-radius: 50px; background: var(--card-bg); box-shadow: var(--shadow);
+            font-size: 0.95rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; color: var(--text-main);
         }
-        .search-input { 
-            width: 100%; 
-            padding: 16px 50px 16px 20px; 
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            border-radius: 50px; 
-            background: var(--card-bg);
-            box-shadow: var(--shadow);
-            font-size: 0.95rem; 
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.3s;
-            color: var(--text-main);
-        }
-        .search-input:focus { 
-            border-color: var(--primary);
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-        .search-icon { 
-            position: absolute; 
-            right: 20px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            color: var(--primary); 
-            font-size: 1.1rem; 
-        }
+        .search-input:focus { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.1rem; }
 
         .preface-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px 24px;
-            margin: 20px auto;
-            max-width: 900px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 182, 193, 0.25);
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: var(--card-bg); border-radius: var(--radius); padding: 20px 24px; margin: 20px auto;
+            max-width: 900px; backdrop-filter: blur(10px); border: 2px solid rgba(255, 182, 193, 0.25);
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
+            display: flex; align-items: flex-start; gap: 20px; cursor: pointer; transition: all 0.3s;
         }
-
-        .preface-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
+        .preface-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
         .preface-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            width: 4px;
+            content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
             background: linear-gradient(180deg, var(--primary), var(--coral), var(--peach));
         }
-
         .preface-icon-wrapper {
-            width: 60px; height: 60px;
-            min-width: 60px;
+            width: 60px; height: 60px; min-width: 60px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
         }
-
-        .preface-icon-wrapper i {
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .preface-card-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .preface-card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
+        .preface-icon-wrapper i { font-size: 1.5rem; color: white; }
+        .preface-card-content { flex: 1; min-width: 0; }
+        .preface-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .preface-card-title {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
         }
-
         .preface-card-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            font-style: italic;
-            margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif; font-size: 0.9rem; line-height: 1.6;
+            color: var(--text-main); font-style: italic; margin: 0;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
-
-        .preface-card-text.expanded {
-            display: block;
-            -webkit-line-clamp: unset;
-        }
-
+        .preface-card-text.expanded { display: block; -webkit-line-clamp: unset; }
         .read-more-btn {
-            display: none;
-            margin-top: 10px;
-            padding: 8px 16px;
+            display: none; margin-top: 10px; padding: 8px 16px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s;
+            color: white; border: none; border-radius: 16px; cursor: pointer;
+            font-size: 0.85rem; font-weight: 600;
         }
 
-        .recipes-list { 
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px; 
-            margin-top: 24px;
-            width: 100%;
-            padding-bottom: 40px;
-        }
-
-        @media (min-width: 768px) {
-            .recipes-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        .recipes-list { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 24px; width: 100%; padding-bottom: 40px; }
+        @media (min-width: 768px) { .recipes-list { grid-template-columns: repeat(2, 1fr); } }
         
-        .recipe-card { 
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            overflow: visible;
-            box-shadow: var(--shadow);
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            backdrop-filter: blur(10px);
+        .recipe-card {
+            background: var(--card-bg); border-radius: var(--radius); overflow: visible;
+            box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; position: relative;
         }
-        .recipe-card:hover { 
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-        .recipe-card:active {
-            transform: scale(0.98);
-        }
-        
-        .card-image-wrapper {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .recipe-card:hover .card-image {
-            transform: scale(1.1);
-        }
-        
+        .recipe-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .card-image-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; }
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .recipe-card:hover .card-image { transform: scale(1.1); }
         .card-badge {
-            position: absolute;
-            top: 12px; right: 12px;
+            position: absolute; top: 12px; right: 12px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+            color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
         }
-        
-        .card-content {
-            padding: 18px;
-        }
-        
-        .card-title {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        
+        .card-content { padding: 18px; }
+        .card-title { font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
         .card-preview {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 12px;
+            color: var(--text-light); font-size: 0.85rem; line-height: 1.4;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px;
         }
-        
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 182, 193, 0.2);
-        }
-        
-        .card-meta {
-            display: flex;
-            gap: 12px;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-        
-        .card-meta i {
-            color: var(--primary);
-            margin-right: 4px;
-        }
-        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255, 182, 193, 0.2); }
+        .card-meta { display: flex; gap: 12px; font-size: 0.8rem; color: var(--text-light); }
+        .card-meta i { color: var(--primary); margin-right: 4px; }
         .view-btn {
-            background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: none;
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
-            transition: all 0.3s;
+            background: linear-gradient(135deg, var(--primary), var(--coral)); color: white;
+            padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: none;
         }
 
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
+            position: fixed; bottom: 0; left: 0; right: 0; background: var(--card-bg);
             box-shadow: 0 -4px 20px rgba(255, 107, 157, 0.2);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 10px 0;
-            z-index: 1000;
-            border-radius: 24px 24px 0 0;
+            display: flex; justify-content: space-around; align-items: center; padding: 10px 0;
+            z-index: 1000; border-radius: 24px 24px 0 0;
         }
-
         .nav-btn {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--text-light);
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            padding: 8px; background: none; border: none; cursor: pointer; color: var(--text-light);
         }
-
-        .nav-btn.active { color: var(--primary); }
         .nav-btn i { font-size: 1.5rem; }
         .nav-btn span { font-size: 0.75rem; font-weight: 600; }
-
         .nav-btn.add {
-            background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            margin: -30px auto 0;
-            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+            background: linear-gradient(135deg, var(--primary), var(--coral)); color: white;
+            border-radius: 50%; width: 56px; height: 56px; margin: -30px auto 0;
         }
 
-        .nav-btn.add:hover { transform: scale(1.1); }
-
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0;
-            width: 100%; height: 100%; 
-            background: var(--modal-bg);
-            backdrop-filter: blur(8px);
-            z-index: 1000; 
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg); backdrop-filter: blur(8px); z-index: 1000;
+            align-items: center; justify-content: center; padding: 20px;
         }
         .modal.active { display: flex; }
-        
-        .modal-content { 
-            background: var(--card-bg);
-            padding: 32px 24px; 
-            width: 100%; 
-            max-width: 600px; 
-            max-height: 85vh; 
-            overflow-y: auto; 
-            border-radius: 32px;
-            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
-            animation: modalSlideIn 0.3s ease;
-            color: var(--text-main);
+        .modal-content {
+            background: var(--card-bg); padding: 32px 24px; width: 100%; max-width: 600px;
+            max-height: 85vh; overflow-y: auto; border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3); animation: modalSlideIn 0.3s ease; color: var(--text-main);
         }
-        
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        .modal-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 28px;
-        }
-        .modal-header h2 { 
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.8rem; 
-            font-weight: 700;
+        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        .modal-header h2 {
+            font-family: 'Quicksand', sans-serif; font-size: 1.8rem; font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .close-btn { 
-            background: linear-gradient(135deg, var(--accent), var(--peach));
-            border: none; 
-            width: 40px; height: 40px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            font-size: 1.2rem; 
-            color: white;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .close-btn {
+            background: linear-gradient(135deg, var(--accent), var(--peach)); border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; color: white;
+            display: flex; align-items: center; justify-content: center;
         }
-        .close-btn:hover { transform: rotate(90deg) scale(1.1); }
 
         .form-group { margin-bottom: 24px; }
-        label { 
-            display: block; 
-            color: var(--text-main);
-            font-weight: 600; 
-            margin-bottom: 10px; 
-            font-size: 0.95rem;
+        label { display: block; color: var(--text-main); font-weight: 600; margin-bottom: 10px; font-size: 0.95rem; }
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%; padding: 16px 18px; border: 2px solid rgba(255, 182, 193, 0.3);
+            border-radius: 16px; font-size: 1rem; font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.1); color: var(--text-main);
         }
-        input[type="text"], textarea, input[type="file"] { 
-            width: 100%; 
-            padding: 16px 18px; 
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            border-radius: 16px; 
-            font-size: 1rem; 
-            font-family: 'Poppins', sans-serif;
-            transition: 0.3s; 
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-        }
-        input:focus, textarea:focus { 
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
-        }
+        input:focus, textarea:focus { border-color: var(--primary); background: rgba(255, 255, 255, 0.2); }
         textarea { resize: vertical; min-height: 100px; }
         
-        .image-upload-wrapper { margin-bottom: 20px; }
         .image-preview-container {
-            width: 100%; height: 200px;
-            border: 3px dashed var(--primary);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            position: relative;
+            width: 100%; height: 200px; border: 3px dashed var(--primary); border-radius: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; background: rgba(255, 255, 255, 0.1); overflow: hidden; position: relative;
         }
-        .image-preview-container:hover {
-            border-color: var(--coral);
-            background: rgba(255, 182, 193, 0.1);
-        }
-        .image-preview-container.has-image {
-            border-style: solid;
-            border-color: var(--primary);
-        }
-        .image-preview-container i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        .image-preview-text {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        .image-preview {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
+        .image-preview-container.has-image { border-style: solid; }
+        .image-preview-container i { font-size: 3rem; color: var(--primary); margin-bottom: 10px; }
+        .image-preview-text { color: var(--text-light); font-size: 0.9rem; text-align: center; }
+        .image-preview { width: 100%; height: 100%; object-fit: cover; }
         .image-remove-btn {
-            position: absolute;
-            top: 10px; right: 10px;
-            background: rgba(255, 107, 157, 0.9);
-            color: white;
-            border: none;
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            position: absolute; top: 10px; right: 10px; background: rgba(255, 107, 157, 0.9);
+            color: white; border: none; width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 1.2rem;
         }
         .image-preview-container.has-image .image-remove-btn { display: flex; }
         #fileInput { display: none; }
-        .upload-hint {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 8px;
-            font-style: italic;
-        }
+        .upload-hint { font-size: 0.85rem; color: var(--text-light); margin-top: 8px; font-style: italic; }
 
-        .dynamic-row { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 12px; 
-            align-items: center; 
-        }
+        .dynamic-row { display: flex; gap: 10px; margin-bottom: 12px; align-items: center; }
         .dynamic-row input, .dynamic-row textarea { flex: 1; }
-        
-        .icon-btn { 
-            width: 44px; height: 44px; 
-            min-width: 44px;
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            font-size: 1.1rem; 
-            transition: 0.3s; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            flex-shrink: 0;
+        .icon-btn {
+            width: 44px; height: 44px; min-width: 44px; border: none; border-radius: 12px;
+            cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
         }
-        .add-btn-sm { 
-            background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
-        }
-        .remove-btn-sm { 
-            background: linear-gradient(135deg, #FFB6C1, #FFDAB9);
-            color: #FF6B9D;
-        }
+        .add-btn-sm { background: linear-gradient(135deg, var(--primary), var(--coral)); color: white; }
+        .remove-btn-sm { background: linear-gradient(135deg, #FFB6C1, #FFDAB9); color: #FF6B9D; }
 
         .btn-group { display: flex; gap: 12px; margin-top: 28px; }
-        .btn { 
-            flex: 1; 
-            padding: 16px; 
-            border: none; 
-            border-radius: 16px; 
-            font-size: 1rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: 0.3s;
-            font-family: 'Quicksand', sans-serif;
+        .btn {
+            flex: 1; padding: 16px; border: none; border-radius: 16px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; font-family: 'Quicksand', sans-serif;
         }
-        .btn-primary { 
-            background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
-            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--coral)); color: white; }
         .btn-secondary { background: #F5F5F5; color: var(--text-main); }
 
-        .detail-view { 
-            position: fixed; 
-            top: 0; left: 0;
-            width: 100%; height: 100%; 
+        .detail-view {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg, #FFE5EC 0%, #FFEDD5 100%);
-            z-index: 2000; 
-            overflow-y: auto; 
-            display: none;
-            -webkit-overflow-scrolling: touch;
+            z-index: 2000; overflow-y: auto; display: none;
         }
         .detail-view.active { display: block; animation: fadeIn 0.4s ease; }
-
         .detail-hero-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 280px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+            position: relative; width: 100%; max-width: 600px; height: 280px; margin: 0 auto;
+            overflow: hidden; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
-
-        .detail-hero { 
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-
+        .detail-hero { width: 100%; height: 100%; object-fit: cover; object-position: center; }
         .detail-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 50%;
+            position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
             background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
         }
-
-        .detail-container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 24px 20px 40px; 
+        .detail-container { max-width: 800px; margin: 0 auto; padding: 24px 20px 40px; }
+        .detail-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin: -60px 0 24px; position: relative; z-index: 10; padding: 0 8px;
         }
-        
-        .detail-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-            margin: -60px 0 24px;
-            position: relative;
-            z-index: 10;
-            padding: 0 8px;
+        .detail-title {
+            font-family: 'Quicksand', sans-serif; font-size: clamp(1.8rem, 6vw, 2.5rem); font-weight: 700;
+            color: white; text-shadow: 0 2px 12px rgba(0,0,0,0.2); flex: 1; line-height: 1.2;
         }
-        
-        .detail-title { 
-            font-family: 'Quicksand', sans-serif;
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-weight: 700;
-            color: white;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
-            flex: 1;
-            line-height: 1.2;
-        }
-        
-        .header-actions { 
-            display: flex; 
-            gap: 10px;
-            flex-shrink: 0;
-            z-index: 11;
-        }
-        
-        .action-btn { 
-            width: 44px; height: 44px; 
-            border-radius: 50%; 
-            border: none; 
-            background: white;
-            cursor: pointer; 
-            font-size: 1.1rem; 
-            transition: 0.3s; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
+        .header-actions { display: flex; gap: 10px; flex-shrink: 0; z-index: 11; }
+        .action-btn {
+            width: 44px; height: 44px; border-radius: 50%; border: none; background: white;
+            cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .back-btn { color: var(--primary); }
         .delete-btn { color: #FF6B9D; }
-        .share-detail-btn { 
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-        }
-        .edit-btn-detail {
+        .share-detail-btn { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
+        .edit-btn-detail { background: linear-gradient(135deg, var(--primary), var(--coral)); color: white; }
+
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .detail-grid { grid-template-columns: 1fr 1.5fr; gap: 24px; } }
+        .detail-section { background: var(--card-bg); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .section-title {
+            font-family: 'Quicksand', sans-serif; font-size: 1.4rem; font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
         }
-
-        .detail-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 20px;
-        }
-        @media (min-width: 768px) {
-            .detail-grid { grid-template-columns: 1fr 1.5fr; gap: 24px; }
-        }
-
-        .detail-section { 
-            background: var(--card-bg);
-            padding: 24px; 
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-        
-        .section-title { 
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.4rem; 
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-        }
-
-        .ingredient-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 14px; 
-            padding: 12px 0; 
-            border-bottom: 1px dashed rgba(255, 182, 193, 0.4);
-            font-size: 1rem; 
-            color: var(--text-main);
+        .ingredient-item {
+            display: flex; align-items: center; gap: 14px; padding: 12px 0;
+            border-bottom: 1px dashed rgba(255, 182, 193, 0.4); font-size: 1rem; color: var(--text-main);
         }
         .ingredient-item:last-child { border-bottom: none; }
-        .ing-icon { 
-            width: 40px; height: 40px; 
-            min-width: 40px;
+        .ing-icon {
+            width: 40px; height: 40px; min-width: 40px;
             background: linear-gradient(135deg, var(--accent), var(--peach));
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.3rem;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
         }
-
-        .step-item { 
-            display: flex; 
-            gap: 16px; 
-            margin-bottom: 20px; 
-            align-items: flex-start;
-            padding: 16px;
-            background: rgba(255, 218, 185, 0.1);
-            border-radius: 16px;
+        .step-item {
+            display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start;
+            padding: 16px; background: rgba(255, 218, 185, 0.1); border-radius: 16px;
         }
-        .step-num { 
-            width: 36px; height: 36px; 
-            min-width: 36px;
+        .step-num {
+            width: 36px; height: 36px; min-width: 36px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            color: white; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 700; 
-            flex-shrink: 0;
-            font-size: 0.95rem;
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; flex-shrink: 0;
         }
-        .step-text { 
-            font-size: 1rem; 
-            line-height: 1.6; 
-            color: var(--text-main);
-            padding-top: 6px;
-        }
+        .step-text { font-size: 1rem; line-height: 1.6; color: var(--text-main); padding-top: 6px; }
 
         .empty-state-wrapper {
-            grid-column: 1 / -1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 80px 20px;
-            min-height: 400px;
+            grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; padding: 80px 20px; min-height: 400px;
         }
-
         .empty-state { color: var(--text-light); max-width: 400px; }
-        .empty-icon { 
-            font-size: 5rem; 
-            margin-bottom: 24px;
+        .empty-icon {
+            font-size: 5rem; margin-bottom: 24px;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
         }
-        .empty-state h3 { 
-            font-size: 1.5rem; 
-            margin-bottom: 12px; 
-            color: var(--text-main);
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-        }
-        .empty-state p { font-size: 1rem; line-height: 1.5; }
+        .empty-state h3 { font-size: 1.5rem; margin-bottom: 12px; color: var(--text-main); font-family: 'Quicksand', sans-serif; }
 
-        .name-modal .modal-content {
-            text-align: center;
-            max-width: 450px;
-        }
-        .name-modal-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
+        .name-modal .modal-content { text-align: center; max-width: 450px; }
+        .name-modal-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
         .name-modal-title {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
+            font-family: 'Quicksand', sans-serif; font-size: 1.6rem; font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;
         }
-        .name-modal-subtitle {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-        .name-input-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        .name-input-wrapper input {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            padding: 18px;
-        }
-        .name-preview {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin-bottom: 20px;
-            min-height: 30px;
-        }
+        .name-modal-subtitle { color: var(--text-light); font-size: 0.95rem; margin-bottom: 25px; }
+        .name-input-wrapper { position: relative; margin-bottom: 20px; }
+        .name-input-wrapper input { text-align: center; font-size: 1.2rem; font-weight: 600; padding: 18px; }
+        .name-preview { font-family: 'Quicksand', sans-serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 20px; min-height: 30px; }
         .name-preview strong {
             background: linear-gradient(135deg, var(--primary), var(--coral));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;
         }
 
         #shareModal { z-index: 3000 !important; }
-
-        .share-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
+        .share-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         .share-list-btn {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 20px;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            color: white;
+            display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: none;
+            border-radius: 16px; cursor: pointer; font-family: 'Quicksand', sans-serif;
+            font-weight: 600; font-size: 1rem; color: white;
         }
-
-        .share-list-btn i {
-            font-size: 1.5rem;
-            width: 40px;
-            text-align: center;
-        }
-
+        .share-list-btn i { font-size: 1.5rem; width: 40px; text-align: center; }
         .share-list-btn.whatsapp { background: #25D366; }
         .share-list-btn.pdf { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .share-list-btn.jpeg { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .share-list-btn.copy { background: #F5F5F5; color: var(--text-main); }
-
         .share-list-btn:active { transform: scale(0.98); }
 
         .theme-selector { margin-top: 20px; }
-        .theme-selector-title {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 12px;
-        }
+        .theme-selector-title { font-family: 'Quicksand', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 12px; }
         .theme-options { display: flex; flex-direction: column; gap: 10px; }
         .theme-option {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 14px 16px;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; gap: 16px; padding: 14px 16px;
+            border: 2px solid transparent; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s; background: rgba(255, 255, 255, 0.1);
         }
         .theme-option:hover { border-color: var(--primary); transform: translateX(4px); }
         .theme-option.active { border-color: var(--primary); background: rgba(255, 107, 157, 0.15); }
-        .theme-preview {
-            width: 48px; height: 48px;
-            border-radius: 12px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+        .theme-preview { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .theme-preview.theme-1 { background: linear-gradient(135deg, #FF6B9D, #FFA07A); }
         .theme-preview.theme-2 { background: linear-gradient(135deg, #0EA5E9, #06B6D4); }
         .theme-preview.theme-3 { background: linear-gradient(135deg, #8B5CF6, #EC4899); }
@@ -1076,7 +435,6 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (min-width: 768px) { .container { padding: 30px 24px; } }
-
         @media (max-width: 768px) {
             .detail-hero-wrapper { height: 220px; border-radius: 0 0 20px 20px; }
             .preface-card { flex-direction: column; text-align: center; padding: 16px 18px !important; margin: 16px auto !important; }
@@ -1090,11 +448,62 @@
             .header-actions { gap: 8px; }
             .action-btn { width: 40px; height: 40px; font-size: 1rem; }
         }
-
         @media (max-width: 375px) {
             .card-image-wrapper { height: 160px; }
             .recipe-card { border-radius: 20px; }
             .detail-hero-wrapper { height: 200px; }
+        }
+
+        /* PDF OLUŞTURMA İÇİN GİZLİ DİV - EKRANDA GÖRÜNMEZ */
+        #pdfRenderArea {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px;
+            background: white;
+            font-family: 'Poppins', 'Quicksand', Arial, sans-serif;
+            color: #333;
+        }
+        #pdfRenderArea .pdf-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF6B9D;
+            margin-bottom: 10px;
+            font-family: 'Quicksand', sans-serif;
+        }
+        #pdfRenderArea .pdf-subtitle {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+        #pdfRenderArea .pdf-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #FF6B9D, #FFA07A);
+            margin-bottom: 30px;
+        }
+        #pdfRenderArea .pdf-section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FF6B9D;
+            margin-bottom: 15px;
+            font-family: 'Quicksand', sans-serif;
+        }
+        #pdfRenderArea .pdf-ingredient {
+            font-size: 15px;
+            padding: 6px 0;
+            color: #444;
+        }
+        #pdfRenderArea .pdf-step {
+            font-size: 15px;
+            padding: 8px 0;
+            color: #444;
+            line-height: 1.6;
+        }
+        #pdfRenderArea .pdf-footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
         }
     </style>
 </head>
@@ -1106,15 +515,16 @@
         <div class="splash-ring"></div>
         <img src="https://raw.githubusercontent.com/oozata/tarifdefteri/main/splash.png" alt="Mutfak Günlüğüm" class="splash-logo">
         <div class="splash-progress">
-            <div class="splash-progress-bar">
-                <div class="splash-progress-fill"></div>
-            </div>
+            <div class="splash-progress-bar"><div class="splash-progress-fill"></div></div>
             <div class="splash-text">YÜKLENİYOR...</div>
         </div>
     </div>
 
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
+
+    <!-- PDF İÇİN GİZLİ RENDER ALANI -->
+    <div id="pdfRenderArea"></div>
 
     <div id="mainPage">
         <div class="container">
@@ -1129,13 +539,9 @@
             </div>
 
             <div class="preface-card" onclick="togglePreface(event)">
-                <div class="preface-icon-wrapper">
-                    <i class="fas fa-book-open"></i>
-                </div>
+                <div class="preface-icon-wrapper"><i class="fas fa-book-open"></i></div>
                 <div class="preface-card-content">
-                    <div class="preface-card-header">
-                        <h3 class="preface-card-title">Önsöz</h3>
-                    </div>
+                    <div class="preface-card-header"><h3 class="preface-card-title">Önsöz</h3></div>
                     <p class="preface-card-text" id="prefaceText">
                         "Bu defter; sadece ölçülerin ve malzemelerin yan yana geldiği bir liste değil, paylaşılan mutlu anların, sıcak sohbetlerin ve emeğin hafızasıdır. Her tarif, sevdiklerime duyduğum sevginin tabaktaki ifadesidir. Mutfağımdan yükselen her güzel koku, geleceğe bırakılmış lezzetli birer hatıradır. Sevgiyle, sabırla ve ağız tadıyla..." 💕
                     </p>
@@ -1149,17 +555,9 @@
         </div>
 
         <nav class="bottom-nav">
-            <button class="nav-btn" onclick="openSettings()">
-                <i class="fas fa-cog"></i>
-                <span>Ayarlar</span>
-            </button>
-            <button class="nav-btn add" onclick="openModal()">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button class="nav-btn" onclick="scrollToTop()">
-                <i class="fas fa-arrow-up"></i>
-                <span>Yukarı</span>
-            </button>
+            <button class="nav-btn" onclick="openSettings()"><i class="fas fa-cog"></i><span>Ayarlar</span></button>
+            <button class="nav-btn add" onclick="openModal()"><i class="fas fa-plus"></i></button>
+            <button class="nav-btn" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i><span>Yukarı</span></button>
         </nav>
     </div>
 
@@ -1170,50 +568,31 @@
                 <button class="close-btn" onclick="closeSettings()"><i class="fas fa-times"></i></button>
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px;">
-                <button class="btn btn-primary" onclick="openNameModal()">
-                    <i class="fas fa-user-edit"></i> İsmi Değiştir
-                </button>
-                <button class="btn btn-secondary" onclick="hardReset()" style="color: #FF6B9D;">
-                    <i class="fas fa-trash-alt"></i> Tümünü Sıfırla
-                </button>
+                <button class="btn btn-primary" onclick="openNameModal()"><i class="fas fa-user-edit"></i> İsmi Değiştir</button>
+                <button class="btn btn-secondary" onclick="hardReset()" style="color: #FF6B9D;"><i class="fas fa-trash-alt"></i> Tümünü Sıfırla</button>
             </div>
             <div class="theme-selector">
                 <div class="theme-selector-title">🎨 Renk Paleti Seç</div>
                 <div class="theme-options">
                     <div class="theme-option active" onclick="changeTheme(1)">
                         <div class="theme-preview theme-1"></div>
-                        <div class="theme-info">
-                            <div class="theme-name">Pembe-Mercan</div>
-                            <div class="theme-desc">Sıcak ve samimi tonlar</div>
-                        </div>
+                        <div class="theme-info"><div class="theme-name">Pembe-Mercan</div><div class="theme-desc">Sıcak ve samimi tonlar</div></div>
                     </div>
                     <div class="theme-option" onclick="changeTheme(2)">
                         <div class="theme-preview theme-2"></div>
-                        <div class="theme-info">
-                            <div class="theme-name">Mavi-Turkuaz</div>
-                            <div class="theme-desc">Ferah ve modern</div>
-                        </div>
+                        <div class="theme-info"><div class="theme-name">Mavi-Turkuaz</div><div class="theme-desc">Ferah ve modern</div></div>
                     </div>
                     <div class="theme-option" onclick="changeTheme(3)">
                         <div class="theme-preview theme-3"></div>
-                        <div class="theme-info">
-                            <div class="theme-name">Mor-Pembe</div>
-                            <div class="theme-desc">Şık ve feminen</div>
-                        </div>
+                        <div class="theme-info"><div class="theme-name">Mor-Pembe</div><div class="theme-desc">Şık ve feminen</div></div>
                     </div>
                     <div class="theme-option" onclick="changeTheme(4)">
                         <div class="theme-preview theme-4"></div>
-                        <div class="theme-info">
-                            <div class="theme-name">Mint-Mor</div>
-                            <div class="theme-desc">Soft ve modern</div>
-                        </div>
+                        <div class="theme-info"><div class="theme-name">Mint-Mor</div><div class="theme-desc">Soft ve modern</div></div>
                     </div>
                     <div class="theme-option" onclick="changeTheme(5)">
                         <div class="theme-preview theme-5"></div>
-                        <div class="theme-info">
-                            <div class="theme-name">Dark Tema</div>
-                            <div class="theme-desc">Göz yormayan koyu tema</div>
-                        </div>
+                        <div class="theme-info"><div class="theme-name">Dark Tema</div><div class="theme-desc">Göz yormayan koyu tema</div></div>
                     </div>
                 </div>
             </div>
@@ -1230,9 +609,7 @@
             </div>
             <div class="name-preview" id="namePreview"></div>
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="saveName()">
-                    <i class="fas fa-check"></i> Başla
-                </button>
+                <button type="button" class="btn btn-primary" onclick="saveName()"><i class="fas fa-check"></i> Başla</button>
             </div>
         </div>
     </div>
@@ -1273,20 +650,16 @@
             </div>
             <div class="share-list">
                 <button class="share-list-btn whatsapp" onclick="shareToWhatsApp()">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp'dan Paylaş</span>
+                    <i class="fab fa-whatsapp"></i><span>WhatsApp'dan Paylaş</span>
                 </button>
                 <button class="share-list-btn pdf" onclick="shareAsPDF()">
-                    <i class="fas fa-file-pdf"></i>
-                    <span>PDF Olarak Paylaş</span>
+                    <i class="fas fa-file-pdf"></i><span>PDF Olarak Paylaş</span>
                 </button>
                 <button class="share-list-btn jpeg" onclick="shareAsJPEG()">
-                    <i class="fas fa-file-image"></i>
-                    <span>Resim Olarak Paylaş</span>
+                    <i class="fas fa-file-image"></i><span>Resim Olarak Paylaş</span>
                 </button>
                 <button class="share-list-btn copy" onclick="copyTextToClipboard()">
-                    <i class="fas fa-copy"></i>
-                    <span>Metin Olarak Paylaş</span>
+                    <i class="fas fa-copy"></i><span>Metin Olarak Paylaş</span>
                 </button>
             </div>
         </div>
@@ -1303,23 +676,20 @@
                     <label><i class="fas fa-utensils"></i> Tarif Adı</label>
                     <input type="text" id="name" placeholder="Örn: Su Böreği" required>
                 </div>
-                <div class="form-group image-upload-wrapper">
+                <div class="form-group">
                     <label><i class="fas fa-camera"></i> Tarif Görseli</label>
                     <div class="image-preview-container" onclick="document.getElementById('fileInput').click()">
                         <img id="imagePreview" class="image-preview" style="display: none;">
                         <i id="uploadIcon" class="fas fa-cloud-upload-alt"></i>
                         <div id="uploadText" class="image-preview-text">
-                            <strong>Görsel yüklemek için tıklayın</strong><br>
-                            veya sürükleyip bırakın
+                            <strong>Görsel yüklemek için tıklayın</strong><br>veya sürükleyip bırakın
                         </div>
                         <button type="button" class="image-remove-btn" onclick="event.stopPropagation(); removeImage()">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)">
-                    <div class="upload-hint">
-                        <i class="fas fa-info-circle"></i> İsteğe bağlı - Yüklemezseniz otomatik görsel eklenecek
-                    </div>
+                    <div class="upload-hint"><i class="fas fa-info-circle"></i> İsteğe bağlı - Yüklemezseniz otomatik görsel eklenecek</div>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-carrot"></i> Malzemeler</label>
@@ -1354,9 +724,7 @@
                 splash.classList.add('fade-out');
                 setTimeout(function() {
                     splash.style.display = 'none';
-                    if (!ownerName || !ownerName.trim()) {
-                        openNameModal();
-                    }
+                    if (!ownerName || !ownerName.trim()) openNameModal();
                 }, 600);
             }, 3500);
         });
@@ -1471,15 +839,13 @@
 
         function updateHeaderTitle() {
             document.getElementById('headerTitle').textContent = (ownerName && ownerName.trim()) 
-                ? getTurkishPossessive(ownerName) 
-                : 'Tarif Defteri';
+                ? getTurkishPossessive(ownerName) : 'Tarif Defteri';
         }
 
         function updateNamePreview() {
             const name = document.getElementById('nameInput').value.trim();
             document.getElementById('namePreview').innerHTML = name 
-                ? `<strong>${getTurkishPossessive(name)}</strong>` 
-                : '';
+                ? `<strong>${getTurkishPossessive(name)}</strong>` : '';
         }
 
         function openNameModal() {
@@ -1511,7 +877,7 @@
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
         function buildShareText(recipe) {
-            return `${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍ Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
+            return `${recipe.name}\n\n📝 ${ownerName}'in Tarif Defteri'nden\n\n🥘 Malzemeler:\n${recipe.ingredients.map(ing => `• ${ing}`).join('\n')}\n\n👩‍🍳 Yapılışı:\n${recipe.instructions.map((step, i) => `${i + 1}. ${step}`).join('\n')}\n\n💕 Afiyet olsun!`;
         }
 
         function openShareModal() {
@@ -1525,58 +891,70 @@
             document.getElementById('shareModal').classList.remove('active');
         }
 
-        // PDF OLUŞTURMA
+        // PDF OLUŞTURMA - HTML2CANVAS İLE TÜRKÇE KARAKTERLER KORUNUR
         async function createPDF() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return null;
 
             try {
+                // PDF içeriğini gizli div'e yaz (Türkçe karakterler korunur)
+                const pdfArea = document.getElementById('pdfRenderArea');
+                
+                let ingredientsHTML = recipe.ingredients.map(ing => 
+                    `<div class="pdf-ingredient">• ${ing}</div>`
+                ).join('');
+                
+                let stepsHTML = recipe.instructions.map((step, i) => 
+                    `<div class="pdf-step"><strong>${i + 1}.</strong> ${step}</div>`
+                ).join('');
+                
+                pdfArea.innerHTML = `
+                    <div class="pdf-title">${recipe.name}</div>
+                    <div class="pdf-subtitle">${ownerName}'in Tarif Defteri'nden</div>
+                    <div class="pdf-divider"></div>
+                    <div class="pdf-section-title">🥘 Malzemeler</div>
+                    ${ingredientsHTML}
+                    <div style="margin-top: 30px;"></div>
+                    <div class="pdf-section-title">👩‍🍳 Yapılışı</div>
+                    ${stepsHTML}
+                    <div class="pdf-footer">📅 ${recipe.date} • Mutfak Günlüğüm</div>
+                `;
+
+                // html2canvas ile canvas'a çevir (Türkçe karakterler düzgün render edilir)
+                const canvas = await html2canvas(pdfArea, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    logging: false,
+                    width: 800,
+                    windowWidth: 800
+                });
+
+                // Canvas'ı jsPDF'e ekle
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
                 
-                doc.setFontSize(22);
-                doc.setTextColor(255, 107, 157);
-                doc.text(recipe.name, 20, 30);
+                // A4 boyutları
+                const pdfWidth = 210; // mm
+                const pdfHeight = 297; // mm
+                const imgWidth = pdfWidth - 20; // 10mm margin her iki taraftan
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 
-                doc.setFontSize(12);
-                doc.setTextColor(100, 100, 100);
-                doc.text(`${ownerName}'in Tarif Defteri'nden`, 20, 40);
+                const doc = new jsPDF('p', 'mm', 'a4');
                 
-                doc.setDrawColor(255, 107, 157);
-                doc.line(20, 45, 190, 45);
+                // Eğer tek sayfaya sığmıyorsa, sayfalara böl
+                let heightLeft = imgHeight;
+                let position = 10;
                 
-                doc.setFontSize(16);
-                doc.setTextColor(255, 107, 157);
-                doc.text('Malzemeler', 20, 60);
+                doc.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                heightLeft -= (pdfHeight - 20);
                 
-                doc.setFontSize(11);
-                doc.setTextColor(50, 50, 50);
-                let y = 70;
-                recipe.ingredients.forEach(ing => {
-                    if (y > 270) { doc.addPage(); y = 20; }
-                    doc.text(`• ${ing}`, 25, y);
-                    y += 8;
-                });
-                
-                y += 10;
-                if (y > 250) { doc.addPage(); y = 20; }
-                doc.setFontSize(16);
-                doc.setTextColor(255, 107, 157);
-                doc.text('Yapılışı', 20, y);
-                y += 15;
-                
-                doc.setFontSize(11);
-                doc.setTextColor(50, 50, 50);
-                recipe.instructions.forEach((step, i) => {
-                    if (y > 270) { doc.addPage(); y = 20; }
-                    const lines = doc.splitTextToSize(`${i + 1}. ${step}`, 160);
-                    doc.text(lines, 25, y);
-                    y += lines.length * 7 + 5;
-                });
-                
-                doc.setFontSize(9);
-                doc.setTextColor(150, 150, 150);
-                doc.text(`Tarih: ${recipe.date}`, 20, 285);
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight + 10;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pdfHeight - 20);
+                }
                 
                 return doc;
             } catch (err) {
@@ -1585,100 +963,32 @@
             }
         }
 
-        // DATA URL İLE YENİ SEKMEDE AÇMA (WebView uyumlu)
-        function openInNewTab(dataUrl, filename, mimeType) {
-            const newWindow = window.open('', '_blank');
-            if (newWindow) {
-                newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>${filename}</title>
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <style>
-                            body { 
-                                margin: 0; 
-                                display: flex; 
-                                flex-direction: column;
-                                justify-content: center; 
-                                align-items: center; 
-                                min-height: 100vh; 
-                                background: linear-gradient(135deg, #FFE5EC 0%, #FFEDD5 100%);
-                                font-family: Arial, sans-serif;
-                                padding: 20px;
-                                box-sizing: border-box;
-                            }
-                            .container {
-                                text-align: center;
-                                background: white;
-                                padding: 30px;
-                                border-radius: 20px;
-                                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-                                max-width: 90%;
-                            }
-                            h2 { color: #FF6B9D; margin-bottom: 15px; }
-                            p { color: #666; margin-bottom: 20px; }
-                            .btn {
-                                display: inline-block;
-                                padding: 15px 30px;
-                                background: linear-gradient(135deg, #FF6B9D, #FFA07A);
-                                color: white;
-                                text-decoration: none;
-                                border-radius: 12px;
-                                font-size: 16px;
-                                font-weight: bold;
-                                margin: 5px;
-                            }
-                            .btn-whatsapp {
-                                background: #25D366;
-                            }
-                            iframe {
-                                width: 100%;
-                                height: 70vh;
-                                border: none;
-                                border-radius: 12px;
-                                margin-top: 20px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <h2>📄 ${filename}</h2>
-                            <p>Dosyanız hazır! Aşağıdaki butonlardan birini kullanın:</p>
-                            <a href="${dataUrl}" download="${filename}" class="btn">📥 İndir</a>
-                            <a href="https://wa.me/?text=${encodeURIComponent(shareText)}" class="btn btn-whatsapp" target="_blank">💬 WhatsApp'tan Paylaş</a>
-                            <br><br>
-                            <iframe src="${dataUrl}"></iframe>
-                        </div>
-                    </body>
-                    </html>
-                `);
-                newWindow.document.close();
-            } else {
-                // Popup engellendiyse data URL'ye yönlendir
-                window.location.href = dataUrl;
-            }
-        }
-
-        // WHATSAPP İLE PAYLAŞ
+        // WHATSAPP - Cihazdaki WhatsApp uygulamasını açar
         async function shareToWhatsApp() {
-            const pdfDoc = await createPDF();
-            if (!pdfDoc) {
-                alert('PDF oluşturulamadı. Lütfen tekrar deneyin.');
-                return;
-            }
-
             const recipe = recipes.find(r => r.id === currentRecipeId);
-            const dataUrl = pdfDoc.output('datauristring');
-            const filename = `${recipe.name}.pdf`;
+            if (!recipe) return;
             
             closeShareModal();
+            const text = encodeURIComponent(shareText);
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             
-            // Yeni sekmede PDF'i aç (kullanıcı indirebilir ve WhatsApp'tan paylaşabilir)
-            openInNewTab(dataUrl, filename, 'application/pdf');
+            if (/android/i.test(userAgent)) {
+                const intentUrl = `intent://send?text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+                window.location.href = intentUrl;
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/?text=${text}`;
+                }, 2000);
+            } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+                window.location.href = `whatsapp://send?text=${text}`;
+                setTimeout(() => {
+                    window.location.href = `https://wa.me/?text=${text}`;
+                }, 2000);
+            } else {
+                window.location.href = `https://wa.me/?text=${text}`;
+            }
         }
 
-        // PDF OLARAK PAYLAŞ
+        // PDF İNDİRME
         async function shareAsPDF() {
             const pdfDoc = await createPDF();
             if (!pdfDoc) {
@@ -1687,17 +997,29 @@
             }
 
             const recipe = recipes.find(r => r.id === currentRecipeId);
-            const dataUrl = pdfDoc.output('datauristring');
-            const filename = `${recipe.name}.pdf`;
-            
             closeShareModal();
-            openInNewTab(dataUrl, filename, 'application/pdf');
+
+            try {
+                const pdfBlob = pdfDoc.output('blob');
+                const fileName = `${recipe.name}.pdf`;
+                
+                if (typeof saveAs !== 'undefined') {
+                    saveAs(pdfBlob, fileName);
+                } else {
+                    pdfDoc.save(fileName);
+                }
+            } catch (err) {
+                console.error('PDF indirme hatası:', err);
+                alert('PDF indirilemedi. Lütfen tekrar deneyin.');
+            }
         }
 
-        // GÖRSEL OLARAK PAYLAŞ
+        // RESİM İNDİRME
         async function shareAsJPEG() {
             const recipe = recipes.find(r => r.id === currentRecipeId);
             if (!recipe) return;
+
+            closeShareModal();
 
             try {
                 const detailPage = document.getElementById('detailPage');
@@ -1709,14 +1031,28 @@
                     scrollY: 0
                 });
                 
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-                const filename = `${recipe.name}.jpg`;
-                
-                closeShareModal();
-                openInNewTab(dataUrl, filename, 'image/jpeg');
+                canvas.toBlob(function(blob) {
+                    const fileName = `${recipe.name}.jpg`;
+                    try {
+                        if (typeof saveAs !== 'undefined') {
+                            saveAs(blob, fileName);
+                        } else {
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = fileName;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }
+                    } catch (err) {
+                        console.error('Resim indirme hatası:', err);
+                        alert('Resim indirilemedi.');
+                    }
+                }, 'image/jpeg', 0.9);
             } catch (err) {
-                console.error('Görsel oluşturma hatası:', err);
-                alert('Görsel oluşturulamadı. Lütfen tekrar deneyin.');
+                console.error('Resim oluşturma hatası:', err);
+                alert('Resim oluşturulamadı.');
             }
         }
 
@@ -1965,8 +1301,7 @@
                     const index = recipes.findIndex(r => r.id === editingRecipeId);
                     if (index !== -1) {
                         recipes[index] = {
-                            ...recipes[index],
-                            name, ingredients, instructions, image,
+                            ...recipes[index], name, ingredients, instructions, image,
                             hasCustomImage: !!uploadedImageBase64 && !imageRemovedDuringEdit,
                             date: new Date().toLocaleDateString('tr-TR')
                         };
