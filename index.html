@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -438,7 +453,6 @@
         .theme-name { font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 2px; }
         .theme-desc { font-size: 0.8rem; color: var(--text-light); }
 
-        /* OCR MODAL */
         .ocr-upload-area {
             border: 3px dashed var(--primary);
             border-radius: 16px;
@@ -619,7 +633,6 @@
         </nav>
     </div>
 
-    <!-- OCR MODAL - Görselden Tarif Oluştur -->
     <div id="ocrModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -974,11 +987,9 @@
         function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // OCR MODAL FONKSİYONLARI
         function openOCRModal() {
             document.getElementById('ocrModal').classList.add('active');
             document.body.style.overflow = 'hidden';
-            // Reset OCR state
             document.getElementById('ocrPreview').style.display = 'none';
             document.getElementById('ocrProgress').style.display = 'none';
             document.getElementById('ocrResult').style.display = 'none';
@@ -995,14 +1006,12 @@
             const file = event.target.files[0];
             if (!file) return;
             
-            // Önizleme göster
             const reader = new FileReader();
             reader.onload = function(e) {
                 const preview = document.getElementById('ocrPreview');
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 
-                // OCR işlemini başlat
                 performOCR(e.target.result);
             };
             reader.readAsDataURL(file);
@@ -1046,6 +1055,7 @@
             }
         }
 
+        // OCR METNİNDEN TARİF OLUŞTURMA - DÜZELTİLMİŞ
         function createRecipeFromOCR() {
             const text = document.getElementById('ocrText').value.trim();
             if (!text) {
@@ -1053,66 +1063,98 @@
                 return;
             }
             
-            // Metni satırlara böl
             const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             
-            // Malzemeler ve yapılış adımlarını ayır
             let ingredients = [];
             let instructions = [];
-            let currentSection = null;
+            let currentSection = 'ingredients'; // Varsayılan: malzemeler
             let recipeName = '';
             
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 const lowerLine = line.toLowerCase();
                 
-                // Tarif adı tespiti (ilk satır veya başlık benzeri)
-                if (i === 0 && !lowerLine.includes('malzeme') && !lowerLine.includes('yapılış') && line.length < 50) {
-                    recipeName = line.replace(/[:;,-]$/, '').trim();
+                // Satırı temizle: başındaki ve sonundaki noktalama işaretlerini kaldır
+                const cleanLineForCheck = lowerLine.replace(/[;:.,!?]+$/, '').trim();
+                
+                // Tarif adı (ilk satır, kısa ve başlık benzeri)
+                if (i === 0 && line.length < 60 && !cleanLineForCheck.includes('için') && !cleanLineForCheck.includes('yapılış') && !cleanLineForCheck.includes('malzeme')) {
+                    recipeName = line.replace(/[:;.,!?-]+$/, '').trim();
                     continue;
                 }
                 
-                // Malzemeler bölümü
-                if (lowerLine.includes('malzeme') || lowerLine.includes('ingredients')) {
-                    currentSection = 'ingredients';
-                    continue;
-                }
-                
-                // Yapılış bölümü
-                if (lowerLine.includes('yapılış') || lowerLine.includes('hazırlanış') || lowerLine.includes('pişirme') || lowerLine.includes('instructions') || lowerLine.includes('preparation')) {
+                // YAPILIŞ başlıkları - ÖNCE KONTROL ET (çünkü malzeme başlıklarından daha spesifik)
+                if (cleanLineForCheck === 'yapılışı' || 
+                    cleanLineForCheck === 'yapılış' ||
+                    cleanLineForCheck === 'yapilisi' ||
+                    cleanLineForCheck === 'yapilis' ||
+                    cleanLineForCheck.startsWith('yapılışı') ||
+                    cleanLineForCheck.startsWith('yapılış') ||
+                    cleanLineForCheck.startsWith('yapilisi') ||
+                    cleanLineForCheck.startsWith('yapilis') ||
+                    cleanLineForCheck.includes('hazırlanış') || 
+                    cleanLineForCheck.includes('hazirlanis') ||
+                    cleanLineForCheck.includes('pişirme') ||
+                    cleanLineForCheck.includes('pisirme') ||
+                    cleanLineForCheck.includes('hazırlanışı') ||
+                    cleanLineForCheck.includes('hazirlanisi') ||
+                    cleanLineForCheck.includes('yapımı') ||
+                    cleanLineForCheck.includes('yapimi')) {
                     currentSection = 'instructions';
+                    continue; // Başlık satırını ekleme, sadece bölüm değiştir
+                }
+                
+                // MALZEMELER başlıkları
+                if (cleanLineForCheck.includes('malzeme') || 
+                    cleanLineForCheck.includes('hamuru için') || 
+                    cleanLineForCheck.includes('hamuru icin') ||
+                    cleanLineForCheck.includes('içi için') || 
+                    cleanLineForCheck.includes('ici icin') ||
+                    cleanLineForCheck.includes('üzeri için') ||
+                    cleanLineForCheck.includes('uzeri icin') ||
+                    cleanLineForCheck.includes('içi ve üzeri için') ||
+                    cleanLineForCheck.includes('ici ve uzeri icin') ||
+                    cleanLineForCheck.includes('içine') ||
+                    cleanLineForCheck.includes('icine') ||
+                    cleanLineForCheck.includes('üzerine') ||
+                    cleanLineForCheck.includes('uzerine') ||
+                    cleanLineForCheck.includes('sosu için') ||
+                    cleanLineForCheck.includes('sosu icin') ||
+                    cleanLineForCheck.includes('harç için') ||
+                    cleanLineForCheck.includes('harc icin') ||
+                    cleanLineForCheck.includes('kreması için') ||
+                    cleanLineForCheck.includes('kremasi icin') ||
+                    cleanLineForCheck.includes('krema için') ||
+                    cleanLineForCheck.includes('krema icin') ||
+                    cleanLineForCheck.includes('şerbeti için') ||
+                    cleanLineForCheck.includes('serbeti icin') ||
+                    cleanLineForCheck.includes('şerbet için') ||
+                    cleanLineForCheck.includes('serbet icin') ||
+                    cleanLineForCheck.includes('iç harç') ||
+                    cleanLineForCheck.includes('ic harc')) {
+                    currentSection = 'ingredients';
+                    continue; // Başlık satırını ekleme
+                }
+                
+                // Hashtag ve gereksiz kısımları atla
+                if (line.startsWith('#') || lowerLine.includes('daha az') || lowerLine.includes('devamı') || lowerLine.includes('devami')) {
                     continue;
                 }
                 
-                // Satırı ilgili bölüme ekle
+                // Satırı ilgili bölüme ekle (*, -, • işaretlerini temizle)
+                const cleanLine = line.replace(/^[\*\-•]\s*/, '').trim();
+                if (!cleanLine) continue;
+                
                 if (currentSection === 'ingredients') {
-                    // Başlangıç karakterlerini temizle (-, •, *, 1., vb.)
-                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
-                    if (cleanLine) ingredients.push(cleanLine);
+                    ingredients.push(cleanLine);
                 } else if (currentSection === 'instructions') {
-                    const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
-                    if (cleanLine) instructions.push(cleanLine);
-                } else {
-                    // Henüz bölüm belirtilmemişse, malzeme benzeri satırları malzemelere ekle
-                    if (line.startsWith('-') || line.startsWith('•') || line.startsWith('*') || /^\d+[\.\)]/.test(line)) {
-                        const cleanLine = line.replace(/^[-•*]\s*/, '').replace(/^\d+[\.\)]\s*/, '').trim();
-                        if (cleanLine) ingredients.push(cleanLine);
-                    }
+                    instructions.push(cleanLine);
                 }
             }
             
-            // Eğer tarif adı bulunamadıysa, ilk malzemeden tahmin et
-            if (!recipeName && ingredients.length > 0) {
-                recipeName = 'Yeni Tarif';
-            }
+            if (!recipeName) recipeName = 'Yeni Tarif';
             
-            // Eğer yapılış bulunamadıysa, malzemeleri yapılış olarak kullan
-            if (instructions.length === 0 && ingredients.length > 0) {
-                instructions = [...ingredients];
-                ingredients = [];
-            }
-            
-            // Modalı aç ve verileri doldur
+            // Modalı aç ve doldur
             closeOCRModal();
             openModal();
             
@@ -1122,7 +1164,7 @@
             const ingredientsContainer = document.getElementById('ingredientsContainer');
             ingredientsContainer.innerHTML = '';
             if (ingredients.length > 0) {
-                ingredients.forEach((ing, index) => {
+                ingredients.forEach(ing => {
                     const div = document.createElement('div');
                     div.className = 'dynamic-row';
                     div.innerHTML = `<input type="text" placeholder="Malzeme..." class="ing-input" value="${ing}" required><button type="button" class="icon-btn remove-btn-sm" onclick="this.parentElement.remove()"><i class="fas fa-minus"></i></button>`;
@@ -1667,3 +1709,23 @@
     </script>
 </body>
 </html>
+
+
+
+              <script>
+                              // Satırın sonundaki noktalama işaretlerini temizle
+const cleanLineForCheck = lowerLine.replace(/[;:.,!?]+$/, '').trim();
+
+// Yapılış başlıklarını ÖNCE kontrol et (daha spesifik)
+if (cleanLineForCheck === 'yapılışı' || 
+    cleanLineForCheck === 'yapılış' ||
+    cleanLineForCheck.startsWith('yapılışı') ||
+    cleanLineForCheck.startsWith('yapılış') || ...) {
+    currentSection = 'instructions';
+    continue; // Başlığı ekleme, sadece bölüm değiştir
+}
+
+
+              </script>
+                        </body>
+                        </html>
