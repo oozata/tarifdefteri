@@ -1333,65 +1333,129 @@
         function getIngredientIcon(text) {
             const normalized = normalizeTurkish(text);
             const emojiMap = {
-                'zeytinyağı': '🫗', 'zeytinyagi': '🫗', 'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗', 'sıvı yağ': '🫗', 'sivi yag': '🫗',
-                'tereyağı': '🧈', 'tereyagi': '🧈', 'kuru soğan': '🧅', 'kuru sogan': '🧅', 'soğan': '🧅', 'sogan': '🧅',
-                'sarımsak': '🧄', 'sarimsak': '🧄', 'tuz': '🧂', 'karabiber': '🌶️', 'toz baharat': '🌶️', 'baharat': '🌶️',
-                'kimyon': '🍛', 'köri': '🍛', 'kori': '🍛', 'kekik': '🌿', 'kuru nane': '🌿', 'nane': '🌿', 'biberiye': '🌿',
-                'defne yaprağı': '🍃', 'defne yapragi': '🍃', 'tarçın': '🪵', 'tarcin': '🪵', 'toz tarçın': '🪵', 'toz tarcin': '🪵',
-                'domates salçası': '🥫', 'domates salcasi': '🥫', 'biber salçası': '🥫', 'biber salcasi': '🥫', 'salça': '🥫', 'salca': '🥫',
-                'soya sosu': '🥢', 'pesto sosu': '🟢', 'acı sos': '🔥', 'aci sos': '🔥', 'sriracha': '🔥', 'tabasco': '🔥',
-                'barbekü sosu': '🪵', 'barbeku sosu': '🪵', 'hardal': '🍯', 'mayonez': '🍅', 'ketçap': '🍅', 'ketcap': '🍅',
-                'köri ezmesi': '🍛', 'kori ezmesi': '🍛', 'et suyu': '🍲', 'tavuk suyu': '🍲', 'limon': '🍋',
-                'elma sirkesi': '🍾', 'üzüm sirkesi': '🍾', 'uzum sirkesi': '🍾', 'sirke': '🍾', 'nar ekşisi': '🍷', 'nar eksi': '🍷',
-                'sıvı krema': '🥛', 'sivi krema': '🥛', 'süt': '🥛', 'sut': '🥛', 'su': '💧', 'Su': '💧',
-                'yoğurt': '🥣', 'yogurt': '🥣', 'tahin': '🏺', 'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
-                'un': '🌾', 'buğday unu': '🌾', 'bugday unu': '🌾', 'mısır nişastası': '🌽', 'misir nisastasi': '🌽',
-                'nişasta': '🌽', 'nisasta': '🌽', 'badem unu': '🫘', 'kırmızı mercimek': '🔴', 'kirmizi mercimek': '🔴',
-                'yeşil mercimek': '🟢', 'yesil mercimek': '🟢', 'mercimek': '🟢', 'kuru fasulye': '🫘', 'nohut': '🧆',
-                'pilavlık bulgur': '🍚', 'pilavlik bulgur': '🍚', 'köftelik bulgur': '🌾', 'koftelik bulgur': '🌾', 'bulgur': '🌾',
-                'baldo pirinç': '🍚', 'baldo pirinc': '🍚', 'basmati pirinç': '🍚', 'basmati pirinc': '🍚', 'pirinç': '🍚', 'pirinc': '🍚',
+                'zeytinyağı': '🫗', 'zeytinyagi': '🫗',
+		'ayçiçek yağı': '🫗', 'aycicek yagi': '🫗',
+		'sıvı yağ': '🫗', 'sivi yag': '🫗',
+                'tereyağı': '🧈', 'tereyagi': '🧈',
+		'kuru soğan': '🧅', 'kuru sogan': '🧅',
+		'soğan': '🧅', 'sogan': '🧅',
+                'sarımsak': '🧄', 'sarimsak': '🧄',
+		'tuz': '🧂',
+		'karabiber': '🌶️', 'toz baharat': '🌶️', 'baharat': '🌶️',
+                'kimyon': '🍛', 'köri': '🍛', 'kori': '🍛',
+		'kekik': '🌿', 'kuru nane': '🌿', 'nane': '🌿', 'biberiye': '🌿',
+                'defne yaprağı': '🍃', 'defne yapragi': '🍃',
+		'tarçın': '🪵', 'tarcin': '🪵', 'toz tarçın': '🪵', 'toz tarcin': '🪵',
+                'domates salçası': '🥫', 'domates salcasi': '🥫',
+		'biber salçası': '🥫', 'biber salcasi': '🥫',
+		'salça': '🥫', 'salca': '🥫',
+                'soya sosu': '🥢', 'pesto sosu': '🟢',
+		'acı sos': '🔥', 'aci sos': '🔥', 'sriracha': '🔥', 'tabasco': '🔥',
+                'barbekü sosu': '🪵', 'barbeku sosu': '🪵', 'hardal': '🍯',
+		'mayonez': '🍅', 'ketçap': '🍅', 'ketcap': '🍅',
+                'köri ezmesi': '🍛', 'kori ezmesi': '🍛',
+		'et suyu': '🍲', 'tavuk suyu': '🍲',
+		'limon': '🍋',
+                'elma sirkesi': '🍾', 'üzüm sirkesi': '🍾', 'uzum sirkesi': '🍾', 'sirke': '🍾',
+		'nar ekşisi': '🍷', 'nar eksi': '🍷',
+                'sıvı krema': '🥛', 'sivi krema': '🥛', 'süt': '🥛', 'sut': '🥛',
+		'su': '💧', 'Su': '💧',
+                'yoğurt': '🥣', 'yogurt': '🥣',
+		'tahin': '🏺', 'balsamık sirke': '🍾', 'balsamik sirke': '🍾',
+                'un': '🌾', 'buğday unu': '🌾', 'bugday unu': '🌾',
+		'mısır nişastası': '🌽', 'misir nisastasi': '🌽',
+                'nişasta': '🌽', 'nisasta': '🌽', 'badem unu': '🫘',
+		'kırmızı mercimek': '🔴', 'kirmizi mercimek': '🔴',
+                'yeşil mercimek': '🟢', 'yesil mercimek': '🟢', 'mercimek': '🟢',
+		'kuru fasulye': '🫘', 'nohut': '🧆',
+                'pilavlık bulgur': '🍚', 'pilavlik bulgur': '🍚', 'köftelik bulgur': '🌾',
+		'koftelik bulgur': '🌾', 'bulgur': '🌾',
+                'baldo pirinç': '🍚', 'baldo pirinc': '🍚', 'basmati pirinç': '🍚',
+		'basmati pirinc': '🍚', 'pirinç': '🍚', 'pirinc': '🍚',
                 'barbunya': '🤎', 'kuru bakla': '🫛', 'börülce': '👁️', 'borulce': '👁️', 'bakla': '🫛',
-                'mısır taneleri': '🌽', 'misir taneleri': '🌽', 'mısır': '🌽', 'misir': '🌽', 'yarma': '🌾', 'dövme buğday': '🌾', 'dovme bugday': '🌾',
+                'mısır taneleri': '🌽', 'misir taneleri': '🌽', 'mısır': '🌽', 'misir': '🌽',
+		'yarma': '🌾', 'dövme buğday': '🌾', 'dovme bugday': '🌾',
                 'erişte': '🍝', 'eriste': '🍝', 'makarna': '🍝', 'yulaf ezmesi': '🥣', 'yulaf': '🥣',
                 'patates': '🥔', 'havuç': '🥕', 'domates': '🍅', 'salatalık': '🥒', 'salatalik': '🥒',
                 'kuru mantar': '🍄', 'kültür mantarı': '🍄', 'kultur mantari': '🍄', 'mantar': '🍄',
-                'patlıcan': '🍆', 'patlican': '🍆', 'yeşil biber': '🫑', 'yesil biber': '🫑', 'kırmızı biber': '🌶️', 'kirmizi biber': '🌶️', 'biber': '🫑',
-                'kabak': '🥒', 'zencefil': '🫚', 'kuru acı biber': '🌶️', 'kuru aci biber': '🌶️', 'acı biber': '🌶️', 'aci biber': '🌶️',
-                'brokoli': '🥦', 'karnabahar': '🥦', 'ıspanak': '🥬', 'ispanak': '🥬', 'pazı': '🥬', 'pazi': '', 'marul': '🥬',
-                'kıvırcık': '🥬', 'kivircik': '🥬', 'beyaz lahana': '🥬', 'kırmızı lahana': '🥬', 'kirmizi lahana': '🥬', 'lahana': '🥬',
-                'pırasa': '🌱', 'pirasa': '🌱', 'kereviz': '🍏', 'enginar': '🪻', 'taze fasulye': '🫛', 'fasulye': '🫘', 'bezelye': '🫛',
-                'bal kabağı': '🎃', 'bal kabagi': '🎃', 'turp': '🥕', 'şalgam': '🥕', 'salgam': '🥕', 'avokado': '🥑',
-                'mısır koçanı': '🌽', 'misir kocani': '🌽', 'kuşkonmaz': '🌿', 'kuskonmaz': '🌿', 'taze maydanoz': '🌿', 'maydanoz': '🌿', 'dereotu': '🌿',
+                'patlıcan': '🍆', 'patlican': '🍆',
+		'yeşil biber': '🫑', 'yesil biber': '🫑', 'kırmızı biber':
+		'🌶️', 'kirmizi biber': '🌶️', 'biber': '🫑',
+                'kabak': '🥒', 'zencefil': '🫚',
+		'kuru acı biber': '🌶️', 'kuru aci biber': '🌶️', 'acı biber': '🌶️', 'aci biber': '🌶️',
+                'brokoli': '🥦', 'karnabahar': '🥦', 'ıspanak': '🥬', 'ispanak': '🥬',
+		'pazı': '🥬', 'pazi': '', 'marul': '🥬',
+                'kıvırcık': '🥬', 'kivircik': '🥬',
+		'beyaz lahana': '🥬', 'kırmızı lahana': '🥬', 'kirmizi lahana': '🥬', 'lahana': '🥬',
+                'pırasa': '🌱', 'pirasa': '🌱', 'kereviz': '🍏', 'enginar': '🪻',
+		'taze fasulye': '🫛', 'fasulye': '🫘', 'bezelye': '🫛',
+                'bal kabağı': '🎃', 'bal kabagi': '🎃', 'turp': '🥕',
+		'şalgam': '🥕', 'salgam': '🥕', 'avokado': '🥑',
+                'mısır koçanı': '🌽', 'misir kocani': '🌽', 'kuşkonmaz': '🌿', 'kuskonmaz': '🌿',
+		'taze maydanoz': '🌿', 'maydanoz': '🌿', 'dereotu': '🌿',
                 'zeytin': '🫒', 'yeşil zeytin': '🫒', 'yesil zeytin': '🫒', 'siyah zeytin': '🫒',
-                'kaşar peyniri': '🧀', 'kasar peyniri': '🧀', 'mozzarella peyniri': '🧀', 'beyaz peynir': '⬜', 'süzme peynir': '⬜', 'suzme peynir': '⬜',
-                'parmesan': '🧀', 'eski kaşar': '🧀', 'eski kasar': '🧀', 'labne peyniri': '🧀', 'peynir': '🧀',
-                'sucuk': '🥓', 'pastırma': '🥓', 'pastirma': '🥓', 'et': '🥩', 'kıyma': '🥩', 'kiyma': '🥩', 'tavuk': '🍗',
-                'pudra şekeri': '🍧', 'pudra sekeri': '🍧', 'toz şeker': '🍬', 'toz seker': '🍬', 'esmer şeker': '🍬', 'esmer seker': '🍬', 'şeker': '🍬', 'seker': '🍬',
-                'yumurta': '🥚', 'kabartma tozu': '🧪', 'karbonat': '🧪', 'şekerli vanilin': '🌸', 'sekerli vanilin': '🌸', 'vanilin': '🌸',
-                'kakao tozu': '🍫', 'çikolata': '🍫', 'cikolata': '🍫', 'damla çikolata': '🍪', 'damla cikolata': '🍪',
-                'limon kabuğu': '🍊', 'limon kabugu': '🍊', 'portakal kabuğu': '🍊', 'portakal kabugu': '🍊',
-                'kuru üzüm': '🍇', 'kuru uzum': '🍇', 'kuru kayısı': '🍇', 'kuru kayisi': '🍇', 'kuru meyve': '🍇',
-                'ceviz': '🧠', 'ceviz içi': '🧠', 'ceviz ici': '🧠', 'fındık': '🌰', 'findik': '🌰', 'badem': '🥜',
-                'hindistan cevizi': '🥥', 'hindistan cevizi tozu': '🥥', 'bal': '🍯', 'pekmez': '🍯',
+                'kaşar peyniri': '🧀', 'kasar peyniri': '🧀', 'mozzarella peyniri': '🧀',
+		'beyaz peynir': '⬜', 'süzme peynir': '⬜', 'suzme peynir': '⬜', 'labne peynir': '⬜',
+                'parmesan': '🧀', 'eski kaşar': '🧀', 'eski kasar': '🧀', 'peynir': '🧀',
+                'sucuk': '🥓', 'pastırma': '🥓', 'pastirma': '🥓',
+		'et': '🥩', 'kıyma': '🥩', 'kiyma': '🥩', 'tavuk': '🍗',
+                'pudra şekeri': '🍧', 'pudra sekeri': '🍧', 'toz şeker': '🍬', 'toz seker': '🍬', 
+		'esmer şeker': '🍬', 'esmer seker': '🍬', 'şeker': '🍬', 'seker': '🍬',
+                'yumurta': '🥚', 'kabartma tozu': '🧪', 'karbonat': '🧪',
+		'şekerli vanilin': '🌸', 'sekerli vanilin': '🌸', 'vanilin': '🌸',
+                'kakao tozu': '🍫', 'çikolata': '🍫', 'cikolata': '🍫','kakao': '🍫',
+		'damla çikolata': '🍪', 'damla cikolata': '🍪',
+                'limon kabuğu': '🍊', 'limon kabugu': '🍊',
+		'portakal kabuğu': '🍊', 'portakal kabugu': '🍊',
+                'kuru üzüm': '🍇', 'kuru uzum': '🍇', 
+		'kuru kayısı': '🍇', 'kuru kayisi': '🍇', 'kuru meyve': '🍇',
+                'ceviz': '🧠', 'ceviz içi': '🧠', 'ceviz ici': '🧠', 
+		'fındık': '🌰', 'findik': '🌰', 'badem': '🥜',
+                'hindistan cevizi': '🥥', 'hindistan cevizi tozu': '🥥',
+		'bal': '🍯', 'pekmez': '🍯', 'reçel': '🍯', 'reçeli': '🍯',
                 'krem şanti': '🧁', 'krem santi': '🧁', 'şanti': '🧁', 'santi': '🧁',
                 'maya': '🍞', 'kuru maya': '🍞', 'yaş maya': '🍞', 'yas maya': '🍞',
                 'jöle': '🍮', 'jole': '🍮', 'jelatin': '🍮', 'gıda boyası': '🎨', 'gida boyasi': '🎨',
-                'şekerleme': '🧁', 'sekerleme': '🧁', 'sprinkles': '🧁', 'kurutulmuş meyve tozu': '🍓', 'kurutulmus meyve tozu': '🍓',
-                'elma': '🍎', 'kırmızı elma': '🍎', 'kirmizi elma': '🍎', 'yeşil elma': '🍏', 'yesil elma': '🍏',
+                'şekerleme': '🧁', 'sekerleme': '🧁', 'sprinkles': '🧁',
+		'kurutulmuş meyve tozu': '🍓', 'kurutulmus meyve tozu': '🍓',
+                'elma': '🍎', 'kırmızı elma': '🍎', 'kirmizi elma': '🍎',
+		'yeşil elma': '🍏', 'yesil elma': '🍏',
                 'armut': '🍐', 'portakal': '🍊', 'mandalina': '🍊', 'greyfurt': '🍊', 'muz': '🍌',
                 'çilek': '🍓', 'cilek': '🍓', 'kiraz': '🍒', 'vişne': '🍒', 'visne': '🍒',
-                'üzüm': '🍇', 'uzum': '🍇', 'yeşil üzüm': '🍇', 'yesil uzum': '🍇', 'kara üzüm': '🍇', 'kara uzum': '🍇',
-                'karpuz': '🍉', 'kavun': '🍈', 'şeftali': '🍑', 'seftali': '🍑', 'kayısı': '🍑', 'kayisi': '🍑', 'taze kayısı': '🍑', 'taze kayisi': '🍑',
-                'erik': '🍏', 'yeşil erik': '🍏', 'yesil erik': '🍏', 'mürdüm erik': '🍏', 'murdum erik': '🍏',
+                'üzüm': '🍇', 'uzum': '🍇', 'yeşil üzüm': '🍇', 'yesil uzum': '🍇',
+		'kara üzüm': '🍇', 'kara uzum': '🍇',
+                'karpuz': '🍉', 'kavun': '🍈', 'şeftali': '🍑', 'seftali': '🍑',
+		'kayısı': '🍑', 'kayisi': '🍑', 'taze kayısı': '🍑', 'taze kayisi': '🍑',
+                'erik': '🍏', 'yeşil erik': '🍏', 'yesil erik': '🍏',
+		'mürdüm erik': '🍏', 'murdum erik': '🍏',
                 'incir': '🪘', 'nar': '🍎', 'kivi': '🥝', 'ananas': '🍍',
-                'böğürtlen': '🫐', 'bogurtlen': '🫐', 'ahududu': '🫐', 'yaban mersini': '🫐', 'hurma': '🌴'
+                'böğürtlen': '🫐', 'bogurtlen': '🫐', 'ahududu': '🫐', 'yaban mersini': '🫐',
+		'hurma': '🌴'
             };
-            if (emojiMap[normalized]) return emojiMap[normalized];
-            for (const [key, emoji] of Object.entries(emojiMap)) {
-                if (normalized.includes(key)) return emoji;
-            }
-            return '';
-        }
+
+           // 1. Önce tam eşleşme kontrol et
+           if (emojiMap[normalized]) {
+               return emojiMap[normalized];
+           }
+    
+     	   // 2. En uzun eşleşmeyi bul (önce uzun kelimeleri kontrol et)
+     	   let bestMatch = '';
+           let bestMatchLength = 0;
+    
+           for (const [key, emoji] of Object.entries(emojiMap)) {
+               if (normalized.includes(key) && key.length > bestMatchLength) {               
+                       bestMatch = key;
+                       bestMatchLength = key.length;
+                   
+                }
+           }
+    
+           if (bestMatch) {
+               return emojiMap[bestMatch];
+           }
+    
+           return '';
+}
 
         async function getSmartImage(recipeName) {
             const normalized = recipeName.toLowerCase().replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c').trim();
