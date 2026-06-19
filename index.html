@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <style>
-                body {
-                  background-color: white; /* Ensure the iframe has a white background */
-                }
-
-                
-              </style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -1067,77 +1052,42 @@
             
             let ingredients = [];
             let instructions = [];
-            let currentSection = 'ingredients'; // Varsayılan: malzemeler
+            let currentSection = 'ingredients';
             let recipeName = '';
+            let foundInstructionsHeader = false;
             
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 const lowerLine = line.toLowerCase();
                 
-                // Satırı temizle: başındaki ve sonundaki noktalama işaretlerini kaldır
-                const cleanLineForCheck = lowerLine.replace(/[;:.,!?]+$/, '').trim();
-                
-                // Tarif adı (ilk satır, kısa ve başlık benzeri)
-                if (i === 0 && line.length < 60 && !cleanLineForCheck.includes('için') && !cleanLineForCheck.includes('yapılış') && !cleanLineForCheck.includes('malzeme')) {
+                // Tarif adı (ilk satır, kısa)
+                if (i === 0 && line.length < 60 && !lowerLine.includes('için') && !lowerLine.includes('yapılış') && !lowerLine.includes('malzeme')) {
                     recipeName = line.replace(/[:;.,!?-]+$/, '').trim();
                     continue;
                 }
                 
-                // YAPILIŞ başlıkları - ÖNCE KONTROL ET (çünkü malzeme başlıklarından daha spesifik)
-                if (cleanLineForCheck === 'yapılışı' || 
-                    cleanLineForCheck === 'yapılış' ||
-                    cleanLineForCheck === 'yapilisi' ||
-                    cleanLineForCheck === 'yapilis' ||
-                    cleanLineForCheck.startsWith('yapılışı') ||
-                    cleanLineForCheck.startsWith('yapılış') ||
-                    cleanLineForCheck.startsWith('yapilisi') ||
-                    cleanLineForCheck.startsWith('yapilis') ||
-                    cleanLineForCheck.includes('hazırlanış') || 
-                    cleanLineForCheck.includes('hazirlanis') ||
-                    cleanLineForCheck.includes('pişirme') ||
-                    cleanLineForCheck.includes('pisirme') ||
-                    cleanLineForCheck.includes('hazırlanışı') ||
-                    cleanLineForCheck.includes('hazirlanisi') ||
-                    cleanLineForCheck.includes('yapımı') ||
-                    cleanLineForCheck.includes('yapimi')) {
+                // YAPILIŞ başlıklarını kontrol et
+                if (lowerLine.includes('yapılışı') || lowerLine.includes('yapılış') || 
+                    lowerLine.includes('yapilisi') || lowerLine.includes('yapilis') ||
+                    lowerLine.includes('hazırlanış') || lowerLine.includes('hazirlanis') ||
+                    lowerLine.includes('pişirme') || lowerLine.includes('pisirme')) {
                     currentSection = 'instructions';
-                    continue; // Başlık satırını ekleme, sadece bölüm değiştir
+                    foundInstructionsHeader = true;
+                    continue; // Başlık satırını atla
                 }
                 
-                // MALZEMELER başlıkları
-                if (cleanLineForCheck.includes('malzeme') || 
-                    cleanLineForCheck.includes('hamuru için') || 
-                    cleanLineForCheck.includes('hamuru icin') ||
-                    cleanLineForCheck.includes('içi için') || 
-                    cleanLineForCheck.includes('ici icin') ||
-                    cleanLineForCheck.includes('üzeri için') ||
-                    cleanLineForCheck.includes('uzeri icin') ||
-                    cleanLineForCheck.includes('içi ve üzeri için') ||
-                    cleanLineForCheck.includes('ici ve uzeri icin') ||
-                    cleanLineForCheck.includes('içine') ||
-                    cleanLineForCheck.includes('icine') ||
-                    cleanLineForCheck.includes('üzerine') ||
-                    cleanLineForCheck.includes('uzerine') ||
-                    cleanLineForCheck.includes('sosu için') ||
-                    cleanLineForCheck.includes('sosu icin') ||
-                    cleanLineForCheck.includes('harç için') ||
-                    cleanLineForCheck.includes('harc icin') ||
-                    cleanLineForCheck.includes('kreması için') ||
-                    cleanLineForCheck.includes('kremasi icin') ||
-                    cleanLineForCheck.includes('krema için') ||
-                    cleanLineForCheck.includes('krema icin') ||
-                    cleanLineForCheck.includes('şerbeti için') ||
-                    cleanLineForCheck.includes('serbeti icin') ||
-                    cleanLineForCheck.includes('şerbet için') ||
-                    cleanLineForCheck.includes('serbet icin') ||
-                    cleanLineForCheck.includes('iç harç') ||
-                    cleanLineForCheck.includes('ic harc')) {
+                // MALZEMELER başlıklarını kontrol et
+                if (lowerLine.includes('malzeme') || lowerLine.includes('hamuru için') || 
+                    lowerLine.includes('içi için') || lowerLine.includes('üzeri için') ||
+                    lowerLine.includes('içi ve üzeri için') || lowerLine.includes('içine') ||
+                    lowerLine.includes('üzerine') || lowerLine.includes('sosu için') ||
+                    lowerLine.includes('harç için') || lowerLine.includes('kreması için')) {
                     currentSection = 'ingredients';
-                    continue; // Başlık satırını ekleme
+                    continue; // Başlık satırını atla
                 }
                 
                 // Hashtag ve gereksiz kısımları atla
-                if (line.startsWith('#') || lowerLine.includes('daha az') || lowerLine.includes('devamı') || lowerLine.includes('devami')) {
+                if (line.startsWith('#') || lowerLine.includes('daha az') || lowerLine.includes('devamı')) {
                     continue;
                 }
                 
@@ -1145,9 +1095,9 @@
                 const cleanLine = line.replace(/^[\*\-•]\s*/, '').trim();
                 if (!cleanLine) continue;
                 
-                if (currentSection === 'ingredients') {
+                if (currentSection === 'ingredients' && !foundInstructionsHeader) {
                     ingredients.push(cleanLine);
-                } else if (currentSection === 'instructions') {
+                } else if (currentSection === 'instructions' || foundInstructionsHeader) {
                     instructions.push(cleanLine);
                 }
             }
@@ -1226,7 +1176,7 @@
                     <div class="pdf-section-title">🥘 Malzemeler</div>
                     ${ingredientsHTML}
                     <div style="margin-top: 30px;"></div>
-                    <div class="pdf-section-title">👩‍🍳 Yapılışı</div>
+                    <div class="pdf-section-title">👩‍ Yapılışı</div>
                     ${stepsHTML}
                     <div class="pdf-footer">📅 ${recipe.date} • Mutfak Günlüğüm</div>
                 `;
@@ -1709,23 +1659,3 @@
     </script>
 </body>
 </html>
-
-
-
-              <script>
-                              // Satırın sonundaki noktalama işaretlerini temizle
-const cleanLineForCheck = lowerLine.replace(/[;:.,!?]+$/, '').trim();
-
-// Yapılış başlıklarını ÖNCE kontrol et (daha spesifik)
-if (cleanLineForCheck === 'yapılışı' || 
-    cleanLineForCheck === 'yapılış' ||
-    cleanLineForCheck.startsWith('yapılışı') ||
-    cleanLineForCheck.startsWith('yapılış') || ...) {
-    currentSection = 'instructions';
-    continue; // Başlığı ekleme, sadece bölüm değiştir
-}
-
-
-              </script>
-                        </body>
-                        </html>
